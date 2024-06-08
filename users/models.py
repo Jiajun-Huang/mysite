@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
     
 class Profile(models.Model):
-    avatar = models.ImageField(upload_to='avatars/', default='resources/avatars/92061424.png')
+    avatar = models.ImageField(upload_to='avatars/', default='/avatars/92061424.png')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=30)
     def __str__(self):
