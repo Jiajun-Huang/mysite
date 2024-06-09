@@ -16,8 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from allauth.socialaccount.providers.github import views as github_views
+from users.views import *
 
-
+urlpatterns = [
+    path('auth/', include('dj_rest_auth.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('auth/github/', GitHubLogin.as_view(), name='github_login'),
+    path('auth/github/url/', github_views.oauth2_login),
+    path('auth/github/callback', github_callback, name='github_callback'),
+    # path('accounts/', include('allauth.urls')),
+]

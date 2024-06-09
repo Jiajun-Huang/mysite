@@ -41,15 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'rest_framework',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount.providers.github',
     'rest_framework.authtoken',
     'dj_rest_auth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
     'django_filters',
     'drf_yasg',  
     'blogs.apps.BlogsConfig',
     'users.apps.UsersConfig',
+    'comments.apps.CommentsConfig',
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -73,6 +75,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -155,9 +159,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-ACCOUNT_LOGOUT_ON_GET = True
-REST_SESSION_LOGIN = True
-ACCOUNT_EMAIL_REQUIRED = False
+# ACCOUNT_LOGOUT_ON_GET = True
+# REST_SESSION_LOGIN = True
+# ACCOUNT_EMAIL_REQUIRED = False
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
@@ -170,3 +174,21 @@ MINIO_STORAGE_MEDIA_BUCKET_NAME = 'blog'
 MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
 MINIO_STORAGE_STATIC_BUCKET_NAME = 'static'
 MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
+
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = False
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'github': {
+#         'APP': {
+#             'client_id': 'Ov23liNqf6GxOw3EfXTI',
+#             'secret': '95a1aa0fd6f897458b2c33520f16de3310f1e3bc',
+#             'key': ''
+#         }
+#     }
+# }
