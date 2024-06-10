@@ -66,10 +66,9 @@ MIDDLEWARE = [
     
 ]
 
-# REST_AUTH = {
-#     'USE_JWT': True,
-#     'JWT_AUTH_COOKIE': 'jwt-auth',
-# }
+REST_AUTH = {
+    'USE_JWT': True,
+}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -99,7 +98,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'dj_rest_auth.jwt_auth.JWTAuthentication',
+    ],
 }
 
 # Database
@@ -183,12 +185,15 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = False
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'github': {
-#         'APP': {
-#             'client_id': 'Ov23liNqf6GxOw3EfXTI',
-#             'secret': '95a1aa0fd6f897458b2c33520f16de3310f1e3bc',
-#             'key': ''
-#         }
-#     }
-# }
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'JSON_EDITOR': True,
+}
