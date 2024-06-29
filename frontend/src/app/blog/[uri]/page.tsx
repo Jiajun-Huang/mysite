@@ -1,14 +1,32 @@
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
-import fs from "fs";
 import style from "./page.module.scss";
 
-export default async function BlogDetail() {
-  const text = await fs.readFileSync(
-    "C://Users//80419//project//mysite//frontend//src//app//blog//[slug]//example",
-    "utf8"
-  );
+interface Data extends Blog {
+  text: string;
+}
 
+interface Prop {
+  params: {
+    uri: string;
+  };
+}
+
+export default async function BlogDetail({ params }: Prop) {
+  const uri = params.uri;
+  const response = await fetch("http://localhost:3000/api/blog/uri/" + uri, {
+    method: "GET",
+  });
+
+  if (response.status === 404) {
+    return <h1>404 Not Found</h1>;
+  }
+
+  const data: Data = await response.json();
+  const text = data.text;
+  if (!data || !text) {
+    return <h1>404 Not Found</h1>;
+  }
   return (
     <div>
       <h1 className={style.title}>Newest Blog</h1>

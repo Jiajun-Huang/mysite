@@ -6,6 +6,7 @@ from blogs.serializers import *
 from django.shortcuts import get_object_or_404, render
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from minio_storage.storage import MinioMediaStorage
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -41,6 +42,9 @@ class BlogSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     filter_class = BlogFilter
+    storage = MinioMediaStorage()
+
+    print("execute")
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter('title', openapi.IN_QUERY, description="Title contains", type=openapi.TYPE_STRING),
@@ -175,11 +179,17 @@ class BlogSet(viewsets.ModelViewSet):
         
         if blog.deleted:
             return Response(status=404)
-
+        print(blog.text_file)
         if blog.text_file:
-            with open(blog.text_file.path, 'r') as f:
-                blog.text = f.read()
-                return Response(BlogSerializer(blog).data)
+            # list all blog file and print
+            try:
+                with self.storage.open(blog.text_file.name, 'r') as f:
+                    # read and convert from binary to string
+                    blog.text = f.read().decode('utf-8')
+                    return Response(BlogDetailSerializer(blog).data)
+            except Exception as e:
+                # return error if file not found
+                return Response(status=404) 
         else:
             return Response(BlogSerializer(blog).data)
 

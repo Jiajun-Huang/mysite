@@ -6,7 +6,7 @@ from .models import *
 class BlogUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ['title', 'discription', 'category', 'tags', 'text_file', 'uri']
+        fields = ['title', 'description', 'category', 'tags', 'text_file', 'uri']
 
 class TagSerializer(serializers.ModelSerializer):
 
@@ -31,6 +31,14 @@ class CategoryNameSerializer(serializers.ModelSerializer):
 class BlogSerializer(serializers.ModelSerializer):
     tags = TagNameSerializer(many=True)
     category = CategoryNameSerializer()
+    class Meta:
+        model = Blog
+        fields = "__all__"
+
+class BlogDetailSerializer(serializers.ModelSerializer):
+    tags = TagNameSerializer(many=True)
+    category = CategoryNameSerializer()
+    text = serializers.CharField()
     class Meta:
         model = Blog
         fields = "__all__"

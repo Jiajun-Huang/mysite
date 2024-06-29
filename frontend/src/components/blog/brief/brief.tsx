@@ -4,8 +4,8 @@ interface BriefProps {
   title: string;
   date: Date;
   views: number;
-  tags: string[];
-  category: string;
+  tags: Tag[];
+  category: Category;
   abstract: string;
   url: string;
 }
@@ -37,7 +37,7 @@ function Brief({
               </span>
             ))}
           </div>
-          <span className={style.category}>{category}</span>
+          <span className={style.category}>{category.name}</span>
         </div>
         <p>{abstract}</p>
       </div>
