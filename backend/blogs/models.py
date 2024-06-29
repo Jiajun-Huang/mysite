@@ -29,9 +29,9 @@ class Blog(models.Model):
     likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     deleted = models.BooleanField(default=False)
-    
-    text_file = models.FileField(upload_to='text_files/', null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    uri = models.CharField(max_length=200, unique=True)
+    text_file = models.FileField(upload_to='blog/', default='blog/default.md')
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     tags = models.ManyToManyField(Tag)
     def __str__(self):
         return self.title

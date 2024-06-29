@@ -1,14 +1,15 @@
 from argparse import Action
 
-from django.shortcuts import get_object_or_404, render
-from rest_framework import viewsets
-from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-
 from blogs.filter import *
 from blogs.models import *
 from blogs.serializers import *
+from django.shortcuts import get_object_or_404, render
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 
 # Create your views here.
 class BlogFilterField():
@@ -125,10 +126,16 @@ class BlogSet(viewsets.ModelViewSet):
         serializer = BlogSerializer(queryset, many=True)
         return Response(serializer.data)
     
-
+    @swagger_auto_schema(
+        request_body=BlogUploadSerializer
+    )
     def create(self, request):
-        serializer = BlogSerializer(data=request.data)
+        serializer = BlogUploadSerializer(data=request.data)
         if serializer.is_valid():
+            # rename text file to uri
+            if 'text_file' in request.data:
+                file_name = request.data['uri']
+                request.data['text_file'].name = f'blog/{file_name}'
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
@@ -149,6 +156,7 @@ class BlogSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=400)
     
     # increase view count
+    @action(detail=False, methods=['get'], url_path='view/(?P<pk>[^/.]+)')
     def view(self, request, pk):
         blog = get_object_or_404(Blog, pk=pk)
         blog.views += 1
@@ -156,12 +164,29 @@ class BlogSet(viewsets.ModelViewSet):
         return Response(status=204)
     
     # increase like count do not change update time
+    @action(detail=False, methods=['get'], url_path='like/(?P<pk>[^/.]+)')
     def like(self, request, pk):
         blog = get_object_or_404(Blog, pk=pk)
         blog.likes += 1
         blog.save()
         return Response(status=204)
     
+    # get blog detail using uri field
+    @action(detail=False, methods=['get'], url_path='by-uri/(?P<uri>[^/.]+)')
+    def get_by_uri(self, request, uri=None):
+        blog = get_object_or_404(Blog, uri=uri)
+        
+        if blog.deleted:
+            return Response(status=404)
+
+        if blog.text_file:
+            with open(blog.text_file.path, 'r') as f:
+                blog.text = f.read()
+                return Response(BlogSerializer(blog).data)
+        else:
+            return Response(BlogSerializer(blog).data)
+
+
 
         
 

@@ -6,6 +6,11 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = "__all__"
 
+class BlogUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = ['title', 'discription', 'category', 'tags', 'text_file', 'uri']
+
 class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
