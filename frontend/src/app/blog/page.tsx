@@ -1,47 +1,46 @@
 import Brief from "@/components/blog/brief/brief";
 import style from "./page.module.scss";
+interface Data {
+  id: number;
+  title: string;
+  discription: string;
+  created_at: string;
+  views: number;
+  likes: number;
+  uri: string;
+  tags: string[];
+  category: string;
 
-const fakeData = [
-  {
-    title: "chatGPT 国内镜像搭建教程(3.5/4)",
-    date: "2023-06-28T00:00:00Z",
-    views: 253,
-    tags: ["工具", "人生"],
-    category: "原创",
-    abstract:
-      "一个非常好用的开源项目:ChatGPT-Next-Web, 这个开源项目可以做到一键免费部署你的私人ChatGPT网页应用。",
-    url: "chatGPT",
-  },
-  {
-    title: "How to Build a Personal ChatGPT Web App",
-    date: "2023-05-15T00:00:00Z",
-    views: 150,
-    tags: ["Tutorial", "Web"],
-    category: "Guide",
-    abstract:
-      "A very useful open-source project: ChatGPT-Next-Web. This project allows you to deploy your personal ChatGPT web app for free with a single click.",
-    url: "chatGPT",
-  },
-];
+  // other fields
+  [key: string]: any;
+}
 
-export default function Home() {
+export default async function Home() {
+  const data = await fetch("http://localhost:3000/api/blog", {
+    method: "GET",
+  });
+  const fakeData: any[] = await data.json();
+
   return (
     <div className={style.page}>
       <h1 className={style.title}>Newest Blog</h1>
       <div className={style.briefCards}>
-        {fakeData.map((data, index) => (
-          <div key={index} className={style.briefCard}>
-            <Brief
-              title={data.title}
-              date={new Date(data.date)}
-              views={data.views}
-              tags={data.tags}
-              category={data.category}
-              abstract={data.abstract}
-              url={data.url}
-            />
-          </div>
-        ))}
+        {fakeData.map((data, index) => {
+          console.log(data.tags);
+          return (
+            <div key={index} className={style.briefCard}>
+              <Brief
+                title={data.title}
+                date={new Date(data.created_at)}
+                views={data.views}
+                tags={data.tags}
+                category={data.category.name}
+                abstract={data.discription}
+                url={data.uri}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

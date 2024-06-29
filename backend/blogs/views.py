@@ -66,7 +66,6 @@ class BlogSet(viewsets.ModelViewSet):
          # Title filter
         filter_fields = BlogFilterField()
         filters = {}
-        print(request.query_params)
         if filter_fields.title in request.query_params:
             filters['title__icontains'] = request.query_params[filter_fields.title]
 
@@ -106,7 +105,6 @@ class BlogSet(viewsets.ModelViewSet):
         # Category filter
         if filter_fields.category in request.query_params:
             filters['category'] = request.query_params[filter_fields.category]
-        print(filters)
         queryset = Blog.objects.filter(deleted=False, **filters)
 
         # Order by
@@ -121,9 +119,8 @@ class BlogSet(viewsets.ModelViewSet):
         if ordering:
             queryset = queryset.order_by(*ordering)
         
-        queryset = Blog.objects.filter(deleted=False, **filters)
-        print(queryset)
         serializer = BlogSerializer(queryset, many=True)
+        print(serializer.data)
         return Response(serializer.data)
     
     @swagger_auto_schema(
@@ -172,7 +169,7 @@ class BlogSet(viewsets.ModelViewSet):
         return Response(status=204)
     
     # get blog detail using uri field
-    @action(detail=False, methods=['get'], url_path='by-uri/(?P<uri>[^/.]+)')
+    @action(detail=False, methods=['get'], url_path='uri/(?P<uri>[^/.]+)')
     def get_by_uri(self, request, uri=None):
         blog = get_object_or_404(Blog, uri=uri)
         

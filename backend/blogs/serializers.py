@@ -1,10 +1,7 @@
 from rest_framework import serializers
+
 from .models import *
 
-class BlogSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Blog
-        fields = "__all__"
 
 class BlogUploadSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,3 +19,18 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'created_at', 'updated_at']
 
+class TagNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['name']
+class CategoryNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name']
+
+class BlogSerializer(serializers.ModelSerializer):
+    tags = TagNameSerializer(many=True)
+    category = CategoryNameSerializer()
+    class Meta:
+        model = Blog
+        fields = "__all__"

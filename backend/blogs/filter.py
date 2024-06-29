@@ -1,6 +1,7 @@
-from django_filters.rest_framework import FilterSet
 import django_filters
 from blogs.models import *
+from django_filters.rest_framework import FilterSet
+
 
 class BlogFilter(FilterSet):
     tags = django_filters.CharFilter(method='filter_tags')
@@ -15,6 +16,7 @@ class BlogFilter(FilterSet):
             'views': ['gte', 'lte'],
             'deleted': ['exact'],
             'category' : ['exact'],
+            'uri': ['exact'],
         }
 
     def filter_tags(self, queryset, name, value):

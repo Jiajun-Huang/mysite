@@ -20,7 +20,7 @@ function Brief({
   url,
 }: BriefProps) {
   const dateStr = date.toLocaleDateString();
-
+  console.log(url);
   return (
     <Link href={url} className={style.link}>
       <div className={style.brief}>
@@ -32,13 +32,9 @@ function Brief({
         <div className={style.tagsCategory}>
           <div className={style.tags}>
             {tags.map((tag, index) => (
-              <object key={index}>
-                <span key={index} className={style.tag}>
-                  <Link href={"/" + tag} className={style.link}>
-                    {tag}
-                  </Link>
-                </span>
-              </object>
+              <span key={index} className={style.tag}>
+                {tag.name}
+              </span>
             ))}
           </div>
           <span className={style.category}>{category}</span>
