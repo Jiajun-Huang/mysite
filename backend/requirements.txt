@@ -9,3 +9,4 @@ mysqlclient===2.2.4
 djangorestframework-simplejwt
 whitenoise
 django-minio-storage
+django-cors-headers

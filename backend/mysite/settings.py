@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'blogs.apps.BlogsConfig',
     'users.apps.UsersConfig',
     'comments.apps.CommentsConfig',
+    'corsheaders',
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 REST_AUTH = {
@@ -200,3 +201,5 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,
     'JSON_EDITOR': True,
 }
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'

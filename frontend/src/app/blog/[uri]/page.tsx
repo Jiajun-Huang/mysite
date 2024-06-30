@@ -23,13 +23,32 @@ export default async function BlogDetail({ params }: Prop) {
   }
 
   const data: Data = await response.json();
+  const tags = data.tags || [];
   const text = data.text;
   if (!data || !text) {
     return <h1>404 Not Found</h1>;
   }
   return (
     <div>
-      <h1 className={style.title}>Newest Blog</h1>
+      <h1 className={style.title}>{data.title}</h1>
+      <div className={style.info}>
+        <span>
+          created at{" "}
+          {new Date(data.created_at || "invalid").toLocaleDateString()}
+        </span>
+        <span>{data.category?.name}</span>
+        <span>
+          {tags.map((tag, index) => {
+            const tagName = tag.name || "tag";
+            return <span key={index}>{tagName }</span>;
+          })}{" "}
+        </span>
+      </div>
+      <span>{data.description}</span>
+
+      <span>{data.likes} likes</span>
+      <span>{data.views} views</span>
+      <br />
       <div className={style.layout}>
         <div className={style.content}>
           <div className={style.page}>

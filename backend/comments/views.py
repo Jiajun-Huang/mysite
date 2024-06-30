@@ -1,10 +1,11 @@
 from logging import Filterer
 
-from django.shortcuts import render
-from rest_framework import serializers, viewsets, response, decorators
-
 from comments.models import *
-
+from django.shortcuts import render
+from rest_framework import decorators, response, serializers, viewsets
+from rest_framework.decorators import action
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 
@@ -38,8 +39,10 @@ class CommentSet(viewsets.ModelViewSet):
     ordering = ['created_at']
     pagination_class = None
 
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     #  a special api for get all top level comments given blog id
-    @decorators.action(methods=['get'], detail=False)
+    @action(methods=['get'], detail=False)
     def get_comments(self, request):
         blog_id = request.GET.get('blog_id')
         if blog_id:
@@ -48,4 +51,6 @@ class CommentSet(viewsets.ModelViewSet):
             return response.Response(serializer.data)
         return response.Response([])
     
+   
+        
         
