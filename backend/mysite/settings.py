@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'blogs.apps.BlogsConfig',
     'users.apps.UsersConfig',
     'comments.apps.CommentsConfig',
-    'corsheaders',
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -201,6 +200,7 @@ SPECTACULAR_SETTINGS = {
         "deepLinking": True,
         "persistAuthorization": True,
         "displayOperationId": True,
+        "displayRequestDuration": True,
     },
 }
 

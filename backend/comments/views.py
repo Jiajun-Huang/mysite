@@ -1,13 +1,17 @@
 import datetime
 from logging import Filterer
+from typing import List
 
-from comments.models import *
 from django.shortcuts import render
-
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from rest_framework import decorators, response, serializers, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from .models import *
+from .serializers import *
 
 # Create your views here.
 
@@ -25,14 +29,18 @@ class CommentFilter(Filterer):
             'user': ['exact'],
         }
 
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = "__all__"
-class CommentRequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ['content', 'blog', 'user', 'reply', 'type']
+
+
+class RootCommentType:
+    def __init__(self, root_comment: Comment, replies: List[Comment] = []):
+        self.root_comment = root_comment
+        self.replies = replies
+    
+    def __str__(self):
+        return f"Root Comment: {self.root_comment}, Replies: {self.replies}"
+    
+    def toString(self):
+        return f"Root Comment: {self.root_comment}, Replies: {self.replies}"
 
 class CommentSet(viewsets.ModelViewSet):
 
@@ -40,13 +48,55 @@ class CommentSet(viewsets.ModelViewSet):
     filter_class = CommentFilter
     serializer_class = CommentSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == 'create':
-            return CommentRequestSerializer
+            return CommentCreateRequestSerializer
         return CommentSerializer
+    
+    
+    @extend_schema(request=CommentCreateRequestSerializer, responses=CommentSerializer)
+    def create(self, request, *args, **kwargs):
+        serializers_class = CommentCreateRequestSerializer(data=request.data)
+        user = request.user
+        print(user)
+
+        if serializers_class.is_valid():        
+            # get the user from the request auth token
+            serializers_class.save(user=user)
+            response_serializer = CommentSerializer(serializers_class.instance)
+            # return the full data of the created comment
+            return response.Response(response_serializer.data, status=201)
+        return response.Response(serializers_class.errors, status=400)
+    
+    
+    
+    @extend_schema(parameters=[
+        OpenApiParameter(name='type', location=OpenApiParameter.QUERY, description="type enum", type=OpenApiTypes.INT, required=False),
+        OpenApiParameter(name='blog', location=OpenApiParameter.QUERY, description="blog id", type=OpenApiTypes.INT)
+    ])
+    @action(detail=False, methods=['GET'], url_path='get-comments')
+    def get_comments(self, request):
+        type = request.query_params.get('type')
+        blog = request.query_params.get('blog')
+        
+        if type is not None and int(type) != 0:
+            comments = Comment.objects.filter(type=type, root=None).order_by('-created_at')
+        else:
+            comments = Comment.objects.filter(blog=blog, root=None).order_by('-created_at')
+
+        serializer = CommentNestedSerializer(comments, many=True)
+        return response.Response(serializer.data)
+
+        
+        
+    
+
+    
+
+    
 
 
 
