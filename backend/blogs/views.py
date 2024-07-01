@@ -4,8 +4,7 @@ from blogs.filter import *
 from blogs.models import *
 from blogs.serializers import *
 from django.shortcuts import get_object_or_404, render
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from minio_storage.storage import MinioMediaStorage
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -45,25 +44,25 @@ class BlogSet(viewsets.ModelViewSet):
     storage = MinioMediaStorage()
 
     print("execute")
-    @swagger_auto_schema(
-        manual_parameters=[
-            openapi.Parameter('title', openapi.IN_QUERY, description="Title contains", type=openapi.TYPE_STRING),
-            openapi.Parameter('created_at_begin', openapi.IN_QUERY, description="Created at (start date)", type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
-            openapi.Parameter('created_at_end', openapi.IN_QUERY, description="Created at (end date)", type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
-            openapi.Parameter('updated_at_begin', openapi.IN_QUERY, description="Updated at (start date)", type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
-            openapi.Parameter('updated_at_end', openapi.IN_QUERY, description="Updated at (end date)", type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
-            openapi.Parameter('likes_begin', openapi.IN_QUERY, description="Minimum likes", type=openapi.TYPE_INTEGER),
-            openapi.Parameter('likes_end', openapi.IN_QUERY, description="Maximum likes", type=openapi.TYPE_INTEGER),
-            openapi.Parameter('views_begin', openapi.IN_QUERY, description="Minimum views", type=openapi.TYPE_INTEGER),
-            openapi.Parameter('views_end', openapi.IN_QUERY, description="Maximum views", type=openapi.TYPE_INTEGER),
-            openapi.Parameter('deleted', openapi.IN_QUERY, description="Deleted", type=openapi.TYPE_BOOLEAN),
-            openapi.Parameter('tags', openapi.IN_QUERY, description="Tag IDs", type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_INTEGER)),
-            openapi.Parameter('category', openapi.IN_QUERY, description="Category ID", type=openapi.TYPE_INTEGER),
-            openapi.Parameter('like_order', openapi.IN_QUERY, description="Order by likes", type=openapi.TYPE_STRING, enum=["asc", "desc"]),
-            openapi.Parameter('view_order', openapi.IN_QUERY, description="Order by views", type=openapi.TYPE_STRING, enum=["asc", "desc"]),
-            openapi.Parameter('title_order', openapi.IN_QUERY, description="Order by title", type=openapi.TYPE_STRING, enum=["asc", "desc"]),
-        ]
-    )
+    @extend_schema(
+    parameters=[
+        OpenApiParameter(name='title', location=OpenApiParameter.QUERY, description="Title contains", type=OpenApiTypes.STR),
+        OpenApiParameter(name='created_at_begin', location=OpenApiParameter.QUERY, description="Created at (start date)", type=OpenApiTypes.DATE),
+        OpenApiParameter(name='created_at_end', location=OpenApiParameter.QUERY, description="Created at (end date)", type=OpenApiTypes.DATE),
+        OpenApiParameter(name='updated_at_begin', location=OpenApiParameter.QUERY, description="Updated at (start date)", type=OpenApiTypes.DATE),
+        OpenApiParameter(name='updated_at_end', location=OpenApiParameter.QUERY, description="Updated at (end date)", type=OpenApiTypes.DATE),
+        OpenApiParameter(name='likes_begin', location=OpenApiParameter.QUERY, description="Minimum likes", type=OpenApiTypes.INT),
+        OpenApiParameter(name='likes_end', location=OpenApiParameter.QUERY, description="Maximum likes", type=OpenApiTypes.INT),
+        OpenApiParameter(name='views_begin', location=OpenApiParameter.QUERY, description="Minimum views", type=OpenApiTypes.INT),
+        OpenApiParameter(name='views_end', location=OpenApiParameter.QUERY, description="Maximum views", type=OpenApiTypes.INT),
+        OpenApiParameter(name='deleted', location=OpenApiParameter.QUERY, description="Deleted", type=OpenApiTypes.BOOL),
+        OpenApiParameter(name='tags', location=OpenApiParameter.QUERY, description="Tag IDs", type={'type': 'array', 'minItems': 4, 'maxItems': 6, 'items': {'type': 'number'}},),
+        OpenApiParameter(name='category', location=OpenApiParameter.QUERY, description="Category ID", type=OpenApiTypes.INT),
+        OpenApiParameter(name='like_order', location=OpenApiParameter.QUERY, description="Order by likes", type=OpenApiTypes.STR, enum=["asc", "desc"]),
+        OpenApiParameter(name='view_order', location=OpenApiParameter.QUERY, description="Order by views", type=OpenApiTypes.STR, enum=["asc", "desc"]),
+        OpenApiParameter(name='title_order', location=OpenApiParameter.QUERY, description="Order by title", type=OpenApiTypes.STR, enum=["asc", "desc"]),
+    ]
+)
     def list(self, request):
         # declare request parameter using a class
         # can add contidion such as deleted=False, title pattern search, order by created_at etc.
@@ -127,8 +126,8 @@ class BlogSet(viewsets.ModelViewSet):
         print(serializer.data)
         return Response(serializer.data)
     
-    @swagger_auto_schema(
-        request_body=BlogUploadSerializer
+    @extend_schema(
+        request=BlogUploadSerializer
     )
     def create(self, request):
         serializer = BlogUploadSerializer(data=request.data)

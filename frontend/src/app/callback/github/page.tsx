@@ -41,7 +41,7 @@ export default function Callback() {
             }
             return prevCount - 1;
           });
-        }, 1000);
+        }, 1000); 
       })
       .catch((error) => {
         console.error("Error:", error);

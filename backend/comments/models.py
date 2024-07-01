@@ -16,11 +16,11 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     
-    type = models.IntegerField(choices=COMMENT_TYPES, default=0)
+    type = models.IntegerField(choices=COMMENT_TYPES, default=2)
     
     def __str__(self):
         return self.content

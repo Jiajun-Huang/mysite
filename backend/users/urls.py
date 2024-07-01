@@ -17,8 +17,6 @@ Including another URLconf
 from allauth.socialaccount.providers.github import views as github_views
 from django.contrib import admin
 from django.urls import include, path
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
 from users.views import *
 
 urlpatterns = [

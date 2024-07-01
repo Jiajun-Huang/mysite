@@ -1,11 +1,14 @@
+import datetime
 from logging import Filterer
 
 from comments.models import *
 from django.shortcuts import render
+
 from rest_framework import decorators, response, serializers, viewsets
 from rest_framework.decorators import action
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 # Create your views here.
 
 
@@ -26,30 +29,28 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
-
+class CommentRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['content', 'blog', 'user', 'reply', 'type']
 
 class CommentSet(viewsets.ModelViewSet):
 
     queryset = Comment.objects.all()
-    
     filter_class = CommentFilter
-    search_fields = ['content', 'created_at', 'updated_at', 'deleted', 'blog', 'user']
     serializer_class = CommentSerializer
-    ordering_fields = ['created_at', 'updated_at', 'deleted', 'blog', 'user']
-    ordering = ['created_at']
-    pagination_class = None
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    #  a special api for get all top level comments given blog id
-    @action(methods=['get'], detail=False)
-    def get_comments(self, request):
-        blog_id = request.GET.get('blog_id')
-        if blog_id:
-            comments = Comment.objects.filter(blog_id=blog_id, reply=None)
-            serializer = CommentSerializer(comments, many=True)
-            return response.Response(serializer.data)
-        return response.Response([])
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CommentRequestSerializer
+        return CommentSerializer
+
+
+
+       
     
    
         
