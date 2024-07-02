@@ -7,8 +7,12 @@ export default async function CommentsPage() {
   const data = await response.json();
 
   return (
-    <div>
-      <Comments comments={data} type={1} blog={null} />
+    <div
+      style={{
+        padding: "1rem 10rem",
+      }}
+    >
+      <Comments placeholder={"Enter something"} type={1} blog={null} />
     </div>
   );
 }

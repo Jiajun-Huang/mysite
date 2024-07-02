@@ -1,7 +1,7 @@
+import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
 import style from "./page.module.scss";
-
 interface Data extends Blog {
   text: string;
 }
@@ -28,6 +28,9 @@ export default async function BlogDetail({ params }: Prop) {
   if (!data || !text) {
     return <h1>404 Not Found</h1>;
   }
+
+  
+
   return (
     <div>
       <h1 className={style.title}>{data.title}</h1>
@@ -40,7 +43,7 @@ export default async function BlogDetail({ params }: Prop) {
         <span>
           {tags.map((tag, index) => {
             const tagName = tag.name || "tag";
-            return <span key={index}>{tagName }</span>;
+            return <span key={index}>{tagName}</span>;
           })}{" "}
         </span>
       </div>
@@ -59,6 +62,7 @@ export default async function BlogDetail({ params }: Prop) {
           <Toc />
         </div>
       </div>
+      <Comment placeholder="write a comment" blog={data.id} type={0}></Comment>
     </div>
   );
 }

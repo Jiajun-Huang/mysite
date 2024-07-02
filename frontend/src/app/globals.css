@@ -39,6 +39,10 @@ button {
   border: none;
 }
 
+textarea {
+  font-family: var(--font-sans);
+}
+
 html {
   scroll-padding-top: 200px;
   scroll-behavior: smooth;
