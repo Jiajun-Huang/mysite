@@ -28,3 +28,8 @@ interface Blog {
   category?: Category;
   tags?: Tag[];
 }
+
+interface User {
+  id?: number;
+  username?: string;
+}

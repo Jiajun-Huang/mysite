@@ -64,6 +64,7 @@ class CommentNestedSerializer(CommentSerializer):
 
 
 
+
 class CommentGetSerializer(serializers.Serializer):
     root_comment = CommentSerializer()
     replies = CommentSerializer(many=True)

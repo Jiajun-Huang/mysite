@@ -50,8 +50,8 @@ function Nav() {
         <Link href="/about" className={style.item} title="About">
           About
         </Link>
-        <Link href="/blog" className={style.item} title="Blog">
-          Blog
+        <Link href="/comments" className={style.item} title="comments">
+          comments
         </Link>
         {user ? (
           <div>{user.username}</div>
