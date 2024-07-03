@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -205,3 +206,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}
