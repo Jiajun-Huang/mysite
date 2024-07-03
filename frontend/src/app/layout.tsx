@@ -1,8 +1,9 @@
 import Nav from "@/components/nav/nav";
+import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
 import "./globals.css";
 import style from "./page.module.scss";
-import "katex/dist/katex.min.css";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,10 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
       <body className={style.body}>
-        <Nav />
-        <main className={style.main}>{children}</main>
+        <Providers>
+          <Nav />
+          <main className={style.main}>{children}</main>
+        </Providers>
       </body>
     </html>
   );

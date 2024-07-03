@@ -1,40 +1,12 @@
 "use client";
 
+import { UserContext } from "@/components/user/state";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import style from "./nav.module.scss";
 function Nav() {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
 
-  useEffect(() => {
-    // get user data
-    const token = localStorage.getItem("token");
-    console.log(token);
-    if (token) {
-      fetch("http://localhost:3000/api/auth/user", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            return null;
-          }
-        })
-        .then((data) => {
-          if (data) {
-            setUser(data);
-          } else {
-            setUser(null);
-          }
-        });
-    }
-  }, []);
-
-  console.log(user);
 
   return (
     <nav className={style.Nav}>
@@ -51,7 +23,7 @@ function Nav() {
           About
         </Link>
         <Link href="/comments" className={style.item} title="comments">
-          comments
+          Comments
         </Link>
         {user ? (
           <div>{user.username}</div>

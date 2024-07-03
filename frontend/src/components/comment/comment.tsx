@@ -40,10 +40,16 @@ export default function Comments({ placeholder, type, blog }) {
         root={null}
         type={type}
         reply={null}
+        avartar={true}
         onSubmit={fetchComments}
       />
       {commentss.map((comment: Comment) => (
-        <CommentBlock key={comment.id} comment={comment} />
+        <CommentBlock
+          key={comment.id}
+          comment={comment}
+          blog={blog}
+          type={type}
+        />
       ))}
     </div>
   );

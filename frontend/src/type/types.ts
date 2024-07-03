@@ -30,6 +30,21 @@ interface Blog {
 }
 
 interface User {
-  id?: number;
-  username?: string;
+  id: number;
+  username: string;
+
+  [key: string]: any;
+}
+
+interface Comment {
+  id: number;
+  content: string;
+  user: User;
+  created_at: string;
+  updated_at: string;
+  deleted: boolean;
+  reply: number;
+  root: number;
+
+  replies?: Comment[];
 }

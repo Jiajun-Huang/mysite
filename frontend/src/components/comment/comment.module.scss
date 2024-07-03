@@ -5,6 +5,7 @@
 
   .commentBody {
     margin: 0px 0px 0px 10px;
+    flex: 1;
     .user {
       font-weight: bold;
       margin: 0;
@@ -30,19 +31,19 @@
 
 .inputBlock {
   display: flex;
-  align-items: center; /* Aligns items vertically */
+  flex-direction: column; /* Stack elements vertically */
   padding: 0.6rem 0;
 
-  form {
+  .inputRow {
     display: flex;
-    align-items: center;
-    flex: 1;
-    margin-left: 10px;
+    align-items: center; /* Aligns items vertically */
+    width: 100%;
+    margin-bottom: 10px; /* Space between inputRow and button */
   }
 
   .input {
     flex: 1;
-    margin-right: 10px;
+    margin-left: 10px;
     padding: 0.4rem;
     border: 1px solid #ddd; /* Light border */
     border-radius: 4px; /* Rounded corners */
@@ -50,9 +51,15 @@
     font-size: 1rem;
   }
 
+  .buttonRow {
+    display: flex;
+    justify-content: flex-end; /* Aligns button to the right */
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
   .button {
     padding: 0.4rem 0.8rem;
-    height: 100%;
     border: none;
     background-color: #007bff; /* Blue background */
     color: white;

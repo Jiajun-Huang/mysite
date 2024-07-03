@@ -1,29 +1,90 @@
 "use client";
 
-import Image from "next/image";
-import style from "./comment.module.scss";
+import { useState } from "react";
 import Avatar from "../user/avatar";
+import style from "./comment.module.scss";
+import CommentInput from "./commentInput";
 
-export default function CommentBlock({ comment }) {
-  const { content, user, created_at, replies } = comment;
+interface Props {
+  comment: Comment;
+  blog: number | null;
+  type: number | null;
+  parentComment: Comment | null;
+  setRootState: any;
+}
+
+export default function CommentBlock({
+  comment,
+  blog = null,
+  type = null,
+  parentComment = null,
+  setRootState = null,
+}: Props) {
+  const [reply, setReply] = useState(false);
+  const [commentState, setCommentState] = useState(comment);
+  const { content, user, created_at, replies, id, root } = commentState;
+  const rootId = root || id; // if root is null, use self as root
+  setRootState = setRootState || setCommentState;
   return (
-    <div className={style.commentBLock}>
+    <div className={style.commentBLock} id={`comment-${comment.id}`}>
       <Avatar user={user.id} width={50} height={50} />
       <div className={style.commentBody}>
-        <p className={style.user}>{user.username}</p>
+        <p className={style.user}>
+          {parentComment
+            ? `${user.username} > ${parentComment.user.username}`
+            : user.username}
+        </p>
         <p className={style.content}>{content}</p>
         <div className={style.meta}>
           <span>{new Date(created_at).toLocaleDateString()}</span>
-          <span>reply</span>
+          <span
+            onClick={() => {
+              setReply(!reply);
+            }}
+          >
+            reply
+          </span>
+          {reply ? (
+            <CommentInput
+              placeholder="reply"
+              blog={blog}
+              type={type}
+              root={rootId} // root comment id
+              reply={id} // reply to this comment
+              avartar={false}
+              onSubmit={() => {
+                setReply(false);
+                console.log(rootId);
+                fetch(
+                  `http://localhost:3000/api/comment/get-comment?id=${rootId}`
+                )
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setRootState(data);
+                  });
+              }}
+            />
+          ) : null}
         </div>
         <div>
           {replies?.map((reply) => {
-            const replier = reply.user;
-            const replied = user;
-            reply.user.username = `${replier.username} > ${replied.username}`;
+            let replyTo = null;
+            if (reply.reply != reply.root) {
+              replyTo = replies.find((r) => r.id === reply.reply);
+
+              if (!replyTo) {
+                console.error("reply to comment not found");
+              }
+            }
             return (
               <div key={reply.id}>
-                <CommentBlock key={reply.id} comment={reply} />
+                <CommentBlock
+                  comment={reply}
+                  blog={blog}
+                  type={type}
+                  parentComment={replyTo}
+                  setRootState={setCommentState}
+                />
               </div>
             );
           })}

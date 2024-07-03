@@ -90,6 +90,16 @@ class CommentSet(viewsets.ModelViewSet):
         serializer = CommentNestedSerializer(comments, many=True)
         return response.Response(serializer.data)
 
+    @extend_schema(parameters=[
+        OpenApiParameter(name='id', location=OpenApiParameter.QUERY, description="comment id", type=OpenApiTypes.INT)
+    ])
+    @action(detail=False, methods=['GET'], url_path='get-comment')
+    def get_comment(self, request):
+        comment_id = request.query_params.get('id')
+        comment = Comment.objects.get(id=comment_id)
+        serializer = CommentNestedSerializer(comment)
+        return response.Response(serializer.data)
+    
         
         
     

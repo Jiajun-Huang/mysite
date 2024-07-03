@@ -1,15 +1,17 @@
 "use client";
 
 import { submitComment } from "@/api/action";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import Avatar from "../user/avatar";
+import { UserContext } from "../user/state";
 import style from "./comment.module.scss";
 interface Props {
   placeholder: string;
   blog: number | null;
   root: number | null;
   reply: number | null;
-  type: string;
+  avartar?: boolean;
+  type: number | null;
   onSubmit: () => void;
 }
 
@@ -19,36 +21,44 @@ export default function CommentInput({
   root,
   type,
   reply,
+  avartar = true,
   onSubmit,
 }: Props) {
-  const router = useRouter();
+  const { user } = useContext(UserContext);
+
   return (
-    <div className={style.inputBlock}>
-      <Image src="/example.jpg" alt="user" width="50" height="50" />
-      <form
-        action={async (formdata: FormData) => {
-          const content = formdata.get("inputField");
-          await submitComment(
-            content,
-            window.location.pathname,
-            localStorage.getItem("token"),
-            blog,
-            root,
-            type,
-            reply
-          );
-          onSubmit();
-        }}
-      >
+    <form
+      className={style.inputBlock}
+      action={async (formdata: FormData) => {
+        const content = formdata.get("inputField");
+        await submitComment(
+          content,
+          window.location.pathname,
+          localStorage.getItem("token"),
+          blog,
+          root,
+          type,
+          reply
+        );
+        onSubmit();
+      }}
+    >
+      <div className={style.buttonRow}>
+        {avartar && user ? (
+          <Avatar user={user.pk} width={50} height={50} />
+        ) : null}
         <textarea
           name="inputField"
-          placeholder={placeholder}
+          placeholder={user ? placeholder : "Please sign in to comment"}
           className={style.input}
+          disabled={user == null}
         />
-        <button type="submit" className={style.button}>
+      </div>
+      <div className={style.buttonRow}>
+        <button type="submit" className={style.button} disabled={user == null}>
           submit
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }

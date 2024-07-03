@@ -1,6 +1,11 @@
 "use client";
 
+import { UserContext } from "@/components/user/state";
+import { useContext } from "react";
+
 export default function SignIn() {
+  const { setToken } = useContext(UserContext);
+
   return (
     <div>
       <h1>Sign In</h1>
@@ -66,10 +71,12 @@ export default function SignIn() {
             return;
           }
 
-          // listen redirect, get token from redirect url
-          window.addEventListener("load", async () => {
-             
-          });
+          var timer = setInterval(function () {
+            if (githubWindow.closed) {
+              clearInterval(timer);
+              setToken(localStorage.getItem("token"));
+            }
+          }, 1000);
         }}
       >
         Github Signin

@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from blogs.models import Blog
 from django.contrib.auth.models import User
 from django.db import models
