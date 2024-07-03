@@ -119,6 +119,10 @@ DATABASES = {
         'PASSWORD': 'H1e8dfe()',
         'HOST': '192.168.1.5',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',  # The characterset you need
+            'use_unicode': True,
+        },
     }
 }
 

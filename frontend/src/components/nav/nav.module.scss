@@ -1,17 +1,15 @@
 .Nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  max-width: var(--max-width);
+  // max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2.4rem;
+  padding: 1.5rem;
   position: sticky;
   top: 0;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
   z-index: 1000;
-  backdrop-filter: blur(8px);
-  
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-text-secondary);
+
   a {
     text-decoration: none;
     transition: color 0.15s;
@@ -25,21 +23,8 @@
   .item {
     padding: 0.5rem 1rem;
     color: var(--color-text-secondary);
-
     &:hover {
       color: var(--color-text);
-      font-weight: bold;
-    }
-
-    &::after {
-      display: block;
-      content: attr(title);
-      font-weight: bold;
-      visibility: hidden;
-      height: 1px;
-      color: transparent;
-      margin-bottom: -1px;
-      overflow: hidden;
     }
   }
 

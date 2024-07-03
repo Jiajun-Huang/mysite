@@ -1,6 +1,6 @@
 .page {
   .title {
-    margin-bottom: 2rem;
+    margin: 2rem 0;
   }
 
   .briefCards {
@@ -8,6 +8,24 @@
   }
   .briefCard {
     margin-bottom: 1.2rem;
+  }
+
+  .infos {
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    span {
+      color: inherit;
+      &::after {
+        content: "·";
+        margin: 0 0.5rem;
+      }
+
+      &:last-child::after {
+        content: "";
+        margin: 0;
+      }
+    }
   }
 }
 

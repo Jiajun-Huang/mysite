@@ -1,11 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=swap");
+
 :root {
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
-  --font-sans: "Ubuntu Sans Variable", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-sans: "Inter", "Ubuntu Sans Variable", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 
   --max-width: 1280px;
 
@@ -15,14 +17,12 @@
 
   /* theme */
   --color-bg: #fff;
-  --color-primary: #0070f3;
-  --color-secondary: #ff0080;
+  --color-primary: #0c77f4;
 
   --color-text: #000;
   --color-text-secondary: #737373;
 
-  --color-link: var(--color-primary);
-  --color-link-hover: #00f;
+  --color-click: var(--color-primary);
 
   --font-size: 16px;
   --line-height: 1.2;

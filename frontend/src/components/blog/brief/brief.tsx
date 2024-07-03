@@ -20,9 +20,8 @@ function Brief({
   url,
 }: BriefProps) {
   const dateStr = date.toLocaleDateString();
-  console.log(url);
   return (
-    <Link href={url} className={style.link}>
+    <Link href={`/blog/${url}`} className={style.link}>
       <div className={style.brief}>
         <h2>{title}</h2>
         <div className={style.details}>

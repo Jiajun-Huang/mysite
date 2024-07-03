@@ -1,5 +1,6 @@
 "use client";
 
+import { printDate } from "@/util/util";
 import { useState } from "react";
 import Avatar from "../user/avatar";
 import style from "./comment.module.scss";
@@ -25,6 +26,8 @@ export default function CommentBlock({
   const { content, user, created_at, replies, id, root } = commentState;
   const rootId = root || id; // if root is null, use self as root
   setRootState = setRootState || setCommentState;
+
+  const dateStr = printDate(created_at);
   return (
     <div className={style.commentBLock} id={`comment-${comment.id}`}>
       <Avatar user={user.id} width={50} height={50} />
@@ -36,7 +39,7 @@ export default function CommentBlock({
         </p>
         <p className={style.content}>{content}</p>
         <div className={style.meta}>
-          <span>{new Date(created_at).toLocaleDateString()}</span>
+          <span>{dateStr}</span>
           <span
             onClick={() => {
               setReply(!reply);
@@ -46,7 +49,7 @@ export default function CommentBlock({
           </span>
           {reply ? (
             <CommentInput
-              placeholder="reply"
+              placeholder={`reply to ${user.username}`}
               blog={blog}
               type={type}
               root={rootId} // root comment id
