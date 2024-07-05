@@ -1,9 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
-export default function Callback() {
+export default dynamic(() => Promise.resolve(Callback), {
+  ssr: false,
+});
+export function Callback() {
   const params = useSearchParams();
   const router = useRouter();
   const code = params.get("code");
@@ -38,9 +42,9 @@ export default function Callback() {
   }, []);
 
   return (
-    <div>
+    <Suspense>
       <h1>Callback</h1>
       <p>Params: {params.toString()}</p>
-    </div>
+    </Suspense>
   );
 }

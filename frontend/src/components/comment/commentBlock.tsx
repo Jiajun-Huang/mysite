@@ -11,7 +11,7 @@ interface Props {
   blog: number | null;
   type: number | null;
   parentComment: Comment | null;
-  setRootState: any;
+  setRootState: (comment: Comment) => void;
 }
 
 export default function CommentBlock({

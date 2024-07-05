@@ -1,7 +1,9 @@
+@import "../../app/variable.scss";
+
 .Nav {
   display: flex;
-  justify-content: space-between;
-  // max-width: var(--max-width);
+  justify-content: flex-start;
+  align-items: center;
   margin: 0 auto;
   padding: 1.5rem;
   position: sticky;
@@ -10,33 +12,88 @@
   background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-text-secondary);
 
+  .openBtn,
+  .closeBtn {
+    display: none;
+  }
+
+  #sidebarActive {
+    display: none;
+  }
+
   a {
     text-decoration: none;
     transition: color 0.15s;
-  }
-
-  .part {
-    display: flex;
-    align-items: center;
-  }
-
-  .item {
-    padding: 0.5rem 1rem;
+    height: 100%;
+    margin-right: 1rem;
     color: var(--color-text-secondary);
     &:hover {
       color: var(--color-text);
     }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .links {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   .home {
     font-weight: bold;
     font-size: 1.5rem;
-    a {
-      color: var(--color-text);
+    margin-right: auto;
+    color: var(--color-text);
+  }
+}
+
+.alt {
+  display: none;
+}
+
+.toggleBtn {
+  display: none;
+}
+
+@media screen and (max-width: $media_query_small) {
+  .Nav {
+    .openBtn,
+    .closeBtn {
+      display: block;
     }
 
-    &:hover {
-      text-decoration: underline;
+    .links {
+      padding: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      transition: 0.75s;
+      position: fixed;
+      top: 0;
+      left: calc(-65vw - 32px);
+      width: 65vw;
+      background-color: floralwhite;
+      z-index: 10;
+    }
+    
+
+    #sidebarActive:checked ~ .links {
+      left: 0;
+    }
+
+    #sidebarActive:checked ~ #overlay {
+      background-color: rgba(0, 0, 0, 0.75);
+      height: 100%;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9;
     }
   }
 }

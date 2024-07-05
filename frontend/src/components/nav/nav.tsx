@@ -1,39 +1,66 @@
 "use client";
 
-import { UserContext } from "@/components/user/state";
 import Link from "next/link";
-import { useContext } from "react";
-import style from "./nav.module.scss";
-function Nav() {
+import { useContext, useEffect, useRef } from "react";
+import Avatar from "../user/avatar";
+import { UserContext } from "../user/state";
+import style from "./nav.module.scss"; // Adjust the import according to your file structure
+
+const Nav = () => {
   const { user, setUser } = useContext(UserContext);
+  const checkboxRef = useRef(null);
+
+  useEffect(() => {
+    const handleLinkClick = () => {
+      if (checkboxRef.current) {
+        checkboxRef.current.checked = false;
+      }
+    };
+
+    const links = document.querySelectorAll(`.${style.links} a`);
+    links.forEach((link) => link.addEventListener("click", handleLinkClick));
+
+    return () => {
+      links.forEach((link) =>
+        link.removeEventListener("click", handleLinkClick)
+      );
+    };
+  }, []);
 
   return (
-    <nav className={style.Nav}>
-      <div>
-        <div className={style.home}>
-          <Link href="/">Jiajun Huang</Link>
-        </div>
-      </div>
-      <div className={style.part}>
-        {user ? (
-          <div className={style.item}>{user.username}</div>
-        ) : (
-          <Link href="/signin" className={style.item} title="Sign In">
-            Sign In
+    <header>
+      <nav className={style.Nav}>
+        <input
+          type="checkbox"
+          id={style.sidebarActive}
+          style={{ display: "none" }}
+          ref={checkboxRef}
+        />
+        <label htmlFor={style.sidebarActive} className={style.openBtn}>
+          &#9776;
+        </label>
+        <label id={style.overlay} htmlFor={style.sidebarActive}></label>
+        <div className={style.links}>
+          <label htmlFor={style.sidebarActive} className={style.closeBtn}>
+            X
+          </label>
+          <Link href="/" className={style.home}>
+            Jiajun Huang
           </Link>
-        )}
-        <Link href="/blog" className={style.item} title="Blog">
-          Blog
-        </Link>
-        <Link href="/about" className={style.item} title="About">
-          About
-        </Link>
-        <Link href="/comments" className={style.item} title="Comments">
-          Comments
-        </Link>
-      </div>
-    </nav>
+          <Link href="/about"> About </Link>
+          <Link href="/comments"> Comments </Link>
+          {user ? (
+            <>
+              <Avatar user={user.pk} width={30} height={30} />
+              <div> {user.username} </div>
+            </>
+          ) : (
+            <Link href="/login"> Login </Link>
+          )}
+        </div>
+      </nav>
+    </header>
   );
-}
+};
 
 export default Nav;

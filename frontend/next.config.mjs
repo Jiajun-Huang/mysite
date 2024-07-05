@@ -9,28 +9,27 @@ const nextConfig = {
     ];
   },
   trailingSlash: true,
-  assetPrefix: "http://localhost:3000",
+  // assetPrefix: "http://localhost:3000",
 
-  async headers() {
-    return [
+  output: "standalone",
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
+  images: {
+    remotePatterns: [
       {
-        source: "/api/:path*",
-        headers: [
-          {
-            key: "Access-Control-Allow-Origin",
-            value: "*", // Set your origin
-          },
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET, POST, PUT, DELETE, OPTIONS",
-          },
-          {
-            key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Authorization",
-          },
-        ],
+        protocol: "http",
+        hostname: "localhost",
       },
-    ];
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+    ],
   },
 };
 

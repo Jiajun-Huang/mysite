@@ -4,11 +4,6 @@ import { useEffect, useState } from "react";
 import CommentBlock from "./commentBlock";
 import CommentInput from "./commentInput";
 
-interface Comment {
-  id: number;
-  content: string;
-  user: string;
-}
 
 export default function Comments({ placeholder, type, blog }) {
   const [commentss, setComments] = useState<Comment[]>([]);

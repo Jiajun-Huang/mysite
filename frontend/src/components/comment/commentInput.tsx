@@ -49,7 +49,7 @@ export default function CommentInput({
         ) : null}
         <textarea
           name="inputField"
-          placeholder={user ? placeholder : "Please sign in to comment"}
+          placeholder={user ? placeholder : "Please log in to comment"}
           className={style.input}
           disabled={user == null}
         />

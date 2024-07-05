@@ -3,12 +3,12 @@
 import { UserContext } from "@/components/user/state";
 import { useContext } from "react";
 
-export default function SignIn() {
+export default function Login() {
   const { setToken } = useContext(UserContext);
 
   return (
     <div>
-      <h1>Sign In</h1>
+      <h1>Log in</h1>
       <form
         action={async (formdata) => {
           //   "use server";
@@ -79,7 +79,7 @@ export default function SignIn() {
           }, 1000);
         }}
       >
-        Github Signin
+        Github Login
       </button>
     </div>
   );
