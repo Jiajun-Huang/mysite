@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useContext, useEffect, useRef } from "react";
+import ThemeChange from "../button/themeChange/themeChange";
 import Avatar from "../user/avatar";
 import { UserContext } from "../user/state";
 import style from "./nav.module.scss"; // Adjust the import according to your file structure
@@ -57,6 +58,7 @@ const Nav = () => {
           ) : (
             <Link href="/login"> Login </Link>
           )}
+          <ThemeChange />
         </div>
       </nav>
     </header>

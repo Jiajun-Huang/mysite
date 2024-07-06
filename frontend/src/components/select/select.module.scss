@@ -1,0 +1,14 @@
+.container {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0.5rem 0.2rem;
+  border: 1px solid var(--text-light);
+  cursor: pointer;
+  .option {
+    padding: 0.2rem 0.5rem;
+    &:hover {
+      //   darker
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
