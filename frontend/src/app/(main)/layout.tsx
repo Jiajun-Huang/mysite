@@ -1,10 +1,9 @@
 import Nav from "@/components/nav/nav";
 import Tools from "@/components/tools/tools";
-import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
-import "./globals.css";
+
+import Providers from "@/app/providers";
 import style from "./page.module.scss";
-import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",

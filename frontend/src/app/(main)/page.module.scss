@@ -1,0 +1,22 @@
+.main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 0.8rem;
+}
+
+.body {
+  margin: 0;
+}
+
+.page {
+  .title {
+    margin-bottom: 2rem;
+  }
+
+  .briefCards {
+    padding: 1rem 2rem;
+  }
+  .briefCard {
+    margin-bottom: 1.2rem;
+  }
+}

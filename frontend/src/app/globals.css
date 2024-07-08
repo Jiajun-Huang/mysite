@@ -27,6 +27,9 @@
   --font-size: 16px;
   --line-height: 1.2;
 
+  --hover-brightness: 0.95;
+  --active-brightness: 0.9;
+
   font-size: var(--font-size);
   line-height: var(--line-height);
   font-family: var(--font-sans);
@@ -44,7 +47,7 @@ textarea {
 }
 
 html {
-  scroll-padding-top: 200px;
+  scroll-padding-top: var(--nav-height);
   scroll-behavior: smooth;
 }
 

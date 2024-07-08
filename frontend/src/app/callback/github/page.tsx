@@ -1,8 +1,9 @@
 "use client";
 
+import { UserContext } from "@/components/user/state";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense, useContext, useEffect } from "react";
 
 export default dynamic(() => Promise.resolve(Callback), {
   ssr: false,
@@ -11,6 +12,7 @@ export function Callback() {
   const params = useSearchParams();
   const router = useRouter();
   const code = params.get("code");
+  const { setToken } = useContext(UserContext);
 
   useEffect(() => {
     if (!code) return;
@@ -30,7 +32,17 @@ export function Callback() {
             const token = data.access;
             console.log(token);
             localStorage.setItem("token", token);
-            window.close();
+            setToken(token);
+
+            // redirect to the previous page
+            const currentUrl = localStorage.getItem("currentUrl");
+
+            if (currentUrl) {
+              localStorage.removeItem("currentUrl");
+              router.push(currentUrl);
+            } else {
+              router.push("/");
+            }
             return token;
           });
         }

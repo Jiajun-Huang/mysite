@@ -7,7 +7,7 @@ export default function CommentsPage() {
   return (
     <div
       style={{
-        padding: "1rem 10rem",
+        // padding: "1rem 10rem",
       }}
     >
       <Comments placeholder={"Enter something"} type={1} blog={null} />

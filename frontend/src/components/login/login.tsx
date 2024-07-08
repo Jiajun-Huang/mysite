@@ -54,24 +54,15 @@ export default function Login({ close }) {
             // open a small window to github
             if (!url) return;
 
-            const githubWindow = window.open(
-              url,
-              "_blank",
-              "width=700,height=700"
-            );
+            const githubWindow = window.open(url);
 
             if (!githubWindow) {
               alert("Please disable your popup blocker");
               return;
             }
-
-            var timer = setInterval(function () {
-              if (githubWindow.closed) {
-                clearInterval(timer);
-                setToken(localStorage.getItem("token"));
-              }
-            }, 1000);
-
+            // save curren url to local storage
+            localStorage.setItem("currentUrl", window.location.href);
+            // close the popup
             close();
           }}
         >

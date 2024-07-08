@@ -1,5 +1,4 @@
 "use client";
-import SelectDropDown from "@/components/select/select";
 import { useEffect, useState } from "react";
 import Button from "../button";
 import stlye from "./themeChange.module.scss";
@@ -20,6 +19,8 @@ const LightColorScheme: ColorScheme = {
   textColor: "#1F1F1F",
   textLight: "#757575",
   textBright: "#000",
+  hoverBrightness: "0.95",
+  activeBrightness: "0.9",
 };
 
 const DarkColorScheme: ColorScheme = {
@@ -28,6 +29,8 @@ const DarkColorScheme: ColorScheme = {
   textColor: "#E4E4E4",
   textLight: "#797979",
   textBright: "#fff",
+  hoverBrightness: "1.2",
+  activeBrightness: "1.3",
 };
 
 const ColorSchemeAttrrToCss: { [key: string]: string } = {
@@ -36,6 +39,8 @@ const ColorSchemeAttrrToCss: { [key: string]: string } = {
   textColor: "--text-normal",
   textLight: "--text-light",
   textBright: "--text-bright",
+  hoverBrightness: "--hover-brightness",
+  activeBrightness: "--active-brightness",
 };
 
 function applyColorScheme(scheme: ColorScheme) {
@@ -74,10 +79,6 @@ export default function ThemeChange() {
         changeTheme(Theme.Dark);
         break;
       case Theme.Dark:
-        setTheme(Theme.System);
-        changeTheme(Theme.System);
-        break;
-      case Theme.System:
         setTheme(Theme.Light);
         changeTheme(Theme.Light);
         break;
@@ -88,17 +89,16 @@ export default function ThemeChange() {
     <div className={stlye.btn}>
       <div>
         <Button clickable hoverable onClick={handleClick}>
-          Change Theme
+          {theme === Theme.Light ? "🌞" : "🌜"}
         </Button>
       </div>
       <div className={stlye.dropdown}>
-        <SelectDropDown
+        {/* <SelectDropDown
           onSelect={(value) => {
             setTheme(value as Theme);
-            
           }}
           options={[Theme.Light, Theme.Dark, Theme.System]}
-        />
+        /> */}
       </div>
     </div>
   );

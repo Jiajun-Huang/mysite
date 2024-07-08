@@ -7,13 +7,13 @@
 
 .hover {
   &:hover {
-    filter: brightness(95%);
+    filter: brightness(var(--hover-brightness));
   }
 }
 
 .click {
   &:active {
-    filter: brightness(90%);
+    filter: brightness(var(--active-brightness));
     cursor: pointer;
   }
 

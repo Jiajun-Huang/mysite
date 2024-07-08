@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import style from "./toc.module.scss";
 interface TocItem {
   id: string;
   level: number;
@@ -13,6 +13,8 @@ function Toc() {
 
   useEffect(() => {
     const contentElement = document.getElementById("blog-body");
+    const htmlElement = document.querySelector("html");
+ 
 
     if (!contentElement) {
       console.error("Element with id 'body-body' not found.");
@@ -32,7 +34,7 @@ function Toc() {
   }, []);
 
   return (
-    <div>
+    <div className={style.toc}>
       <div>
         <strong>Table of Contents</strong>
       </div>
