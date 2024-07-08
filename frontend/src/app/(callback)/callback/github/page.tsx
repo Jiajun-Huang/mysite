@@ -3,7 +3,7 @@
 import { UserContext } from "@/components/user/state";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 export default dynamic(() => Promise.resolve(Callback), {
   ssr: false,
@@ -53,10 +53,5 @@ export function Callback() {
       });
   }, []);
 
-  return (
-    <Suspense>
-      <h1>Callback</h1>
-      <p>Params: {params.toString()}</p>
-    </Suspense>
-  );
+  return <></>;
 }

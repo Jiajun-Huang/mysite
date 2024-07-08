@@ -1,8 +1,9 @@
+import "@/app/globals.css";
+import Providers from "@/app/providers";
 import Nav from "@/components/nav/nav";
 import Tools from "@/components/tools/tools";
+import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
-
-import Providers from "@/app/providers";
 import style from "./page.module.scss";
 
 export const metadata: Metadata = {
