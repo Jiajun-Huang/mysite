@@ -1,5 +1,6 @@
 "use client";
 
+import { BASE_URL } from "@/api/request";
 import { UserContext } from "@/components/user/state";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,7 +18,7 @@ export function Callback() {
   useEffect(() => {
     if (!code) return;
 
-    fetch("http://localhost:3000/api/auth/github/", {
+    fetch(BASE_URL + "/api/auth/github/", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

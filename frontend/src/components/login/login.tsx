@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/api/request";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import { UserContext } from "../user/state";
@@ -42,12 +43,9 @@ export default function Login({ close }) {
       <div className={style.socialLogin}>
         <button
           onClick={async () => {
-            const response = await fetch(
-              "http://localhost:3000/api/auth/github/url",
-              {
-                method: "HEAD",
-              }
-            );
+            const response = await fetch(BASE_URL + "/api/auth/github/url", {
+              method: "HEAD",
+            });
 
             //  get url from header
             const url = response.headers.get("Url");

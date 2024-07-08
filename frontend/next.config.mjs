@@ -4,12 +4,12 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*/",
-        destination: `http://localhost:8000/api/:path*/`,
+        destination: `http://192.168.1.5:8000/api/:path*/`,
       },
     ];
   },
   trailingSlash: true,
-  // assetPrefix: "http://localhost:3000",
+  // assetPrefix: "http://192.168.1.5:3000",
 
   output: "standalone",
   eslint: {

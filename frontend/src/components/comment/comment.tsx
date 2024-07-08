@@ -1,9 +1,9 @@
 "use client";
 
+import { BASE_URL } from "@/api/request";
 import { useEffect, useState } from "react";
 import CommentBlock from "./commentBlock";
 import CommentInput from "./commentInput";
-
 
 export default function Comments({ placeholder, type, blog }) {
   const [commentss, setComments] = useState<Comment[]>([]);
@@ -17,8 +17,9 @@ export default function Comments({ placeholder, type, blog }) {
     }
 
     const params = searchParams.toString();
+    console.log(BASE_URL);
     const response = await fetch(
-      "http://localhost:3000/api/comment/get-comments?" + params
+      BASE_URL + "/api/comment/get-comments?" + params
     );
     const data = await response.json();
     setComments(data);

@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/api/request";
 import React, { createContext, useEffect, useState } from "react";
 
 interface UserContextType {
@@ -24,7 +25,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     // get user data
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("http://localhost:3000/api/auth/user", {
+      fetch(BASE_URL + "/api/auth/user", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/api/request";
 import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
@@ -16,7 +17,7 @@ interface Prop {
 }
 export async function generateMetadata({ params }: Prop): Promise<Metadata> {
   const uri = params.uri;
-  const response = await fetch("http://localhost:3000/api/blog/uri/" + uri, {
+  const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
     method: "GET",
   });
 
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: Prop): Promise<Metadata> {
 
 export default async function Index({ params }: Prop) {
   const uri = params.uri;
-  const response = await fetch("http://localhost:3000/api/blog/uri/" + uri, {
+  const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
     method: "GET",
   });
 

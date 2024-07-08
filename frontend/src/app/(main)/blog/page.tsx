@@ -1,8 +1,10 @@
 import Brief from "@/components/blog/brief/brief";
 import style from "./page.module.scss";
+import { BASE_URL } from "@/api/request";
+
 
 export default async function Home() {
-  const data = await fetch("http://localhost:3000/api/blog", {
+  const data = await fetch(BASE_URL + "/api/blog", {
     method: "GET",
   });
   const fakeData: Blog[] = await data.json();

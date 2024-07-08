@@ -5,7 +5,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import Popup from "../popup/popup";
 import Avatar from "../user/avatar";
 import { UserContext } from "../user/state";
-import style from "./nav.module.scss"; // Adjust the import according to your file structure
+import style from "./nav.module.scss";
 // https://www.youtube.com/watch?v=PL3Odw-k8W4
 const Nav = () => {
   const { user, setUser } = useContext(UserContext);
@@ -37,7 +37,7 @@ const Nav = () => {
 
       // calculate the height of the nav bar
       const nav = document.getElementById("nav");
-      const height = nav.clientHeight;
+      const height = nav.offsetHeight;
       // add the variable to the root element
       const root = document.documentElement;
       root.style.setProperty("--nav-height", `${height}px`);
