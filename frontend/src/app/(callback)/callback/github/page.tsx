@@ -18,7 +18,7 @@ export function Callback() {
   useEffect(() => {
     if (!code) return;
 
-    fetch(BASE_URL + "/api/auth/github/", {
+    fetch("/api/auth/github/", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

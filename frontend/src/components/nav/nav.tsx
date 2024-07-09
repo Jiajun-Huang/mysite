@@ -30,17 +30,17 @@ const Nav = () => {
     const links = document.querySelectorAll(`.${style.links} a`);
     links.forEach((link) => link.addEventListener("click", handleLinkClick));
 
+    // calculate the height of the nav bar
+    const nav = document.getElementById("nav");
+    const height = nav.offsetHeight;
+    // add the variable to the root element
+    const root = document.documentElement;
+    root.style.setProperty("--nav-height", `${height}px`);
+
     return () => {
       links.forEach((link) =>
         link.removeEventListener("click", handleLinkClick)
       );
-
-      // calculate the height of the nav bar
-      const nav = document.getElementById("nav");
-      const height = nav.offsetHeight;
-      // add the variable to the root element
-      const root = document.documentElement;
-      root.style.setProperty("--nav-height", `${height}px`);
     };
   }, []);
 

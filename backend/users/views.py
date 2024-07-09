@@ -23,16 +23,22 @@ from .serializers import UserProfileSerializer
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
     client_class = OAuth2Client
+    # github_callback = "http://localhost:8080/api/auth/callback/github/"
     @property
     def callback_url(self):
         # use the same callback url as defined in your GitHub app, this url
         # must be absolute:
-        return self.request.build_absolute_uri(reverse('github_callback'))
+        print("callback_url")
+
+        return "http://localhost:8080/api/auth/callback/github/"
     
 
 
 def custom_oauth2_login(request, *args, **kwargs):
     # Call the original oauth2_login view
+    # print(str(request))
+    # get request url
+    
     response = github_views.oauth2_login(request, *args, **kwargs)
     
     # make request to github

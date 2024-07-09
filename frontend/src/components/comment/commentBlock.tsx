@@ -1,6 +1,5 @@
 "use client";
 
-import { BASE_URL } from "@/api/request";
 import { printDate } from "@/util/util";
 import { useState } from "react";
 import Avatar from "../user/avatar";
@@ -59,7 +58,7 @@ export default function CommentBlock({
               onSubmit={() => {
                 setReply(false);
                 console.log(rootId);
-                fetch(BASE_URL + `/api/comment/get-comment?id=${rootId}`)
+                fetch(`/api/comment/get-comment?id=${rootId}`)
                   .then((res) => res.json())
                   .then((data) => {
                     setRootState(data);

@@ -1,4 +1,3 @@
-import { BASE_URL } from "@/api/request";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import { UserContext } from "../user/state";
@@ -43,7 +42,7 @@ export default function Login({ close }) {
       <div className={style.socialLogin}>
         <button
           onClick={async () => {
-            const response = await fetch(BASE_URL + "/api/auth/github/url", {
+            const response = await fetch("/api/auth/github/url", {
               method: "HEAD",
             });
 

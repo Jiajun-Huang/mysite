@@ -1,1 +1,2 @@
-export const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_ADDR;
+export const BASE_URL = process.env.BACKEND_ADDR;
+console.log(BASE_URL);

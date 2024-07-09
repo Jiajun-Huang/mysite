@@ -18,9 +18,7 @@ export default function Comments({ placeholder, type, blog }) {
 
     const params = searchParams.toString();
     console.log(BASE_URL);
-    const response = await fetch(
-      BASE_URL + "/api/comment/get-comments?" + params
-    );
+    const response = await fetch("/api/comment/get-comments?" + params);
     const data = await response.json();
     setComments(data);
   }
