@@ -139,10 +139,13 @@
           margin: 0.5rem 0;
           font-size: 1.3rem;
         }
-      }
+        .avatar {
+          display: none;
+        }
 
-      .avatar {
-        display: none;
+        .dropdown {
+          display: none;
+        }
       }
 
       img {
