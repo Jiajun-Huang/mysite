@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import Popup from "../popup/popup";
+import SelectDropDown from "../select/select";
 import Avatar from "../user/avatar";
 import { UserContext } from "../user/state";
 import style from "./nav.module.scss";
 // https://www.youtube.com/watch?v=PL3Odw-k8W4
 const Nav = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setToken } = useContext(UserContext);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const openPopup = () => {
@@ -74,15 +75,22 @@ const Nav = () => {
             Comments{" "}
           </Link>
           {user ? (
-            <>
-              <Avatar
-                user={user.pk}
-                width={30}
-                height={30}
-                className={style.avatar}
-              />
-              <div className={style.user}> {user.username} </div>
-            </>
+            <div className={style.user}>
+              <div className={style.avatar}>
+                <Avatar user={user.pk} width={30} height={30} />
+              </div>
+              <div className={style.userText}> {user.username} </div>
+              <div className={style.dropdown}>
+                <SelectDropDown
+                  onSelect={(option) => {
+                    if (option === "logout") {
+                      setToken(null);
+                    }
+                  }}
+                  options={["logout"]}
+                />
+              </div>
+            </div>
           ) : (
             <div>
               <button onClick={openPopup} className={style.item}>

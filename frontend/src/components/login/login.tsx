@@ -11,7 +11,48 @@ export default function Login({ close }) {
   return (
     <div className={style.signinForm}>
       <h2>{title}</h2>
-      <form>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const form = e.target as HTMLFormElement;
+          let requestData = null;
+
+          if (isSignin) {
+            requestData = {
+              username: form[0].value,
+              password: form[1].value,
+            };
+          } else {
+            requestData = {
+              username: form[0].value,
+              nickname: form[1].value,
+              email: form[2].value,
+              password: form[3].value,
+              confirmPassword: form[4].value,
+            };
+          }
+
+          const response = await fetch(
+            `/api/auth/${isSignin ? "login" : "signup"}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(requestData),
+            }
+          );
+
+          const data = await response.json();
+          console.log(data);
+          if (data.access) {
+            setToken(data.access);
+            close();
+          } else {
+            alert(data.message);
+          }
+        }}
+      >
         <div className={style.inputGroup}>
           {isSignin ? (
             <>
@@ -51,13 +92,13 @@ export default function Login({ close }) {
             // open a small window to github
             if (!url) return;
 
-            const githubWindow = window.open(url);
+            const windows = window.open(url);
 
-            if (!githubWindow) {
+            if (!windows) {
               alert("Please disable your popup blocker");
               return;
             }
-            // save curren url to local storage
+            // save curren url to local storage for redirect after login
             localStorage.setItem("currentUrl", window.location.href);
             // close the popup
             close();

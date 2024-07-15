@@ -1,6 +1,5 @@
 "use client";
 
-import { BASE_URL } from "@/api/request";
 import { UserContext } from "@/components/user/state";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -32,7 +31,6 @@ export function Callback() {
           return response.json().then((data) => {
             const token = data.access;
             console.log(token);
-            localStorage.setItem("token", token);
             setToken(token);
 
             // redirect to the previous page

@@ -56,6 +56,39 @@
     margin-right: auto;
     color: var(--text-normal);
   }
+
+  .user {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    .userText {
+      margin-left: 0.5rem;
+    }
+
+    .avatar {
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 4rem;
+      right: 3rem;
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
+      transition: height 0ms 400ms, opacity 400ms 0ms;
+
+      &.show {
+        visibility: visible;
+      }
+    }
+    &:hover {
+      .dropdown {
+        visibility: visible;
+        transition: 1s;
+      }
+      transition: 1s;
+    }
+  }
 }
 
 .alt {
@@ -103,8 +136,10 @@
       }
 
       .user {
-        margin: 0.5rem 0;
-        font-size: 1.3rem;
+        .userText {
+          margin: 0.5rem 0;
+          font-size: 1.3rem;
+        }
       }
 
       .avatar {

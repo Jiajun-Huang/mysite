@@ -17,8 +17,19 @@ export const UserContext = createContext<UserContextType>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser1] = useState<User | null>(null);
+  const [token, setToken1] = useState<string | null>(null);
+
+  const setUser = (user: User | null) => {
+    if (!user) {
+      setToken1(null);
+    }
+  };
+
+  const setToken = (token: string) => {
+    localStorage.setItem("token", token);
+    setToken1(token);
+  };
 
   useEffect(() => {
     // get user data
@@ -34,12 +45,18 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           if (response.ok) {
             return response.json();
           } else {
-            return null;
+            alert("Something went wrong, please log in again");
           }
         })
         .then((data) => {
-          setUser(data);
+          setUser1(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Something went wrong, please log in again" + error);
         });
+    } else {
+      localStorage.removeItem("token");
     }
   }, [token]);
 

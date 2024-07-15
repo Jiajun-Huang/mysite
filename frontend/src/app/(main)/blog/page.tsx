@@ -1,7 +1,6 @@
+import { BASE_URL } from "@/api/request";
 import Brief from "@/components/blog/brief/brief";
 import style from "./page.module.scss";
-import { BASE_URL } from "@/api/request";
-
 
 export default async function Home() {
   const data = await fetch(BASE_URL + "/api/blog", {
@@ -16,7 +15,6 @@ export default async function Home() {
       <h1 className={style.title}>Newest Blog</h1>
       <div className={style.briefCards}>
         {fakeData.map((data, index) => {
-          console.log(data.tags);
           return (
             <div key={index} className={style.briefCard}>
               <Brief

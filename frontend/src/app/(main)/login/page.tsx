@@ -1,83 +1,83 @@
-"use client";
+// "use client";
 
-import { UserContext } from "@/components/user/state";
-import { useContext } from "react";
+// import { UserContext } from "@/components/user/state";
+// import { useContext } from "react";
 
-export default function Login() {
-  const { setToken } = useContext(UserContext);
+// export default function Login() {
+//   const { setToken } = useContext(UserContext);
 
-  return (
-    <div>
-      <h1>Log in</h1>
-      <form
-        action={async (formdata) => {
-          //   "use server";
-          //   get username and password from formdata
-          const username = formdata.get("username");
-          const password = formdata.get("password");
+//   return (
+//     <div>
+//       <h1>Log in</h1>
+//       <form
+//         action={async (formdata) => {
+//           //   "use server";
+//           //   get username and password from formdata
+//           const username = formdata.get("username");
+//           const password = formdata.get("password");
 
-          //   send request to server
+//           //   send request to server
 
-          const response = await fetch(BASE_URL + "/api/auth/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, password }),
-          });
+//           const response = await fetch(BASE_URL + "/api/auth/login", {
+//             method: "POST",
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify({ username, password }),
+//           });
 
-          const data = await response.json();
+//           const data = await response.json();
 
-          //   get token from response
-          const token = data.access;
-          console.log(token);
+//           //   get token from response
+//           const token = data.access;
+//           console.log(token);
 
-          // localStorage not available in server
-          localStorage.setItem("token", token);
-        }}
-      >
-        <label>
-          Username:
-          <input type="text" name="username" />
-        </label>
-        <label>
-          Password:
-          <input type="password" name="password" />
-        </label>
-        <button type="submit">Sign In</button>
-      </form>
-      <button
-        onClick={async () => {
-          const response = await fetch(BASE_URL + "/api/auth/github/url", {
-            method: "HEAD",
-          });
+//           // localStorage not available in server
+//           localStorage.setItem("token", token);
+//         }}
+//       >
+//         <label>
+//           Username:
+//           <input type="text" name="username" />
+//         </label>
+//         <label>
+//           Password:
+//           <input type="password" name="password" />
+//         </label>
+//         <button type="submit">Sign In</button>
+//       </form>
+//       <button
+//         onClick={async () => {
+//           const response = await fetch(BASE_URL + "/api/auth/github/url", {
+//             method: "HEAD",
+//           });
 
-          //  get url from header
-          const url = response.headers.get("Url");
-          // open a small window to github
-          if (!url) return;
+//           //  get url from header
+//           const url = response.headers.get("Url");
+//           // open a small window to github
+//           if (!url) return;
 
-          const githubWindow = window.open(
-            url,
-            "_blank",
-            "width=700,height=700"
-          );
+//           const githubWindow = window.open(
+//             url,
+//             "_blank",
+//             "width=700,height=700"
+//           );
 
-          if (!githubWindow) {
-            alert("Please disable your popup blocker");
-            return;
-          }
+//           if (!githubWindow) {
+//             alert("Please disable your popup blocker");
+//             return;
+//           }
 
-          var timer = setInterval(function () {
-            if (githubWindow.closed) {
-              clearInterval(timer);
-              setToken(localStorage.getItem("token"));
-            }
-          }, 1000);
-        }}
-      >
-        Github Login
-      </button>
-    </div>
-  );
-}
+//           var timer = setInterval(function () {
+//             if (githubWindow.closed) {
+//               clearInterval(timer);
+//               setToken(localStorage.getItem("token"));
+//             }
+//           }, 1000);
+//         }}
+//       >
+//         Github Login
+//       </button>
+//     </div>
+//   );
+// }
