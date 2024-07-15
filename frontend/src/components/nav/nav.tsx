@@ -9,7 +9,7 @@ import { UserContext } from "../user/state";
 import style from "./nav.module.scss";
 // https://www.youtube.com/watch?v=PL3Odw-k8W4
 const Nav = () => {
-  const { user, setToken } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const openPopup = () => {
@@ -84,7 +84,7 @@ const Nav = () => {
                 <SelectDropDown
                   onSelect={(option) => {
                     if (option === "logout") {
-                      setToken(null);
+                      logout();
                     }
                   }}
                   options={["logout"]}

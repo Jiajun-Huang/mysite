@@ -4,29 +4,31 @@ interface UserContextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   token: string | null;
-  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  login: (token: string | null) => void;
+  logout: () => void;
 }
 
 export const UserContext = createContext<UserContextType>({
   user: null,
   setUser: () => {},
   token: null,
-  setToken: () => {},
+  login: (token) => {},
+  logout: () => {},
 });
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser1] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [token, setToken1] = useState<string | null>(null);
 
-  const setUser = (user: User | null) => {
-    if (!user) {
-      setToken1(null);
-    }
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken1(null);
   };
 
-  const setToken = (token: string) => {
+  const login = (token: string | null) => {
+    if (!token) return;
     localStorage.setItem("token", token);
     setToken1(token);
   };
@@ -44,24 +46,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         .then((response) => {
           if (response.ok) {
             return response.json();
-          } else {
-            alert("Something went wrong, please log in again");
           }
         })
         .then((data) => {
-          setUser1(data);
+          setUser(data);
         })
         .catch((error) => {
           console.error("Error:", error);
-          alert("Something went wrong, please log in again" + error);
+          // alert("Something went wrong, please log in again" + error);
         });
     } else {
-      localStorage.removeItem("token");
+      setUser(null);
     }
   }, [token]);
 
   return (
-    <UserContext.Provider value={{ user, setUser, token, setToken }}>
+    <UserContext.Provider value={{ user, setUser, token, login, logout }}>
       {children}
     </UserContext.Provider>
   );

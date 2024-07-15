@@ -5,7 +5,7 @@ import style from "./login.module.scss";
 
 export default function Login({ close }) {
   const [isSignin, setIsSignin] = useState(true);
-  const { setToken } = useContext(UserContext);
+  const { login } = useContext(UserContext);
   const title = isSignin ? "Sign in" : "Create an account";
   const logoSize = 40;
   return (
@@ -46,7 +46,7 @@ export default function Login({ close }) {
           const data = await response.json();
           console.log(data);
           if (data.access) {
-            setToken(data.access);
+            login(data.access);
             close();
           } else {
             alert(data.message);

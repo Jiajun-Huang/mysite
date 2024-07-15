@@ -73,20 +73,19 @@
       top: 4rem;
       right: 3rem;
       visibility: hidden;
-      height: 0;
-      overflow: hidden;
-      transition: height 0ms 400ms, opacity 400ms 0ms;
+      opacity: 0;
+      transition: 0.5s;
 
       &.show {
         visibility: visible;
+        opacity: 1;
       }
     }
     &:hover {
       .dropdown {
         visibility: visible;
-        transition: 1s;
+        opacity: 1;
       }
-      transition: 1s;
     }
   }
 }
