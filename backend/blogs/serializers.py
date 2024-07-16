@@ -1,3 +1,4 @@
+from mysite.settings import DEFAULT_FILE_STORAGE
 from rest_framework import serializers
 
 from .models import *
@@ -6,7 +7,13 @@ from .models import *
 class BlogUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ['title', 'description', 'category', 'tags', 'text_file', 'uri']
+        fields = ['title', 'description', 'category', 'tags', 'uri', 'files']
+    
+
+
+
+    
+    
 
 class TagSerializer(serializers.ModelSerializer):
 
@@ -29,16 +36,24 @@ class CategoryNameSerializer(serializers.ModelSerializer):
         fields = ['name']
 
 class BlogSerializer(serializers.ModelSerializer):
+    # tags = TagNameSerializer(many=True)
+    # category = CategoryNameSerializer()
+    class Meta:
+        model = Blog
+        fields = "__all__"
+
+
+class BlogDataSerializer(serializers.ModelSerializer):
     tags = TagNameSerializer(many=True)
     category = CategoryNameSerializer()
     class Meta:
         model = Blog
         fields = "__all__"
 
+
 class BlogDetailSerializer(serializers.ModelSerializer):
     tags = TagNameSerializer(many=True)
     category = CategoryNameSerializer()
-    text = serializers.CharField()
     class Meta:
         model = Blog
         fields = "__all__"

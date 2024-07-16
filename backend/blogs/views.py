@@ -41,7 +41,6 @@ class BlogSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     filter_class = BlogFilter
-    storage = MinioMediaStorage()
 
     print("execute")
     @extend_schema(
@@ -122,7 +121,7 @@ class BlogSet(viewsets.ModelViewSet):
         if ordering:
             queryset = queryset.order_by(*ordering)
         
-        serializer = BlogSerializer(queryset, many=True)
+        serializer = BlogDataSerializer(queryset, many=True)
         print(serializer.data)
         return Response(serializer.data)
     
@@ -132,29 +131,12 @@ class BlogSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer = BlogUploadSerializer(data=request.data)
         if serializer.is_valid():
-            # rename text file to uri
-            if 'text_file' in request.data:
-                file_name = request.data['uri']
-                request.data['text_file'].name = f'blog/{file_name}'
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
-    def delete(self, request, pk):
-        blog = get_object_or_404(Blog, pk=pk)
-        blog.deleted = True
-        blog.save()
-        return Response(status=204)
-    
-    # update blog information given
-    def update(self, request, pk):
-        blog = get_object_or_404(Blog, pk=pk)
-        serializer = BlogSerializer(blog, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
-    
+        
+
     # increase view count
     @action(detail=False, methods=['get'], url_path='view/(?P<pk>[^/.]+)')
     def view(self, request, pk):
@@ -178,19 +160,8 @@ class BlogSet(viewsets.ModelViewSet):
         
         if blog.deleted:
             return Response(status=404)
-        print(blog.text_file)
-        if blog.text_file:
-            # list all blog file and print
-            try:
-                with self.storage.open(blog.text_file.name, 'r') as f:
-                    # read and convert from binary to string
-                    blog.text = f.read().decode('utf-8')
-                    return Response(BlogDetailSerializer(blog).data)
-            except Exception as e:
-                # return error if file not found
-                return Response(status=404) 
         else:
-            return Response(BlogSerializer(blog).data)
+            return Response(BlogDetailSerializer(blog).data)
 
 
 

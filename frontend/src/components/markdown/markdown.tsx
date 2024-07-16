@@ -1,12 +1,26 @@
-import ReactMarkdown from "react-markdown";
-import MdCode from "./code/code";
+import ReactMarkdown, { UrlTransform } from "react-markdown";
+import MdCode from "./components/code/code";
+import MdImage from "./components/image/image";
 import { rehypePlugins, remarkPlugins } from "./config";
 import style from "./markdown.module.scss";
 interface Props {
   children: string;
-  urlTransform?: (url: string) => string;
+  urlTransform?: UrlTransform;
 }
 
+const deafutUrlTransform: UrlTransform = (
+  url: string,
+  key: string,
+  node: Readonly<Element>
+) => {
+  if (node.tagName === "img") {
+    console.log("url", url);
+    console.log("key", key);
+    console.log("node", node);
+    return "/" + url;
+  }
+  return url;
+};
 const MarkDown = ({ children, urlTransform, ...otherProps }: Props) => {
   if (!children) {
     return <div className="Markdown"></div>;
@@ -17,9 +31,10 @@ const MarkDown = ({ children, urlTransform, ...otherProps }: Props) => {
       <ReactMarkdown
         remarkPlugins={remarkPlugins}
         rehypePlugins={rehypePlugins}
-        urlTransform={urlTransform}
+        urlTransform={urlTransform || deafutUrlTransform}
         components={{
           code: MdCode,
+          img: MdImage,
         }}
       >
         {children}

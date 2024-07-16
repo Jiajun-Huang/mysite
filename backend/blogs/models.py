@@ -21,7 +21,13 @@ class Category(models.Model):
         return self.name
 
 
+
+def upload_to(instance, filename):
+    return f'blog/{instance.uri}/text.md'
+
 class Blog(models.Model):
+
+    
     title = models.CharField(max_length=200)
     description = models.TextField()    
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,8 +36,9 @@ class Blog(models.Model):
     views = models.IntegerField(default=0)
     deleted = models.BooleanField(default=False)
     uri = models.CharField(max_length=200, unique=True)
-    text_file = models.FileField(upload_to='blog/', default='blog/default.md')
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     tags = models.ManyToManyField(Tag)
+    files = models.FileField(upload_to=upload_to)
     def __str__(self):
         return self.title
+    

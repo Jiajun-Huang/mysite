@@ -23,8 +23,8 @@ interface Blog {
   likes?: number;
   views?: number;
   deleted?: boolean;
-  uri?: string;
-  text_file?: string;
+  uri: string;
+  files: string;
   category?: Category;
   tags?: Tag[];
 }

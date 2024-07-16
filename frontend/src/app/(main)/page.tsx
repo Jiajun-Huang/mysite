@@ -6,6 +6,9 @@ export default async function Home() {
   const data = await fetch(BASE_URL + "/api/blog", {
     method: "GET",
   });
+
+  console.log(data);
+
   const fakeData: Blog[] = await data.json();
 
   // ensure required fields are present

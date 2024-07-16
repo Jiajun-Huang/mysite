@@ -39,19 +39,18 @@ export default async function Index({ params }: Prop) {
   const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
     method: "GET",
   });
-
   if (response.status === 404) {
     return <h1>404 Not Found</h1>;
   }
 
-  let { created_at, likes, views, tags, category, ...data }: Data =
+  let { created_at, likes, views, tags, category, files, ...data }: Data =
     await response.json();
 
   tags = tags || [];
-  const text = data.text;
-  if (!data || !text) {
-    return <h1>404 Not Found</h1>;
-  }
+
+  const text = await fetch(files).then((res) => res.text());
+  const storageUrl = files.split("/").slice(0, -1).join("/");
+  console.log(storageUrl);
 
   const dateStr = printDate(created_at || "");
 
@@ -77,7 +76,15 @@ export default async function Index({ params }: Prop) {
       <div className={style.layout}>
         <div className={style.content}>
           <div className={style.page}>
-            <MarkDown>{text}</MarkDown>
+            <MarkDown
+              urlTransform={(url, key, node) => {
+                if (key === "src" && node.tagName === "img") {
+                  return storageUrl + "/" + url;
+                }
+              }}
+            >
+              {text}
+            </MarkDown>
           </div>
         </div>
         <div className={style.toc}>
