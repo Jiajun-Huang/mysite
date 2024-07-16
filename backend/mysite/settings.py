@@ -106,6 +106,7 @@ REST_FRAMEWORK = {
         'dj_rest_auth.jwt_auth.JWTAuthentication',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
 }
 
 # Database

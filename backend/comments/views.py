@@ -7,7 +7,8 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from rest_framework import decorators, response, serializers, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (SAFE_METHODS, BasePermission,
+                                        IsAuthenticated)
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import *
@@ -42,14 +43,33 @@ class RootCommentType:
     def toString(self):
         return f"Root Comment: {self.root_comment}, Replies: {self.replies}"
 
+class CommentPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
+        elif request.method == 'POST':
+            return request.user.is_authenticated 
+        return request.user.is_admin
+
+
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            return True
+        elif request.method == 'PUT':
+            return (request.user.is_authenticated and request.user == obj.user) or request.user.is_admin
+        elif request.method == 'DELETE':
+            return request.user.is_admin
+        return False
+
+
 class CommentSet(viewsets.ModelViewSet):
 
     queryset = Comment.objects.all()
     filter_class = CommentFilter
     serializer_class = CommentSerializer
-
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [CommentPermission]
+    
 
     def get_serializer_class(self):
         if self.action == 'create':

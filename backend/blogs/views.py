@@ -2,12 +2,14 @@ from argparse import Action
 
 from blogs.filter import *
 from blogs.models import *
+from blogs.permission import *
 from blogs.serializers import *
 from django.shortcuts import get_object_or_404, render
 from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from minio_storage.storage import MinioMediaStorage
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 
@@ -41,6 +43,14 @@ class BlogSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     filter_class = BlogFilter
+    permission_classes = (BlogPermission,)
+
+    # only superuser can post and delete
+    def get_permissions(self):
+        if self.action in ['create', 'destroy']:
+            return [IsAdminUser()]
+        return [AllowAny()]
+
 
     print("execute")
     @extend_schema(
@@ -171,6 +181,7 @@ class CategorySet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     filter_class = CategoryFilter
+    permission_classes = (CategoryPermission,)
     
     def list(self, request):
         queryset = Category.objects.filter(deleted=False)
@@ -202,6 +213,7 @@ class TagSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     filter_class = TagFilter
+    permission_classes = (TagPermission,)
     
     def list(self, request):
         queryset = Tag.objects.filter(deleted=False)
