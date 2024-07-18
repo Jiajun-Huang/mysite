@@ -12,7 +12,7 @@ export function Callback() {
   const params = useSearchParams();
   const router = useRouter();
   const code = params.get("code");
-  const { setToken } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   useEffect(() => {
     if (!code) return;
@@ -28,28 +28,31 @@ export function Callback() {
     })
       .then((response) => {
         if (response.ok) {
-          return response.json().then((data) => {
-            const token = data.access;
-            setToken(token);
-
-            // redirect to the previous page
-            const currentUrl = localStorage.getItem("currentUrl");
-
-            if (currentUrl) {
-              localStorage.removeItem("currentUrl");
-              router.push(currentUrl);
-            } else {
-              router.push("/");
-            }
-            return token;
-          });
+          return response.json();
         }
-        return response;
+      })
+      .then((data) => {
+        if (!data) return;
+        const token = data.access;
+        localStorage.setItem("token", token);
+        const currentUrl = localStorage.getItem("currentUrl");
+
+        if (currentUrl) {
+          localStorage.removeItem("currentUrl");
+          router.push(currentUrl);
+        } else {
+          router.push("/");
+        }
+        return token;
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("Fetch Error:", error);
       });
-  }, []);
+  }, [code]);
 
-  return <></>;
+  return (
+    <>
+      <div>Redirecting...</div>
+    </>
+  );
 }

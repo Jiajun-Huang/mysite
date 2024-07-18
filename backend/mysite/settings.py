@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'comments.apps.CommentsConfig',
 ]
-SITE_ID = 1
+SITE_ID = 9
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

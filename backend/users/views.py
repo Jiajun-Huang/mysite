@@ -28,7 +28,7 @@ class GitHubLogin(SocialLoginView):
     def callback_url(self):
         # use the same callback url as defined in your GitHub app, this url
         # must be absolute:
-
+    
         return self.request.build_absolute_uri(reverse('github_callback'))
     
 

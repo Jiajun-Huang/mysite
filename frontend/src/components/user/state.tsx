@@ -20,17 +20,19 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken1] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   const logout = () => {
     localStorage.removeItem("token");
-    setToken1(null);
+    console.log("Logged out");
+    setUser(null);
   };
 
   const login = (token: string | null) => {
+    console.log("Token:", token);
     if (!token) return;
     localStorage.setItem("token", token);
-    setToken1(token);
+    setToken(token);
   };
 
   useEffect(() => {
