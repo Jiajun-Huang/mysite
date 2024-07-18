@@ -51,8 +51,6 @@ class BlogSet(viewsets.ModelViewSet):
             return [IsAdminUser()]
         return [AllowAny()]
 
-
-    print("execute")
     @extend_schema(
     parameters=[
         OpenApiParameter(name='title', location=OpenApiParameter.QUERY, description="Title contains", type=OpenApiTypes.STR),

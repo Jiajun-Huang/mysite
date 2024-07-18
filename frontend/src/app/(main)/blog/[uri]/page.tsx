@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/api/request";
+import { BASE_URL, STORGE_URL } from "@/api/request";
 import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
@@ -43,14 +43,19 @@ export default async function Index({ params }: Prop) {
     return <h1>404 Not Found</h1>;
   }
 
+  // console.log(await response.text());
+
   let { created_at, likes, views, tags, category, files, ...data }: Data =
     await response.json();
 
   tags = tags || [];
 
-  const text = await fetch(files).then((res) => res.text());
+  const parsedUrl = new URL(files);
+  const path = parsedUrl.pathname;
+  const textUrl = STORGE_URL + path;
+
+  const text = await fetch(textUrl).then((res) => res.text());
   const storageUrl = files.split("/").slice(0, -1).join("/");
-  console.log(storageUrl);
 
   const dateStr = printDate(created_at || "");
 
@@ -79,7 +84,8 @@ export default async function Index({ params }: Prop) {
             <MarkDown
               urlTransform={(url, key, node) => {
                 if (key === "src" && node.tagName === "img") {
-                  return storageUrl + "/" + url;
+                  const newUrl = STORGE_URL + "/blog/blog/" + uri + "/" + url;
+                  return newUrl;
                 }
               }}
             >

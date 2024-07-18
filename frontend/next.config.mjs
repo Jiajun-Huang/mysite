@@ -4,7 +4,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*/",
-        destination: `http://localhost:8000/api/:path*/`,
+        destination: `http://192.168.1.7/api/:path*/`,
       },
     ];
   },
@@ -36,6 +36,10 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "192.168.1.5",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.jiajunhuang.cc",
       },
     ],
   },

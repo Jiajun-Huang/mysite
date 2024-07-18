@@ -14,7 +14,6 @@ export const submitComment = async (
   reply
 ) => {
   if (content) {
-    console.log(content, path, token, blog, root, type, reply);
     const response = await fetch(BASE_URL + "/api/comment/", {
       method: "POST",
       headers: {

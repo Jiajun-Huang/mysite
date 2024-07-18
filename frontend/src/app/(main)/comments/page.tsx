@@ -1,8 +1,7 @@
 import Comments from "@/components/comment/comment";
 
 export default function CommentsPage() {
-  
-  console.log("commentsPage");
+
 
   return (
     <div

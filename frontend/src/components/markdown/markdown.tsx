@@ -8,19 +8,6 @@ interface Props {
   urlTransform?: UrlTransform;
 }
 
-const deafutUrlTransform: UrlTransform = (
-  url: string,
-  key: string,
-  node: Readonly<Element>
-) => {
-  if (node.tagName === "img") {
-    console.log("url", url);
-    console.log("key", key);
-    console.log("node", node);
-    return "/" + url;
-  }
-  return url;
-};
 const MarkDown = ({ children, urlTransform, ...otherProps }: Props) => {
   if (!children) {
     return <div className="Markdown"></div>;
@@ -31,7 +18,7 @@ const MarkDown = ({ children, urlTransform, ...otherProps }: Props) => {
       <ReactMarkdown
         remarkPlugins={remarkPlugins}
         rehypePlugins={rehypePlugins}
-        urlTransform={urlTransform || deafutUrlTransform}
+        urlTransform={urlTransform}
         components={{
           code: MdCode,
           img: MdImage,

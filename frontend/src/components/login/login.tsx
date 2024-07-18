@@ -44,7 +44,6 @@ export default function Login({ close }) {
           );
 
           const data = await response.json();
-          console.log(data);
           if (data.access) {
             login(data.access);
             close();
@@ -83,7 +82,7 @@ export default function Login({ close }) {
       <div className={style.socialLogin}>
         <button
           onClick={async () => {
-            const response = await fetch("/api/auth/github/url", {
+            const response = await fetch("/api/auth/github/url/", {
               method: "HEAD",
             });
 

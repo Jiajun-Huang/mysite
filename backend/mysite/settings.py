@@ -104,6 +104,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'dj_rest_auth.jwt_auth.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
@@ -179,7 +180,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
 # STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
 MINIO_STORAGE_USE_HTTPS = False
-MINIO_STORAGE_ENDPOINT = '192.168.1.5:9768'
+MINIO_STORAGE_ENDPOINT = '192.168.1.10:9000'
 MINIO_STORAGE_ACCESS_KEY = 'Z2UEZevaUAlmeX3t0W2K'
 MINIO_STORAGE_SECRET_KEY = 'nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg'
 MINIO_STORAGE_MEDIA_BUCKET_NAME = 'blog'

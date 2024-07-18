@@ -6,7 +6,7 @@ export default function MdImage(
     HTMLImageElement
   >
 ) {
-  console.log("MdImage props", props);
+
   return (
     <Image
       src={props.src || ""}

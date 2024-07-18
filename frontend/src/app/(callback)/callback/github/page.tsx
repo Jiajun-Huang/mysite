@@ -30,7 +30,6 @@ export function Callback() {
         if (response.ok) {
           return response.json().then((data) => {
             const token = data.access;
-            console.log(token);
             setToken(token);
 
             // redirect to the previous page

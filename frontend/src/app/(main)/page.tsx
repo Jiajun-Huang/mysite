@@ -7,8 +7,6 @@ export default async function Home() {
     method: "GET",
   });
 
-  console.log(data);
-
   const fakeData: Blog[] = await data.json();
 
   // ensure required fields are present
@@ -18,7 +16,6 @@ export default async function Home() {
       <h1 className={style.title}>Newest Blog</h1>
       <div className={style.briefCards}>
         {fakeData.map((data, index) => {
-          console.log(data.tags);
           return (
             <div key={index} className={style.briefCard}>
               <Brief
