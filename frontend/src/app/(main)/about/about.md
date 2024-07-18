@@ -1,9 +1,51 @@
-
-![1721072695688](image/about/1721072695688.png)
-
 ## Feature highlights
 
-* [X] **[safe][section-security] by default**
+> [!NOTE]
+> Highlights information that users should take into account, even when skimming.
+
+> [!TIP]
+> Optional information to help a user be more successful.
+
+> [!IMPORTANT]
+> Crucial information necessary for users to succeed.
+
+> [!WARNING]
+> Critical content demanding immediate user attention due to potential risks.
+
+> [!CAUTION]
+> Negative potential consequences of an action.
+
+```mermaid
+graph TD
+A[Hard] -->|Text| B(Round)
+B --> C{Decision}
+C -->|One| D[Result 1]
+C -->|Two| E[Result 2]
+```
+
+```mermaid
+sequenceDiagram
+Alice->>John: Hello John, how are you?
+loop Healthcheck
+    John->>John: Fight against hypochondria
+end
+Note right of John: Rational thoughts!
+John-->>Alice: Great!
+John->>Bob: How about you?
+Bob-->>John: Jolly good!
+```
+
+
+```mermaid
+graph LR
+    Start --> Stop
+```
+
+
+
+
+
+* [ ] **[safe][section-security] by default**
   (no `dangerouslySetInnerHTML` or XSS attacks)
 * [X] **[components][section-components]**
   (pass your own component to use instead of `<h2>` for `## hi`)
@@ -69,7 +111,7 @@ with plugins.
 This package focusses on making it easy for beginners to safely use markdown in
 React.
 When you’re familiar with unified, you can use a modern hooks based alternative
- or  manually.
+or  manually.
 If you instead want to use JavaScript and JSX *inside* markdown files, use
 [MDX][MDX].
 
@@ -356,7 +398,7 @@ createRoot(document.body).render(
 This example shows how to use a plugin and give it options.
 To do that, use an array with the plugin at the first place, and the options
 second.
- has an option to allow only double tildes for
+has an option to allow only double tildes for
 strikethrough:
 
 ```jsx
@@ -390,7 +432,7 @@ createRoot(document.body).render(
 This example shows how you can overwrite the normal handling of an element by
 passing a component.
 In this case, we apply syntax highlighting with the seriously super amazing
- by
+by
 [@conorhastings][conor]:
 
 <!-- To do: currently broken on actual ESM; let’s find an alternative? -->
