@@ -2,7 +2,6 @@
 
 import mermaid from "mermaid";
 import { useEffect, useState } from "react";
-import { initializeMermaid } from "./useMermaid";
 type Props = {
   children: string;
 };
@@ -20,7 +19,10 @@ function Mermaid({ children }: Props) {
   }, []);
 
   useEffect(() => {
-    initializeMermaid();
+    if (mounted) {
+      mermaid.initialize({ startOnLoad: true });
+      mermaid.contentLoaded();
+    }
   }, [mounted]);
 
   if (!mounted) return null;
