@@ -1,4 +1,3 @@
-// /components/Brief.module.scss
 .link {
   text-decoration: none;
   color: inherit;
@@ -34,6 +33,7 @@
   .tags {
     display: flex;
     gap: 0.5rem;
+    z-index: 10;
   }
 
   .tag {

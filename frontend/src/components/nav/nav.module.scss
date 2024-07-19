@@ -100,6 +100,7 @@
 
 @media screen and (max-width: $media_query_small) {
   .Nav {
+    box-sizing: border-box;
     .openBtn,
     .closeBtn {
       display: block;

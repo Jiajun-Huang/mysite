@@ -17,6 +17,13 @@
       background-color: var(--color-bg-secondary);
     }
   }
+
+  pre {
+    width: 100%;
+    overflow-x: scroll;
+    code {
+    }
+  }
   // h2,
   // h3,
   // h4,

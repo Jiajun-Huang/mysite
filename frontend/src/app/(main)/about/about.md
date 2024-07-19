@@ -35,23 +35,18 @@ John->>Bob: How about you?
 Bob-->>John: Jolly good!
 ```
 
-
 ```mermaid
 graph LR
     Start --> Stop
 ```
 
-
-
-
-
 * [ ] **[safe][section-security] by default**
   (no `dangerouslySetInnerHTML` or XSS attacks)
-* [X] **[components][section-components]**
+* [x] **[components][section-components]**
   (pass your own component to use instead of `<h2>` for `## hi`)
-* [X] **[plugins][section-plugins]**
+* [x] **[plugins][section-plugins]**
   (many plugins you can pick and choose from)
-* [X] **[compliant][section-syntax]**
+* [x] **[compliant][section-syntax]**
   (100% to CommonMark, 100% to GFM with a plugin)
 
 ## Contents
@@ -88,7 +83,7 @@ graph LR
 
 ## What is this?
 
-This package is a [React][React] component that can be given a string of markdown
+This package is a [React] component that can be given a string of markdown
 that it’ll safely render to React elements.
 You can pass plugins to change how markdown is transformed and pass components
 that will be used instead of normal HTML elements.
@@ -104,8 +99,8 @@ have bugs with how they handle markdown, or don’t let you swap elements for
 components.
 `react-markdown` builds a virtual DOM, so React only replaces what changed,
 from a syntax tree.
-That’s supported because we use [unified][unified], specifically [remark][remark] for
-markdown and [rehype][rehype] for HTML, which are popular tools to transform content
+That’s supported because we use [unified], specifically [remark] for
+markdown and [rehype] for HTML, which are popular tools to transform content
 with plugins.
 
 This package focusses on making it easy for beginners to safely use markdown in
@@ -113,12 +108,12 @@ React.
 When you’re familiar with unified, you can use a modern hooks based alternative
 or  manually.
 If you instead want to use JavaScript and JSX *inside* markdown files, use
-[MDX][MDX].
+[MDX].
 
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 16+), install with [npm][npm]:
+In Node.js (version 16+), install with [npm]:
 
 ```sh
 npm install react-markdown
@@ -183,7 +178,7 @@ createRoot(document.body).render(
 <details>
 <summary>Show equivalent JSX</summary>
 
-```jsx
+```jsx, filename="awesome.js"
 <p>
   Just a link: <a href="http://www.nasa.gov">www.nasa.gov</a>.
 </p>
@@ -359,7 +354,7 @@ createRoot(document.body).render(
 <details>
 <summary>Show equivalent JSX</summary>
 
-```jsx
+```jsx filename="js"
 <>
   <p>
     A paragraph with <em>emphasis</em> and <strong>strong importance</strong>.
@@ -537,7 +532,7 @@ createRoot(document.body).render(
 
 ## Plugins
 
-We use [unified][unified], specifically [remark][remark] for markdown and [rehype][rehype] for
+We use [unified], specifically [remark] for markdown and [rehype] for
 HTML, which are tools to transform content with plugins.
 Here are three good ways to find plugins:
 
@@ -561,7 +556,7 @@ extensions.
 
 ## Types
 
-This package is fully typed with [TypeScript][TypeScript].
+This package is fully typed with [TypeScript].
 It exports the additional types
 ,
 ,
@@ -847,3 +842,4 @@ abide by its terms.
 [api-default-url-transform]: #defaulturltransformurl
 [api-extra-props]: #extraprops
 [api-markdown]: #markdown
+
