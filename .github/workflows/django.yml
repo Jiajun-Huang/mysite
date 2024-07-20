@@ -26,14 +26,14 @@ jobs:
           --health-retries 5
 
       minio:
-        image: minio/minio:latest
+        image: lazybit/minio
         ports:
           - 9000:9000
         env:
           MINIO_ACCESS_KEY: minio
           MINIO_SECRET_KEY: minio123
         options: >-
-          --entrypoint "minio server /data"
+          --name=minio
           --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
           --health-interval 10s
           --health-timeout 5s
