@@ -66,6 +66,14 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r backend/requirements.txt
+      
+      - name: Create MinIO bucket
+        env:
+          MINIO_ROOT_USER: minio
+          MINIO_ROOT_PASSWORD: minio123
+        run: |
+          curl -X PUT -u "${MINIO_ROOT_USER}:${MINIO_ROOT_PASSWORD}" \
+            "http://localhost:9000/minio/blog"
 
       # Test the Django application
       - name: Test Django application
