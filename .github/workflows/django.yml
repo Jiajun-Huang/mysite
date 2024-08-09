@@ -74,7 +74,7 @@ jobs:
         env:
           DJANGO_ALLOWED_HOSTS: localhost
           DATABASE_URL: mysql://root:root@localhost:3306/django_db
-          MINIO_STORAGE_URL: http://localhost:9000
+          MINIO_STORAGE_URL: http://localhost:9000/blog
           MINIO_STORAGE_ACCESS_KEY: minio
           MINIO_STORAGE_SECRET_KEY: minio123
 
