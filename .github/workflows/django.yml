@@ -68,12 +68,12 @@ jobs:
       # Install the dependencies and run the tests
       - name: Install dependencies and run tests
         run: |
-          pip install -r backend/requirements.txt
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       # Test the Django application
       - name: Test Django application
         run: |
-          pip install -r backend/requirements.txt
           python backend/manage.py test
         env:
           DJANGO_ALLOWED_HOSTS: localhost
