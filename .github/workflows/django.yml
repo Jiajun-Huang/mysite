@@ -47,7 +47,7 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          apt-get update && apt-get install -y default-libmysqlclient-dev build-essential
+          apt-get update && apt-get install -y default-libmysqlclient-dev build-essential pkg-config
       # Set up Docker Buildx for building multi-architecture Docker images
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
