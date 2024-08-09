@@ -60,6 +60,11 @@ jobs:
 
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
+      
+      # Install the dependencies and run the tests
+      - name: Install dependencies and run tests
+        run: |
+          pip install -r backend/requirements.txt
 
       # test the Django application use python
       - name: Test Django application
