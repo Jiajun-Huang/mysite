@@ -30,8 +30,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY','django-insecure-sb69!w*a4%3ojbr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(" ")
-
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', "*").split(" ")
 
 # Application definition
 
@@ -110,7 +109,10 @@ DATABASES = {
             'charset': 'utf8mb4',  # The characterset you need
             'use_unicode': True,
         },
-    }
+        'TEST': {
+            'NAME': 'django_test',
+        },
+    },
 }
 
 
