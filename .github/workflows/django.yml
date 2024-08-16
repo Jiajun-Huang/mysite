@@ -71,7 +71,8 @@ jobs:
       # Test the Django application
       - name: Test Django application
         run: |
-          python backend/manage.py test
+          cd backend
+          python manage.py test
         env:
           DJANGO_ALLOWED_HOSTS: localhost
           DATABASE_URL: mysql://root:root@mysql:3306/django_db
