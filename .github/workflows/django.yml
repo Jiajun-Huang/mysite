@@ -127,7 +127,6 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -146,3 +145,5 @@ jobs:
           asset_path: ./my-django-app.tar.gz
           asset_name: my-django-app.tar.gz
           asset_content_type: application/gzip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
