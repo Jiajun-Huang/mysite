@@ -107,7 +107,6 @@ jobs:
         run: |
           docker save my-django-app:latest | gzip > my-django-app.tar.gz
 
-
       - name: Check if Release Exists
         id: check_release
         run: |
@@ -115,10 +114,10 @@ jobs:
             echo "release_exists=true" >> $GITHUB_ENV
           else
             echo "release_exists=false" >> $GITHUB_ENV
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          
       - name: Delete Existing Release and Tag
         if: env.release_exists == 'true'
         run: |
