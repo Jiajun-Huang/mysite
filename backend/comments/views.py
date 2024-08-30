@@ -81,7 +81,6 @@ class CommentSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializers_class = CommentCreateRequestSerializer(data=request.data)
         user = request.user
-        print(user)
 
         if serializers_class.is_valid():        
             # get the user from the request auth token

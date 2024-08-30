@@ -12,7 +12,6 @@ class AuthTestCase(TestCase):
         })
 
         self.assertEqual(response.status_code, 201)
-        print(response.json())
 
     
         response = self.client.post('/api/auth/login/', {
@@ -20,7 +19,6 @@ class AuthTestCase(TestCase):
             "password": "string1234"
         })
 
-        print(response.json())
         self.assertEqual(response.status_code, 200)
 
 
