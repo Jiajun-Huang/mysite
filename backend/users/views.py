@@ -44,7 +44,6 @@ def custom_oauth2_login(request, *args, **kwargs):
     url = response.headers['Location']
 
     # send the url to the frontend as a 200 response
-    print(url)
     header = {"url": url}
     
     # http response with the 

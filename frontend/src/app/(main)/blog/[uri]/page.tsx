@@ -93,8 +93,20 @@ export default async function Index({ params }: Prop) {
             </MarkDown>
           </div>
         </div>
-        <div className={style.toc}>
-          <Toc />
+        <input
+          type="checkbox"
+          id={style.sidebarActive}
+          style={{ display: "none" }}
+        />
+
+        <label htmlFor={style.sidebarActive} className={style.toogleCheckbox}>
+          &#9776;
+        </label>
+        <div className={style.tocContainer}>
+          <label id={style.overlay} htmlFor={style.sidebarActive}></label>
+          <div className={style.toc}>
+            <Toc />
+          </div>
         </div>
       </div>
       <h2>Comments</h2>

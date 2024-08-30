@@ -52,7 +52,6 @@ const Nav = () => {
           type="checkbox"
           id={style.sidebarActive}
           style={{ display: "none" }}
-          ref={checkboxRef}
         />
         <label htmlFor={style.sidebarActive} className={style.openBtn}>
           &#9776;
