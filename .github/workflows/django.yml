@@ -66,7 +66,6 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r backend/requirements.txt
-      
 
       # Test the Django application
       - name: Test Django application
@@ -79,7 +78,7 @@ jobs:
           MINIO_STORAGE_URL: http://minio:9000/blog
           MINIO_STORAGE_ACCESS_KEY: minio
           MINIO_STORAGE_SECRET_KEY: minio123
-  
+
   # build docker image without push it to docker hub
   build:
     runs-on: ubuntu-latest
@@ -119,14 +118,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Docker image to GitHub Release
+      - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: my-django-app.tar.gz
+          asset_path: ./my-django-app.tar.gz
           asset_name: my-django-app.tar.gz
           asset_content_type: application/gzip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      
