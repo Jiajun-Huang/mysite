@@ -50,11 +50,10 @@ export default async function Index({ params }: Prop) {
 
   tags = tags || [];
 
-  const parsedUrl = new URL(files);
-  const path = parsedUrl.pathname;
-  const textUrl = STORGE_URL + path;
+  console.log("sdf", files);
 
-  const text = await fetch(textUrl).then((res) => res.text());
+  const text = await fetch(files).then((res) => res.text());
+  // const text = "";
   const storageUrl = files.split("/").slice(0, -1).join("/");
 
   const dateStr = printDate(created_at || "");
@@ -84,7 +83,7 @@ export default async function Index({ params }: Prop) {
             <MarkDown
               urlTransform={(url, key, node) => {
                 if (key === "src" && node.tagName === "img") {
-                  const newUrl = STORGE_URL + "/blog/blog/" + uri + "/" + url;
+                  const newUrl = STORGE_URL + "/blog/" + uri + "/" + url;
                   return newUrl;
                 }
               }}
