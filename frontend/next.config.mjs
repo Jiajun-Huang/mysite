@@ -1,15 +1,20 @@
 /** @type {import('next').NextConfig} */
+
+// print the env
+//
+console.log(process.env.STORAGE_ADDR);
+const backend_url = process.env.BACKEND_ADDR;
+
 const nextConfig = {
   async rewrites() {
     return [
       {
         source: "/api/:path*/",
-        destination: `http://192.168.1.7/api/:path*/`,
+        destination: `${backend_url}/api/:path*/`,
       },
     ];
   },
   trailingSlash: true,
-  // assetPrefix: "http://192.168.1.5:3000",
 
   output: "standalone",
   eslint: {
@@ -38,8 +43,8 @@ const nextConfig = {
         hostname: "192.168.1.5",
       },
       {
-        protocol: "https",
-        hostname: "storage.jiajunhuang.cc",
+        protocol: "http",
+        hostname: process.env.STORAGE_ADDR,
       },
     ],
   },

@@ -29,7 +29,6 @@ class CommentCreateRequestSerializer(serializers.ModelSerializer):
         type_value = data.get('type')
         if type_value != 0:
             # Temporarily remove 'blog' field from data for validation
-            print("here")
             self.fields.pop('blog')
         validated_data = super().to_internal_value(data)
         return validated_data

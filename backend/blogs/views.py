@@ -130,7 +130,6 @@ class BlogSet(viewsets.ModelViewSet):
             queryset = queryset.order_by(*ordering)
         
         serializer = BlogDataSerializer(queryset, many=True)
-        print(serializer.data)
         return Response(serializer.data)
     
     @extend_schema(

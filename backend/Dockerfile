@@ -14,9 +14,9 @@ RUN apt-get update \
     && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file into the container
+# Copy the whole project to the working directory
+COPY . /app
 
-COPY docker_entry.sh /docker_entry.sh
 # Expose the port the app runs on
 EXPOSE 8000
 

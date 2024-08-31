@@ -1,5 +1,6 @@
 "use client";
 
+import { BASE_URL } from "@/api/request";
 import Image from "next/image";
 interface Props {
   user: number;
@@ -10,9 +11,7 @@ interface Props {
 export default function Avatar({ user, width, height }: Props) {
   return (
     <Image
-      src={
-        process.env.NEXT_PUBLIC_BACKEND_ADDR + `/api/user/avatar?user=${user}`
-      }
+      src={BASE_URL + `/api/user/avatar?user=${user}`}
       alt="avatar"
       width={width}
       height={height}

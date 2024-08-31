@@ -15,6 +15,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,13 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sb69!w*a4%3ojbrc29b&tkl6$s9-@b-2j3s)dy09u$3^%)uk^n'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY','django-insecure-sb69!w*a4%3ojbrc29b&tkl6$s9-@b-2j3s)dy09u$3^%)uk^n')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.5', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', "*").split(" ")
 
 # Application definition
 
@@ -66,7 +66,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 REST_AUTH = {
@@ -82,21 +81,6 @@ AUTHENTICATION_BACKENDS = [
 
 ROOT_URLCONF = 'mysite.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
@@ -110,22 +94,25 @@ REST_FRAMEWORK = {
 
 }
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+DATABASE_URL = urlparse(os.environ.get('DATABASE_URL'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'MYSQL_DATABASE',
-        'USER': 'user',
-        'PASSWORD': 'H1e8dfe()',
-        'HOST': '192.168.1.5',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'NAME': DATABASE_URL.path[1:],
+        'USER': DATABASE_URL.username,
+        'PASSWORD': DATABASE_URL.password,
+        'HOST': DATABASE_URL.hostname,
+        'PORT': DATABASE_URL.port,
         'OPTIONS': {
             'charset': 'utf8mb4',  # The characterset you need
             'use_unicode': True,
         },
-    }
+        'TEST': {
+            'NAME': 'django_test',
+        },
+    },
 }
 
 
@@ -179,18 +166,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
 # STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
-MINIO_STORAGE_USE_HTTPS = False
-MINIO_STORAGE_ENDPOINT = '192.168.1.10:9000'
-MINIO_STORAGE_ACCESS_KEY = 'Z2UEZevaUAlmeX3t0W2K'
-MINIO_STORAGE_SECRET_KEY = 'nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg'
-MINIO_STORAGE_MEDIA_BUCKET_NAME = 'blog'
+
+MINIO_STORAGE_URL = urlparse(os.environ.get('MINIO_STORAGE_URL', 'http://192.168.1.10:9000/blog'))
+MINIO_STORAGE_USE_HTTPS = MINIO_STORAGE_URL.scheme == 'https'
+MINIO_STORAGE_ENDPOINT = MINIO_STORAGE_URL.netloc
+MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_STORAGE_ACCESS_KEY', 'Z2UEZevaUAlmeX3t0W2K')
+MINIO_STORAGE_SECRET_KEY = os.environ.get('MINIO_STORAGE_SECRET_KEY', 'nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg')
+MINIO_STORAGE_MEDIA_BUCKET_NAME = MINIO_STORAGE_URL.path[1:]
 MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
-MINIO_STORAGE_STATIC_BUCKET_NAME = 'static'
-MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
 
-
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
@@ -216,3 +200,19 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
