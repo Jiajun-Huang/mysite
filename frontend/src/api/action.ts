@@ -4,15 +4,26 @@ import { BASE_URL } from "@/api/request";
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
 import { revalidatePath } from "next/cache";
-export const submitComment = async (
+
+type SubmitCommentType = {
+  content: string;
+  path: string;
+  token: string;
+  blog: number | null;
+  root: number | null;
+  type: number | null;
+  reply: number | null;
+};
+
+export const submitComment = async ({
   content,
   path,
   token,
   blog,
   root,
   type,
-  reply
-) => {
+  reply,
+}: SubmitCommentType) => {
   if (content) {
     const response = await fetch(BASE_URL + "/api/comment/", {
       method: "POST",

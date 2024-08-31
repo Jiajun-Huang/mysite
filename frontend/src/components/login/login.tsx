@@ -3,7 +3,11 @@ import { useContext, useState } from "react";
 import { UserContext } from "../user/state";
 import style from "./login.module.scss";
 
-export default function Login({ close }) {
+type Props = {
+  close: () => void;
+};
+
+export default function Login({ close }: Props) {
   const [isSignin, setIsSignin] = useState(true);
   const { login } = useContext(UserContext);
   const title = isSignin ? "Sign in" : "Create an account";
@@ -14,23 +18,8 @@ export default function Login({ close }) {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          const form = e.target as HTMLFormElement;
-          let requestData = null;
-
-          if (isSignin) {
-            requestData = {
-              username: form[0].value,
-              password: form[1].value,
-            };
-          } else {
-            requestData = {
-              username: form[0].value,
-              nickname: form[1].value,
-              email: form[2].value,
-              password: form[3].value,
-              confirmPassword: form[4].value,
-            };
-          }
+          const form = e.currentTarget.querySelectorAll("input");
+          const formData = new FormData(e.currentTarget);
 
           const response = await fetch(
             `/api/auth/${isSignin ? "login" : "signup"}`,
@@ -39,7 +28,7 @@ export default function Login({ close }) {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(requestData),
+              body: JSON.stringify(formData),
             }
           );
 

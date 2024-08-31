@@ -15,7 +15,7 @@ interface Category {
 }
 
 interface Blog {
-  id?: number;
+  id: number;
   title?: string;
   description?: string;
   created_at?: string;
@@ -43,7 +43,7 @@ interface Comment {
   created_at: string;
   updated_at: string;
   deleted: boolean;
-  reply: number;
+  reply: number; //
   root: number;
 
   replies?: Comment[];

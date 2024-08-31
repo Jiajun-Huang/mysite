@@ -1,29 +1,34 @@
 "use client";
 
-import { BASE_URL } from "@/api/request";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CommentBlock from "./commentBlock";
 import CommentInput from "./commentInput";
 
-export default function Comments({ placeholder, type, blog }) {
+type Prop = {
+  placeholder: string;
+  type: number;
+  blog: number | null;
+};
+
+export default function Comments({ placeholder, type, blog }: Prop) {
   const [commentss, setComments] = useState<Comment[]>([]);
-  async function fetchComments() {
+  const fetchComments = useCallback(async () => {
     const searchParams = new URLSearchParams();
     if (blog) {
-      searchParams.set("blog", blog);
-      searchParams.set("type", type);
+      searchParams.set("blog", blog.toString());
+      searchParams.set("type", type.toString());
     } else {
-      searchParams.set("type", type);
+      searchParams.set("type", type.toString());
     }
 
     const params = searchParams.toString();
     const response = await fetch("/api/comment/get-comments?" + params);
     const data = await response.json();
     setComments(data);
-  }
+  }, [blog, type]);
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [fetchComments]);
 
   return (
     <div>
@@ -42,6 +47,10 @@ export default function Comments({ placeholder, type, blog }) {
           comment={comment}
           blog={blog}
           type={type}
+          parentComment={null}
+          setRootState={function (comment: Comment): void {
+            throw new Error("Function not implemented.");
+          }}
         />
       ))}
     </div>

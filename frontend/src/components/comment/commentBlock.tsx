@@ -6,20 +6,20 @@ import Avatar from "../user/avatar";
 import style from "./comment.module.scss";
 import CommentInput from "./commentInput";
 
-interface Props {
+type Props = {
   comment: Comment;
   blog: number | null;
   type: number | null;
   parentComment: Comment | null;
   setRootState: (comment: Comment) => void;
-}
+};
 
 export default function CommentBlock({
   comment,
   blog = null,
   type = null,
   parentComment = null,
-  setRootState = null,
+  setRootState = (comment: Comment) => {},
 }: Props) {
   const [reply, setReply] = useState(false);
   const [commentState, setCommentState] = useState(comment);
@@ -71,10 +71,11 @@ export default function CommentBlock({
           {replies?.map((reply) => {
             let replyTo = null;
             if (reply.reply != reply.root) {
-              replyTo = replies.find((r) => r.id === reply.reply);
+              // if the comment is a reply to another comment (not the root comment)
+              replyTo = replies.find((r) => r.id === reply.reply); // find the comment under which this comment is replied
 
               if (!replyTo) {
-                console.error("reply to comment not found");
+                console.error("reply to comment not found"); // if not found, log error
               }
             }
             return (
@@ -83,7 +84,7 @@ export default function CommentBlock({
                   comment={reply}
                   blog={blog}
                   type={type}
-                  parentComment={replyTo}
+                  parentComment={replyTo || null}
                   setRootState={setCommentState}
                 />
               </div>

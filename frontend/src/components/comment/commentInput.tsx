@@ -30,16 +30,16 @@ export default function CommentInput({
     <form
       className={style.inputBlock}
       action={async (formdata: FormData) => {
-        const content = formdata.get("inputField");
-        await submitComment(
-          content,
-          window.location.pathname,
-          localStorage.getItem("token"),
+        const content = formdata.get("inputField") as string;
+        await submitComment({
+          content: content ?? "",
+          path: window.location.pathname,
+          token: localStorage.getItem("token") ?? "",
           blog,
           root,
           type,
-          reply
-        );
+          reply,
+        });
         onSubmit();
       }}
     >

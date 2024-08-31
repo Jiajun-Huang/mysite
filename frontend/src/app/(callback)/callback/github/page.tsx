@@ -48,7 +48,7 @@ export function Callback() {
       .catch((error) => {
         console.error("Fetch Error:", error);
       });
-  }, [code]);
+  }, [code, router]);
 
   return (
     <>

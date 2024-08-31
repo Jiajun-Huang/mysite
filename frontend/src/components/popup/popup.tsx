@@ -1,7 +1,12 @@
 import SignInForm from "@/components/login/login";
 import styles from "./popup.module.scss";
 
-const Popup = ({ isOpen, onClose }) => {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function Popup({ isOpen, onClose }: Props) {
   if (!isOpen) return null;
 
   return (
@@ -15,6 +20,4 @@ const Popup = ({ isOpen, onClose }) => {
       </div>
     </div>
   );
-};
-
-export default Popup;
+}

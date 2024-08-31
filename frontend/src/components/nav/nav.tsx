@@ -19,7 +19,7 @@ const Nav = () => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
-  const checkboxRef = useRef(null);
+  const checkboxRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // close sidebar when link is clicked
@@ -33,7 +33,7 @@ const Nav = () => {
 
     // calculate the height of the nav bar
     const nav = document.getElementById("nav");
-    const height = nav.offsetHeight;
+    const height = nav ? nav.offsetHeight : 0;
     // add the variable to the root element
     const root = document.documentElement;
     root.style.setProperty("--nav-height", `${height}px`);

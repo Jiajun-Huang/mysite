@@ -42,10 +42,10 @@ const nextConfig = {
         protocol: "http",
         hostname: "192.168.1.5",
       },
-      {
-        protocol: "http",
-        hostname: process.env.STORAGE_ADDR,
-      },
+      // {
+      //   protocol: "http",
+      //   hostname: process.env.STORAGE_ADDR,
+      // },
     ],
   },
 };
