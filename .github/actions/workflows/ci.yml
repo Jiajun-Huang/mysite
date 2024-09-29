@@ -2,9 +2,9 @@ name: Django and Next.js CI/CD
 
 on:
   push:
-    branches: [action2]
+    branches: [action]
   pull_request:
-    branches: [action2]
+    branches: [action]
 
 jobs:
   # Common steps for both Django and Next.js
