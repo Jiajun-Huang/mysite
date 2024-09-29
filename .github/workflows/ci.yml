@@ -132,11 +132,10 @@ jobs:
       - name: Run Next.js Docker container
         run: |
           docker run -d --name nextjs-app -p 3000:3000 \
-            -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
-            -e MINIO_STORAGE_URL=http://minio:9000/blog \
-            -e MINIO_STORAGE_ACCESS_KEY=minio \
-            -e MINIO_STORAGE_SECRET_KEY=minio123 \
-            -e DJANGO_ALLOWED_HOSTS="localhost
+            -e BACKEND_ADDR_URL=http://localhost:8000 \
+            -e NEXT_PUBLIC_BACKEND_ADDR=http://localhost:8000 \
+            -e STORAGE_ADDR=minio:9000 \
+            -e NEXT_PUBLIC_STORAGE_ADDR="minio:9000
       
       
 
