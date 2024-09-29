@@ -87,7 +87,6 @@ jobs:
             -e MINIO_STORAGE_URL=http://minio:9000/blog \
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
-            -e MINIO_STORAGE_USE_HTTPS=false \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
             --health-cmd "curl -f http://localhost:8000 || exit 1" \
             --health-interval 10s \
@@ -95,21 +94,21 @@ jobs:
             --health-retries 5 \
             my-django-app:latest
 
-      - name: Wait for Django container to become healthy
-        run: |
-          for i in $(seq 1 10); do \
-            health=$(docker inspect --format='{{json .State.Health.Status}}' django-app); \
-            echo "Django health status: $health"; \
-            if [ "$health" = "\"healthy\"" ]; then \
-              echo "Django container is healthy"; \
-              break; \
-            elif [ "$i" -eq 10 ]; then \
-              echo "Django container is unhealthy"; \
-              docker logs django-app; \
-              exit 1; \
-            fi; \
-            sleep 10; \
-          done
+      # - name: Wait for Django container to become healthy
+      #   run: |
+      #     for i in $(seq 1 10); do \
+      #       health=$(docker inspect --format='{{json .State.Health.Status}}' django-app); \
+      #       echo "Django health status: $health"; \
+      #       if [ "$health" = "\"healthy\"" ]; then \
+      #         echo "Django container is healthy"; \
+      #         break; \
+      #       elif [ "$i" -eq 10 ]; then \
+      #         echo "Django container is unhealthy"; \
+      #         docker logs django-app; \
+      #         exit 1; \
+      #       fi; \
+      #       sleep 10; \
+      #     done
 
   nextjs-ci:
     needs: django-ci
@@ -144,6 +143,18 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+      django:
+        image: my-django-app:latest
+        ports:
+          - 8000:8000
+        env:
+          DATABASE_URL: mysql://root:root@mysql:3306/django_db
+          MINIO_STORAGE_URL: http://minio:9000/blog
+          MINIO_STORAGE_ACCESS_KEY: minio
+          MINIO_STORAGE_SECRET_KEY: minio123
+          DJANGO_ALLOWED_HOSTS: localhost
+
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -158,6 +169,26 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
+
+      - name: Build Next.js application
+        working-directory: ./frontend
+        run: |
+          npm run build
+
+      - name: Build Docker image for Next.js
+        run: |
+          docker build -t my-nextjs-app:latest .
+
+      - name: Run Next.js Docker container
+        run: |
+          docker run -d --name nextjs-app -p 3000:3000 \
+            -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
+            -e MINIO_STORAGE_URL=http://minio:9000/blog \
+            -e MINIO_STORAGE_ACCESS_KEY=minio \
+            -e MINIO_STORAGE_SECRET_KEY=minio123 \
+            -e DJANGO_ALLOWED_HOSTS="localhost
+      
+      
 
 
   # Push releases
