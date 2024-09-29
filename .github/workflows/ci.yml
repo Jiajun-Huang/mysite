@@ -90,12 +90,13 @@ jobs:
             -e MINIO_STORAGE_USE_HTTPS=false \
             -e MINIO_STORAGE_MEDIA_BUCKET_NAME=django-app-media \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
+            --health-cmd "curl -f http://localhost:8000 || exit 1" \
+            --health-interval 10s \
+            --health-timeout 5s \
+            --health-retries 5 \
             my-django-app:latest
-
-      - name: Wait for Django to start
-        run: |
-          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8000)" != "200" ]]; do sleep 5; done' || false
-
+      
+      
       - name: Save Django Docker image
         run: docker save my-django-app:latest | gzip > my-django-app.tar.gz
 
