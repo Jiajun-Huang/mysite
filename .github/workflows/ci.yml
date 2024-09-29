@@ -84,11 +84,10 @@ jobs:
         run: |
           docker run -d --name django-app -p 8000:8000 \
             -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
-            -e MINIO_STORAGE_ENDPOINT=minio:9000 \
+            -e MINIO_STORAGE_URL=http://minio:9000/blog \
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
             -e MINIO_STORAGE_USE_HTTPS=false \
-            -e MINIO_STORAGE_MEDIA_BUCKET_NAME=django-app-media \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
             --health-cmd "curl -f http://localhost:8000 || exit 1" \
             --health-interval 10s \
