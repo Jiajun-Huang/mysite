@@ -8,7 +8,7 @@ on:
 
 jobs:
   # Django CI
-  ci:
+  django-ci:
     runs-on: ubuntu-latest
     container: python:3.11.9-slim
 
@@ -80,33 +80,84 @@ jobs:
           cd backend
           docker build -t my-django-app:latest .
 
-      - name: Save Django Docker image to file
+      - name: Run Django Docker container
         run: |
-          docker save my-django-app:latest | gzip > my-django-app.tar.gz
+          docker run -d --name django-app --network app-network -p 8000:8000 \
+            -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
+            -e MINIO_STORAGE_ENDPOINT=minio:9000 \
+            -e MINIO_STORAGE_ACCESS_KEY=minio \
+            -e MINIO_STORAGE_SECRET_KEY=minio123 \
+            -e MINIO_STORAGE_USE_HTTPS=false \
+            -e MINIO_STORAGE_MEDIA_BUCKET_NAME=django-app-media \
+            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
+            my-django-app:latest
 
-      - name: Start Django Docker container
+      - name: Wait for Django to start
         run: |
-          docker run -d --name my-django-app -p 8000:8000 \
-          -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
-          -e DATABASE_URL="mysql://root:root@mysql:3306/django_db" \
-          -e MINIO_STORAGE_URL="http://minio:9000/blog" \
-          -e MINIO_STORAGE_ACCESS_KEY="minio" \
-          -e MINIO_STORAGE_SECRET_KEY="minio123" \
-          my-django-app:latest
+          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8000)" != "200" ]]; do sleep 5; done' || false
 
-      - name: Build Next.js
+      - name: Save Django Docker image
+        run: docker save my-django-app:latest | gzip > my-django-app.tar.gz
+
+  nextjs-ci:
+    needs: django-ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Download Django Docker image
+        uses: actions/download-artifact@v3
+        with:
+          name: django-docker-image
+
+      - name: Create Docker network
+        run: docker network create app-network
+
+      - name: Run MySQL in Docker network
         run: |
-          cd frontend
+          docker run -d --name mysql --network app-network \
+            -e MYSQL_DATABASE=django_db \
+            -e MYSQL_ROOT_PASSWORD=root \
+            mysql:latest
+
+      - name: Run MinIO in Docker network
+        run: |
+          docker run -d --name minio --network app-network \
+            -e MINIO_ROOT_USER=minio \
+            -e MINIO_ROOT_PASSWORD=minio123 \
+            minio/minio server /data
+
+      - name: Load and run Django Docker image
+        run: |
+          docker load < my-django-app.tar.gz
+          docker run -d --name django-app --network app-network -p 8000:8000 \
+            -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
+            -e MINIO_STORAGE_ENDPOINT=minio:9000 \
+            -e MINIO_STORAGE_ACCESS_KEY=minio \
+            -e MINIO_STORAGE_SECRET_KEY=minio123 \
+            -e MINIO_STORAGE_USE_HTTPS=false \
+            -e MINIO_STORAGE_MEDIA_BUCKET_NAME=django-app-media \
+            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
+            my-django-app:latest
+
+      - name: Wait for Django to start
+        run: |
+          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8000)" != "200" ]]; do sleep 5; done' || false
+
+      - name: Install dependencies and build Next.js
+        working-directory: ./frontend
+        run: |
           npm install
           npm run build
-
-      - name: Build next.js docker image
-        run: |
-          docker build -t my-nextjs-app:latest .
-
-      - name: Save Next.js Docker image to file
-        run: |
-          docker save my-nextjs-app:latest | gzip > my-nextjs-app.tar.gz
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:8000
 
   # Push releases
   push_release:
