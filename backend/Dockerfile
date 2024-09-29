@@ -17,9 +17,15 @@ RUN apt-get update \
 # Copy the whole project to the working directory
 COPY . /app
 
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+
+
+
 # Expose the port the app runs on
 EXPOSE 8000
 
-# RUN chmod +x docker_entry.sh
-# Run Gunicorn
-CMD ["/docker_entry.sh"]
+# Run the app gunicorn --workers=3 --bind=0.0.0.0:8000 mysite.wsgi:application
+CMD ["gunicorn", "--workers=3", "--bind=0.0.0.0:8000 mysite.wsgi:application"]  
