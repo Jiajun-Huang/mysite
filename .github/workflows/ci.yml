@@ -88,27 +88,27 @@ jobs:
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
-            --health-cmd "curl -f http://localhost:8000 || exit 1" \
+            --health-cmd "curl -f http://localhost:8000/api/blogs || exit 1" \
             --health-interval 10s \
             --health-timeout 5s \
             --health-retries 5 \
             my-django-app:latest
 
-      # - name: Wait for Django container to become healthy
-      #   run: |
-      #     for i in $(seq 1 10); do \
-      #       health=$(docker inspect --format='{{json .State.Health.Status}}' django-app); \
-      #       echo "Django health status: $health"; \
-      #       if [ "$health" = "\"healthy\"" ]; then \
-      #         echo "Django container is healthy"; \
-      #         break; \
-      #       elif [ "$i" -eq 10 ]; then \
-      #         echo "Django container is unhealthy"; \
-      #         docker logs django-app; \
-      #         exit 1; \
-      #       fi; \
-      #       sleep 10; \
-      #     done
+      - name: Wait for Django container to become healthy
+        run: |
+          for i in $(seq 1 10); do \
+            health=$(docker inspect --format='{{json .State.Health.Status}}' django-app); \
+            echo "Django health status: $health"; \
+            if [ "$health" = "\"healthy\"" ]; then \
+              echo "Django container is healthy"; \
+              break; \
+            elif [ "$i" -eq 10 ]; then \
+              echo "Django container is unhealthy"; \
+              docker logs django-app; \
+              exit 1; \
+            fi; \
+            sleep 10; \
+          done
 
   nextjs-ci:
     needs: django-ci
