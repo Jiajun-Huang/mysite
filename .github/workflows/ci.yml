@@ -7,7 +7,6 @@ on:
     branches: [action3]
 
 jobs:
-
   # Django CI
   django_ci:
     runs-on: ubuntu-latest
@@ -44,7 +43,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y default-mysql-client
+
       - name: Install dependencies and run tests
         run: |
           pip install --upgrade pip
