@@ -45,7 +45,8 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y default-mysql-client
+        run: |
+          apt-get update && apt-get install -y default-libmysqlclient-dev build-essential pkg-config
 
       - name: Install dependencies and run tests
         run: |
