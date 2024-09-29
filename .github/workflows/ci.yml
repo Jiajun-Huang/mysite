@@ -16,9 +16,7 @@ jobs:
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      
   
-
   # Django CI
   build_django:
     runs-on: ubuntu-latest
@@ -102,10 +100,12 @@ jobs:
           npm install
           npm run build
         env:
-          BACKEND_ADDR: http://localhost:8000
-          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000
-          STORAGE_ADDR: http://minio:9000/blog
-          NEXT_PUBLIC_STORAGE_ADDR: ${{ env.STORAGE_ADDR }}
+          BACKEND_ADDR: http://localhost:8000  # Address of Django backend
+          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000  # Publicly accessible backend address
+          MINIO_STORAGE_URL: http://minio:9000/blog  # Same MinIO address used by Django
+          NEXT_PUBLIC_MINIO_STORAGE_URL: http://minio:9000/blog  # Public MinIO address for Next.js
+          MINIO_STORAGE_ACCESS_KEY: minio
+          MINIO_STORAGE_SECRET_KEY: minio123
 
       - name: Build Docker image for Next.js
         run: |
