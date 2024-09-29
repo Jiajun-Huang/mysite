@@ -57,7 +57,7 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          apt-get update && apt-get install -y default-libmysqlclient-dev build-essential pkg-config docker.io
+          apt-get update && apt-get install -y default-libmysqlclient-dev build-essential pkg-config docker.io curl
 
       - name: Install dependencies and run tests
         run: |
