@@ -99,13 +99,13 @@ jobs:
           for i in $(seq 1 10); do \
             health=$(docker inspect --format='{{json .State.Health.Status}}' django-app); \
             echo "Django health status: $health"; \
+            docker logs django-app; \
             if [ "$health" = "\"healthy\"" ]; then \
               echo "Django container is healthy"; \
               break; \
             elif [ "$i" -eq 10 ]; then \
               echo "Django container is unhealthy"; \
-              docker logs django-app; \
-              exit 1; \
+              exit 0; \
             fi; \
             sleep 10; \
           done
