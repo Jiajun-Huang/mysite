@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY','django-insecure-sb69!w*a4%3ojbrc29b&tkl6$s9-@b-2j3s)dy09u$3^%)uk^n')
+SECRET_KEY = 'django-insecure-sb69!w*a4%3ojbrc29b&tkl6$s9-@b-2j3s)dy09u$3^%)uk^n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -174,6 +174,7 @@ MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_STORAGE_ACCESS_KEY', 'Z2UEZevaU
 MINIO_STORAGE_SECRET_KEY = os.environ.get('MINIO_STORAGE_SECRET_KEY', 'nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg')
 MINIO_STORAGE_MEDIA_BUCKET_NAME = MINIO_STORAGE_URL.path[1:]
 MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
+
 
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'

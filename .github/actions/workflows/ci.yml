@@ -1,0 +1,124 @@
+name: Django and Next.js CI/CD
+
+on:
+  push:
+    branches: [action]
+  pull_request:
+    branches: [action]
+
+jobs:
+  # Common steps for both Django and Next.js
+  common_steps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+  # Django CI
+  build_django:
+    runs-on: ubuntu-latest
+    container: python:3.11.9-slim
+    needs: common_steps
+
+    services:
+      mysql:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: django_db
+          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
+        options: >-
+          --health-cmd "mysqladmin ping -h localhost -u root --password=$MYSQL_ROOT_PASSWORD"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      minio:
+        image: lazybit/minio
+        ports:
+          - 9000:9000
+        env:
+          MINIO_ROOT_USER: minio
+          MINIO_ROOT_PASSWORD: minio123
+        options: >-
+          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install system dependencies
+        run: |
+          apt-get update && apt-get install -y default-libmysqlclient-dev build-essential pkg-config
+
+      - name: Install dependencies and run tests
+        run: |
+          pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Test Django application
+        run: |
+          cd backend
+          python manage.py test
+        env:
+          DJANGO_ALLOWED_HOSTS: localhost
+          DATABASE_URL: mysql://root:root@mysql:3306/django_db
+          MINIO_STORAGE_URL: http://minio:9000/blog
+          MINIO_STORAGE_ACCESS_KEY: minio
+          MINIO_STORAGE_SECRET_KEY: minio123
+
+      - name: Build Docker image for Django
+        run: |
+          cd backend
+          docker build -t my-django-app:latest .
+
+      - name: Save Django Docker image to file
+        run: |
+          docker save my-django-app:latest | gzip > my-django-app.tar.gz
+
+  # Next.js CI
+  build_nextjs:
+    runs-on: ubuntu-latest
+    container: node:18-slim
+    needs: common_steps
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies and build Next.js
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Build Docker image for Next.js
+        run: |
+          cd frontend
+          docker build -t my-nextjs-app:latest .
+
+      - name: Save Next.js Docker image to file
+        run: |
+          docker save my-nextjs-app:latest | gzip > my-nextjs-app.tar.gz
+
+  # Push releases
+  push_release:
+    runs-on: ubuntu-latest
+    needs: [build_django, build_nextjs]
+    steps:
+      - name: Load and push Django Docker image
+        run: |
+          docker load < my-django-app.tar.gz
+          docker tag my-django-app:latest my-django-app:prod
+          docker push my-django-app:prod
+
+      - name: Load and push Next.js Docker image
+        run: |
+          docker load < my-nextjs-app.tar.gz
+          docker tag my-nextjs-app:latest my-nextjs-app:prod
+          docker push my-nextjs-app:prod
