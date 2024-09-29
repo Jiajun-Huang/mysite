@@ -151,7 +151,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install system dependencies
+        run: |
+          apt-get update && apt-get install -y docker.io 
+
       - name: Run Django Docker container
         run: |
           docker run -d --name django-app -p 8000:8000 \
@@ -165,7 +172,6 @@ jobs:
             --health-timeout 5s \
             --health-retries 5 \
             my-django-app:latest
-     
       - name: Install dependencies
         working-directory: ./frontend
         run: |
