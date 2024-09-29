@@ -64,8 +64,8 @@ jobs:
           MINIO_STORAGE_ACCESS_KEY: minio
           MINIO_STORAGE_SECRET_KEY: minio123
 
-      - name: Set up docker
-        run: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Build Docker image for Django
         run: |
