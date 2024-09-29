@@ -83,27 +83,32 @@ jobs:
       - name: Save Django Docker image to file
         run: |
           docker save my-django-app:latest | gzip > my-django-app.tar.gz
-      
-      - name: Start django server
+
+      - name: Start Django Docker container
         run: |
-          cd backend
-          python manage.py runserver
+          docker run -d --name my-django-app -p 8000:8000 \
+          -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
+          -e DATABASE_URL="mysql://root:root@mysql:3306/django_db" \
+          -e MINIO_STORAGE_URL="http://minio:9000/blog" \
+          -e MINIO_STORAGE_ACCESS_KEY="minio" \
+          -e MINIO_STORAGE_SECRET_KEY="minio123" \
+          my-django-app:latest
 
       - name: Build Next.js
         run: |
           cd frontend
           npm install
           npm run build
-      
+
       - name: Build next.js docker image
         run: |
           cd frontend
           docker build -t my-nextjs-app:latest .
-      
+
       - name: Save Next.js Docker image to file
         run: |
           docker save my-nextjs-app:latest | gzip > my-nextjs-app.tar.gz
-  
+
   # Push releases
   push_release:
     runs-on: ubuntu-latest
