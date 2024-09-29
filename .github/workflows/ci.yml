@@ -151,7 +151,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
+      
+      - name: Run Django Docker container
+        run: |
+          docker run -d --name django-app -p 8000:8000 \
+            -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
+            -e MINIO_STORAGE_URL=http://minio:9000/blog \
+            -e MINIO_STORAGE_ACCESS_KEY=minio \
+            -e MINIO_STORAGE_SECRET_KEY=minio123 \
+            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
+            --health-cmd "curl -f http://localhost:8000/api/blogs || exit 1" \
+            --health-interval 10s \
+            --health-timeout 5s \
+            --health-retries 5 \
+            my-django-app:latest
      
       - name: Install dependencies
         working-directory: ./frontend
