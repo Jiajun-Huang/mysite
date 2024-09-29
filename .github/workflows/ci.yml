@@ -96,7 +96,8 @@ jobs:
 
       - name: Build Next.js
         run: |
-          cd frontend
+          cwd .
+          cd ../frontend
           npm install
           npm run build
 
