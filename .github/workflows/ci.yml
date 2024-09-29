@@ -96,13 +96,12 @@ jobs:
 
       - name: Build Next.js
         run: |
-          cd ../frontend
+          cd frontend
           npm install
           npm run build
 
       - name: Build next.js docker image
         run: |
-          cd frontend
           docker build -t my-nextjs-app:latest .
 
       - name: Save Next.js Docker image to file
