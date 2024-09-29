@@ -110,68 +110,11 @@ jobs:
             sleep 10; \
           done
 
-  nextjs-ci:
-    needs: django-ci
-    runs-on: ubuntu-latest
-    container: node:20
-
-    services:
-      mysql:
-        image: mysql:latest
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_DATABASE: django_db
-          MYSQL_PASSWORD: root
-          MYSQL_ROOT_PASSWORD: root
-        options: >-
-          --health-cmd "mysqladmin ping -h localhost -u root --password=$MYSQL_ROOT_PASSWORD"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      minio:
-        image: lazybit/minio
-        ports:
-          - 9000:9000
-        env:
-          MINIO_ROOT_USER: minio
-          MINIO_ROOT_PASSWORD: minio123
-        options: >-
-          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Install system dependencies
-        run: |
-          apt-get update && apt-get install -y docker.io 
-
-      - name: Run Django Docker container
-        run: |
-          docker run -d --name django-app -p 8000:8000 \
-            -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
-            -e MINIO_STORAGE_URL=http://minio:9000/blog \
-            -e MINIO_STORAGE_ACCESS_KEY=minio \
-            -e MINIO_STORAGE_SECRET_KEY=minio123 \
-            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
-            --health-cmd "curl -f http://localhost:8000/api/blogs || exit 1" \
-            --health-interval 10s \
-            --health-timeout 5s \
-            --health-retries 5 \
-            my-django-app:latest
+          node-version: '20'
+      
       - name: Install dependencies
         working-directory: ./frontend
         run: |
