@@ -95,7 +95,12 @@ jobs:
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 django-app" \
             my-django-app:latest
-
+            
+      - name: Log Django container
+        run: | 
+          docker logs django-app
+          curl http://django-app:8000/api/blog/
+          
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -117,8 +122,6 @@ jobs:
           STORAGE_ADDR: minio:9000
         continue-on-error: true
 
-      - name: Log Django container
-        run: curl http://django-app:8000/api/blog/
 
       - name: Build Docker image for Next.js
         run: |
