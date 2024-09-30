@@ -94,27 +94,22 @@ jobs:
             --health-retries 5 \
             my-django-app:latest
 
-      # - name: Wait for Django container to become healthy
-      #   run: |
-      #     for i in $(seq 1 10); do \
-      #       health=$(docker inspect --format='{{json .State.Health.Status}}' django-app); \
-      #       echo "Django health status: $health"; \
-      #       docker logs django-app; \
-      #       if [ "$health" = "\"healthy\"" ]; then \
-      #         echo "Django container is healthy"; \
-      #         break; \
-      #       elif [ "$i" -eq 10 ]; then \
-      #         echo "Django container is unhealthy"; \
-      #         exit 0; \
-      #       fi; \
-      #       sleep 10; \
-      #     done
-        
-      - name: Print Django container -f logs
+      - name: Wait for Django container to become healthy
         run: |
-          sleep 10
-          docker logs django-app 
-
+          for i in $(seq 1 10); do \
+            health=$(docker inspect --format='{{json .State.Health.Status}}' django-app); \
+            echo "Django health status: $health"; \
+            docker logs django-app; \
+            if [ "$health" = "\"healthy\"" ]; then \
+              echo "Django container is healthy"; \
+              break; \
+            elif [ "$i" -eq 10 ]; then \
+              echo "Django container is unhealthy"; \
+              exit 0; \
+            fi; \
+            sleep 10; \
+          done
+        
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -131,17 +126,17 @@ jobs:
         run: |
           npm run build
         env:
-          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000/
-          NEXT_PUBLIC_STORAGE_ADDR: http://minio:9000/blog
-          BACKEND_ADDR: http://localhost:8000/
-          STORAGE_ADDR: http://minio:9000/
+          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000
+          NEXT_PUBLIC_STORAGE_ADDR: minio:9000/blog
+          BACKEND_ADDR: http://localhost:8000
+          STORAGE_ADDR: minio:9000
 
       - name: Build Docker image for Next.js
         run: |
           docker build -t my-nextjs-app:latest .
         env:
           BACKEND_ADDR: http://localhost:8000/
-          STORAGE_ADDR: http://minio:9000/
+          STORAGE_ADDR: minio:9000
 
       - name: Run Next.js Docker container
         run: |
