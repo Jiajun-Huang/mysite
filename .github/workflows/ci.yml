@@ -113,7 +113,7 @@ jobs:
       - name: Print Django container logs
         run: |
           sleep 10
-          docker logs django-app
+          docker logs my-django-app
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -128,13 +128,18 @@ jobs:
         working-directory: ./frontend
         run: |
           npm run build
+        env:
+          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000/
+          NEXT_PUBLIC_STORAGE_ADDR: http://minio:9000/blog
+          BACKEND_ADDR: http://localhost:8000/
+          STORAGE_ADDR: http://minio:9000/
 
       - name: Build Docker image for Next.js
         run: |
           docker build -t my-nextjs-app:latest .
         env:
           BACKEND_ADDR: http://localhost:8000/
-          STORAGE_ADDR: http://minio:9000/blog
+          STORAGE_ADDR: http://minio:9000/
 
       - name: Run Next.js Docker container
         run: |
