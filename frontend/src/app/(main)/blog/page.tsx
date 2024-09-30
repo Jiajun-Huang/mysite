@@ -5,7 +5,7 @@ import style from "./page.module.scss";
 export default async function Home() {
   let data;
   try {
-    data = await fetch(BASE_URL + "/api/blog", {
+    data = await fetch(BASE_URL + "/api/blog/", {
       method: "GET",
     });
   } catch (error) {

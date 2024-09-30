@@ -7,8 +7,7 @@ on:
     branches: [action3]
 
 jobs:
-  # Django CI
-  django-ci:
+  ci:
     runs-on: ubuntu-latest
     container: python:3.11.9-slim
 
@@ -82,13 +81,12 @@ jobs:
 
       - name: Run Django Docker container
         run: |
-          docker run -d --name django-app --network ${{ job.container.network }} \
-            -p 8000:8000 \
+          docker run -d --name django-app -p 8000:8000 \
             -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
             -e MINIO_STORAGE_URL=http://minio:9000/blog \
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
-            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 0.0.0.0" \
+            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
             my-django-app:latest
 
       - name: Install Node.js
@@ -113,7 +111,7 @@ jobs:
         continue-on-error: true
 
       - name: Log Django container
-        run: curl http://django-app:8000
+        run: curl http://django-app:8000/api/blog/
 
       - name: Build Docker image for Next.js
         run: |
@@ -131,26 +129,40 @@ jobs:
             -e STORAGE_ADDR=minio:9000 \
             -e NEXT_PUBLIC_STORAGE_ADDR="minio:9000" \
             my-nextjs-app:latest
+            
 
   # Push releases
   push_release:
     runs-on: ubuntu-latest
-    needs: [django-ci]
+    needs: [ci]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Save Django Docker image
         run: docker save my-django-app:latest | gzip > my-django-app.tar.gz
+      
+      - name: Save Next.js Docker image
+        run: docker save my-nextjs-app:latest | gzip > my-nextjs-app.tar.gz
 
-      - name: Load and push Django Docker image
-        run: |
-          docker load < my-django-app.tar.gz
-          docker tag my-django-app:latest my-django-app:prod
-          docker push my-django-app:prod
+      - name: Upload Django Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-django-app
+          path: my-django-app.tar.gz
 
-      - name: Load and push Next.js Docker image
-        run: |
-          docker load < my-nextjs-app.tar.gz
-          docker tag my-nextjs-app:latest my-nextjs-app:prod
-          docker push my-nextjs-app:prod
+      - name: Upload Next.js Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-nextjs-app
+          path: my-nextjs-app.tar.gz
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            my-django-app.tar.gz
+            my-nextjs-app.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      

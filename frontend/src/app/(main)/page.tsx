@@ -5,7 +5,7 @@ import style from "./page.module.scss";
 export default async function Home() {
   let data;
   try {
-    data = await fetch(BASE_URL + "/api/blog", {
+    data = await fetch(BASE_URL + "/api/blog/", {
       method: "GET",
     });
   } catch (error) {
@@ -13,8 +13,13 @@ export default async function Home() {
     data = { json: () => [] };
   }
 
+  console.log(data);
+  
+  if (data instanceof Response) {
+    console.log(await data.text());
+  }
   const fakeData: Blog[] = await data.json();
-
+  
   // ensure required fields are present
 
   return (
