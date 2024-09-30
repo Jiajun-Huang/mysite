@@ -87,7 +87,7 @@ jobs:
             -e MINIO_STORAGE_URL=http://minio:9000/blog \
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
-            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 0.0.0.0" \
+            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 django-app" \
             my-django-app:latest
 
       - name: Install Node.js
