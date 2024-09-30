@@ -31,6 +31,9 @@ EXPOSE 8000
 # Add a healthcheck to ensure the service is up
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl --fail http://localhost:8000/ || exit 1
 
+# print env variables
+RUN printenv
+
 # Start the migration and collect static files
 RUN python manage.py makemigrations
 RUN python manage.py migrate
