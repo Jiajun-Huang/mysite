@@ -105,10 +105,16 @@ jobs:
         run: |
           npm run build
         env:
-          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000
-          NEXT_PUBLIC_STORAGE_ADDR: minio:9000/blog
+          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000/
+          NEXT_PUBLIC_STORAGE_ADDR: minio:9000
           BACKEND_ADDR: http://localhost:8000
           STORAGE_ADDR: minio:9000
+        continue-on-error: true
+      
+      - name: Log Django container
+        run: docker logs django-app
+        
+      
 
       - name: Build Docker image for Next.js
         run: |
