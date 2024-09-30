@@ -66,6 +66,8 @@ jobs:
       - name: Test Django application
         run: |
           cd backend
+          python manage.py makemigrations
+          python manage.py migrate
           python manage.py test
         env:
           DJANGO_ALLOWED_HOSTS: localhost
@@ -100,7 +102,7 @@ jobs:
         run: | 
           docker logs django-app
           curl http://django-app:8000/api/blog/
-          
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
