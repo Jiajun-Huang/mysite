@@ -88,10 +88,11 @@ jobs:
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
-        # --health-cmd "curl -f http://localhost:8000/api/blog/ || exit 1" \
-        # --health-interval 10s \
-        # --health-timeout 5s \
-        # --health-retries 5 \
+            --health-cmd "curl -f http://localhost:8000/api/blog/ || exit 1" \
+            --health-interval 10s \
+            --health-timeout 5s \
+            --health-retries 5 \
+            my-django-app:latest
 
       # - name: Wait for Django container to become healthy
       #   run: |
@@ -108,12 +109,11 @@ jobs:
       #       fi; \
       #       sleep 10; \
       #     done
-      - name: Log django container
+        
+      - name: Print Django container logs
         run: |
           sleep 10
           docker logs django-app
-
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -128,16 +128,13 @@ jobs:
         working-directory: ./frontend
         run: |
           npm run build
-        env:
-          BACKEND_ADDR: http://localhost:8000/
-          STORAGE_ADDR: http://minio:9000/blog/
 
       - name: Build Docker image for Next.js
         run: |
           docker build -t my-nextjs-app:latest .
         env:
           BACKEND_ADDR: http://localhost:8000/
-          STORAGE_ADDR: http://minio:9000/blog/
+          STORAGE_ADDR: http://minio:9000/blog
 
       - name: Run Next.js Docker container
         run: |
