@@ -128,7 +128,9 @@ jobs:
             -e BACKEND_ADDR=http://django-app:8000/ \
             -e NEXT_PUBLIC_BACKEND_ADDR=http://django-app:8000/ \
             -e STORAGE_ADDR=minio:9000 \
-            -e NEXT_PUBLIC_STORAGE_ADDR="minio:9000
+            -e NEXT_PUBLIC_STORAGE_ADDR="minio:9000" \
+            my-nextjs-app:latest
+            
 
   # Push releases
   push_release:
