@@ -93,8 +93,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-      
+          node-version: "20"
+
       - name: Install dependencies
         working-directory: ./frontend
         run: |
@@ -110,14 +110,13 @@ jobs:
           BACKEND_ADDR: http://localhost:8000
           STORAGE_ADDR: minio:9000
         continue-on-error: true
-      
+
       - name: Log Django container
         run: docker logs django-app
-        
-      
 
       - name: Build Docker image for Next.js
         run: |
+          cd frontend
           docker build -t my-nextjs-app:latest .
         env:
           BACKEND_ADDR: http://localhost:8000/
@@ -130,9 +129,6 @@ jobs:
             -e NEXT_PUBLIC_BACKEND_ADDR=http://localhost:8000/ \
             -e STORAGE_ADDR=minio:9000 \
             -e NEXT_PUBLIC_STORAGE_ADDR="minio:9000
-      
-      
-
 
   # Push releases
   push_release:
@@ -144,7 +140,6 @@ jobs:
 
       - name: Save Django Docker image
         run: docker save my-django-app:latest | gzip > my-django-app.tar.gz
-
 
       - name: Load and push Django Docker image
         run: |
