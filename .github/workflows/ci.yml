@@ -81,14 +81,13 @@ jobs:
 
       - name: Run Django Docker container
         run: |
-          docker run -d --name django-app \
-            --network ${{ job.container.network }} \
-            -p 8000:8000 \ 
+          docker run -d --name django-app --network ${{ job.container.network }} \
+            -p 8000:8000 \
             -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
             -e MINIO_STORAGE_URL=http://minio:9000/blog \
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
-            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
+            -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 0.0.0.0" \
             my-django-app:latest
 
       - name: Install Node.js
