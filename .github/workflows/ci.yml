@@ -105,9 +105,9 @@ jobs:
         run: |
           npm run build
         env:
-          NEXT_PUBLIC_BACKEND_ADDR: http://localhost:8000/
+          NEXT_PUBLIC_BACKEND_ADDR: http://django-app:8000/
           NEXT_PUBLIC_STORAGE_ADDR: minio:9000
-          BACKEND_ADDR: http://localhost:8000
+          BACKEND_ADDR: http://django-app:8000
           STORAGE_ADDR: minio:9000
         continue-on-error: true
 
@@ -119,14 +119,14 @@ jobs:
           cd frontend
           docker build -t my-nextjs-app:latest .
         env:
-          BACKEND_ADDR: http://localhost:8000/
+          BACKEND_ADDR: http://django-app:8000/
           STORAGE_ADDR: minio:9000
 
       - name: Run Next.js Docker container
         run: |
           docker run -d --name nextjs-app -p 3000:3000 \
-            -e BACKEND_ADDR=http://localhost:8000/ \
-            -e NEXT_PUBLIC_BACKEND_ADDR=http://localhost:8000/ \
+            -e BACKEND_ADDR=http://django-app:8000/ \
+            -e NEXT_PUBLIC_BACKEND_ADDR=http://django-app:8000/ \
             -e STORAGE_ADDR=minio:9000 \
             -e NEXT_PUBLIC_STORAGE_ADDR="minio:9000
 
