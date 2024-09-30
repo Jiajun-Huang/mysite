@@ -81,8 +81,9 @@ jobs:
 
       - name: Run Django Docker container
         run: |
-          docker run -d --name django-app -p 8000:8000 \
-            --network ${{ job.container.network }} \ 
+          docker run -d --name django-app \
+            --network ${{ job.container.network }} \
+            -p 8000:8000 \ 
             -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
             -e MINIO_STORAGE_URL=http://minio:9000/blog \
             -e MINIO_STORAGE_ACCESS_KEY=minio \
@@ -130,7 +131,6 @@ jobs:
             -e STORAGE_ADDR=minio:9000 \
             -e NEXT_PUBLIC_STORAGE_ADDR="minio:9000" \
             my-nextjs-app:latest
-            
 
   # Push releases
   push_release:
@@ -142,7 +142,7 @@ jobs:
 
       - name: Save Django Docker image
         run: docker save my-django-app:latest | gzip > my-django-app.tar.gz
-      
+
       - name: Save Next.js Docker image
         run: docker save my-nextjs-app:latest | gzip > my-nextjs-app.tar.gz
 
@@ -166,4 +166,3 @@ jobs:
             my-nextjs-app.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
