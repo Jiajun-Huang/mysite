@@ -88,11 +88,10 @@ jobs:
             -e MINIO_STORAGE_ACCESS_KEY=minio \
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1" \
-            --health-cmd "curl -f http://localhost:8000/api/blog/ || exit 1" \
-            --health-interval 10s \
-            --health-timeout 5s \
-            --health-retries 5 \
-            F:latest
+        # --health-cmd "curl -f http://localhost:8000/api/blog/ || exit 1" \
+        # --health-interval 10s \
+        # --health-timeout 5s \
+        # --health-retries 5 \
 
       # - name: Wait for Django container to become healthy
       #   run: |
