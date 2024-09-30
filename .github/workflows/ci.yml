@@ -82,6 +82,7 @@ jobs:
       - name: Run Django Docker container
         run: |
           docker run -d --name django-app -p 8000:8000 \
+            --network ${{ job.container.network }} \ 
             -e DATABASE_URL=mysql://root:root@mysql:3306/django_db \
             -e MINIO_STORAGE_URL=http://minio:9000/blog \
             -e MINIO_STORAGE_ACCESS_KEY=minio \
