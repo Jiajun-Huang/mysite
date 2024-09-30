@@ -78,6 +78,12 @@ jobs:
         run: |
           cd backend
           docker build -t my-django-app:latest .
+        env:
+          DJANGO_ALLOWED_HOSTS: localhost
+          DATABASE_URL: mysql://root:root@mysql:3306/django_db
+          MINIO_STORAGE_URL: http://minio:9000/blog
+          MINIO_STORAGE_ACCESS_KEY: minio
+          MINIO_STORAGE_SECRET_KEY: minio123
 
       - name: Run Django Docker container
         run: |
