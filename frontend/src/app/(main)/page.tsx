@@ -3,9 +3,15 @@ import Brief from "@/components/blog/brief/brief";
 import style from "./page.module.scss";
 
 export default async function Home() {
-  const data = await fetch(BASE_URL + "/api/blog", {
-    method: "GET",
-  });
+  let data;
+  try {
+    data = await fetch(BASE_URL + "/api/blog", {
+      method: "GET",
+    });
+  } catch (error) {
+    console.error(error);
+    data = { json: () => [] };
+  }
 
   const fakeData: Blog[] = await data.json();
 
