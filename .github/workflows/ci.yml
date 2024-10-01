@@ -62,7 +62,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r backend/requirements.txt
-      
+
       - name: Test Django application
         run: |
           cd backend
@@ -95,9 +95,9 @@ jobs:
             -e MINIO_STORAGE_SECRET_KEY=minio123 \
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 django-app" \
             my-django-app:latest
-            
+
       - name: Log Django container
-        run: | 
+        run: |
           sleep 10
           docker logs django-app
 
@@ -170,5 +170,12 @@ jobs:
           files: |
             my-django-app.tar.gz
             my-nextjs-app.tar.gz
+          tag_name: ${{ github.sha }}
+          body: |
+            This is an automated release.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push release
+        run: echo "Release pushed with tag ${{ github.sha }}!"
+        
