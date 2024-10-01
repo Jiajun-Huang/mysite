@@ -3,10 +3,9 @@ import Brief from "@/components/blog/brief/brief";
 import style from "./page.module.scss";
 
 export default async function Home() {
-  const data = await fetch(BASE_URL + "/api/blog", {
+  const data = await fetch(BASE_URL + "/api/blog/", {
     method: "GET",
   });
-
   const fakeData: Blog[] = await data.json();
 
   // ensure required fields are present

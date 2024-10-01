@@ -12,7 +12,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os
+import os, sys
 from datetime import timedelta
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -96,7 +96,7 @@ REST_FRAMEWORK = {
 
 
 
-DATABASE_URL = urlparse(os.environ.get('DATABASE_URL'))
+DATABASE_URL = urlparse(os.environ.get('DATABASE_URL', "mysql://demo:12345678@192.168.1.5:3306/DJANGO"))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
@@ -167,7 +167,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
 # STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
 
-MINIO_STORAGE_URL = urlparse(os.environ.get('MINIO_STORAGE_URL', 'http://192.168.1.10:9000/blog'))
+MINIO_STORAGE_URL = urlparse(os.environ.get('MINIO_STORAGE_URL', 'http://192.168.1.10:9000/django'))
 MINIO_STORAGE_USE_HTTPS = MINIO_STORAGE_URL.scheme == 'https'
 MINIO_STORAGE_ENDPOINT = MINIO_STORAGE_URL.netloc
 MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_STORAGE_ACCESS_KEY', 'Z2UEZevaUAlmeX3t0W2K')
@@ -217,3 +217,30 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,  # Log to stdout
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',  # or 'INFO'
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Logs HTTP requests
+            'propagate': False,
+        },
+    },
+}

@@ -38,7 +38,7 @@ class Blog(models.Model):
     uri = models.CharField(max_length=200, unique=True)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     tags = models.ManyToManyField(Tag)
-    files = models.FileField(upload_to=upload_to)
+    files = models.FileField(upload_to=upload_to, default="")
     def __str__(self):
         return self.title
     

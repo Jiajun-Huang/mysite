@@ -2,7 +2,6 @@
 
 // print the env
 //
-console.log(process.env.STORAGE_ADDR);
 const backend_url = process.env.BACKEND_ADDR;
 
 const nextConfig = {

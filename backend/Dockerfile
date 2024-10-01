@@ -1,4 +1,4 @@
-# Use the official Python image from Docker Hub (Debian slim variant)
+# Use the official Python image (Debian slim variant)
 FROM python:3.11.9-slim
 
 # Set environment variables
@@ -9,17 +9,32 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the whole project to the working directory
+# Copy only requirements.txt first to leverage Docker layer caching
+COPY requirements.txt /app/
+
+# Install Python dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . /app
 
-# Expose the port the app runs on
+# Expose the port the app will run on
 EXPOSE 8000
 
-# RUN chmod +x docker_entry.sh
-# Run Gunicorn
-CMD ["/docker_entry.sh"]
+# Add a healthcheck to ensure the service is up
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl --fail http://localhost:8000/ || exit 1
+
+# print env variables
+RUN printenv
+
+# Start the migration and collect static files
+CMD python manage.py migrate && \
+    python manage.py collectstatic --noinput && \
+    gunicorn --workers=$(( 2 * $(nproc) + 1 )) --bind=0.0.0.0:8000 mysite.wsgi:application

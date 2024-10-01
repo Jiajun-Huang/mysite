@@ -18,3 +18,7 @@ backend:
 .PHONY: frontend
 frontend:
 	cd frontend && npm run dev
+
+.PHONY: frontend-build
+frontend-build:
+	cd frontend && npm run build
