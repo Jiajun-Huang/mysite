@@ -120,8 +120,6 @@ jobs:
           NEXT_PUBLIC_STORAGE_ADDR: minio:9000
           BACKEND_ADDR: http://django-app:8000
           STORAGE_ADDR: minio:9000
-        continue-on-error: true
-
 
       - name: Build Docker image for Next.js
         run: |
@@ -155,13 +153,13 @@ jobs:
         run: docker save my-nextjs-app:latest | gzip > my-nextjs-app.tar.gz
 
       - name: Upload Django Docker image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: my-django-app
           path: my-django-app.tar.gz
 
       - name: Upload Next.js Docker image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: my-nextjs-app
           path: my-nextjs-app.tar.gz
