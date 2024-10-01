@@ -3,23 +3,11 @@ import Brief from "@/components/blog/brief/brief";
 import style from "./page.module.scss";
 
 export default async function Home() {
-  let data;
-  try {
-    data = await fetch(BASE_URL + "/api/blog/", {
-      method: "GET",
-    });
-  } catch (error) {
-    console.error(error);
-    data = { json: () => [] };
-  }
-
-  console.log(data);
-  
-  if (data instanceof Response) {
-    console.log(await data.text());
-  }
+  const data = await fetch(BASE_URL + "/api/blog/", {
+    method: "GET",
+  });
   const fakeData: Blog[] = await data.json();
-  
+
   // ensure required fields are present
 
   return (
