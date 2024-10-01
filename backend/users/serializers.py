@@ -7,10 +7,12 @@ from .models import Profile
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ["id", "username"]
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+
     class Meta:
         model = Profile
         fields = "__all__"

@@ -23,45 +23,52 @@ from .serializers import UserProfileSerializer
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
     client_class = OAuth2Client
+
     # github_callback = "http://localhost:8080/api/auth/callback/github/"
     @property
     def callback_url(self):
         # use the same callback url as defined in your GitHub app, this url
         # must be absolute:
-    
-        return self.request.build_absolute_uri(reverse('github_callback'))
-    
+
+        return self.request.build_absolute_uri(reverse("github_callback"))
 
 
 def custom_oauth2_login(request, *args, **kwargs):
     # Call the original oauth2_login view
     # print(str(request))
     # get request url
-    
+
     response = github_views.oauth2_login(request, *args, **kwargs)
-    
+
     # make request to github
-    url = response.headers['Location']
+    url = response.headers["Location"]
 
     # send the url to the frontend as a 200 response
     header = {"url": url}
-    
-    # http response with the 
+
+    # http response with the
     return HttpResponse(url, headers=header)
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = UserProfileSerializer
     storage = MinioMediaStorage()
 
-
     # get the user avatar
     @extend_schema(
-            parameters=[OpenApiParameter(name='user', location=OpenApiParameter.QUERY, description="User ID", type=OpenApiTypes.INT)]
-        )
-    @action(detail=False, methods=['GET'])
+        parameters=[
+            OpenApiParameter(
+                name="user",
+                location=OpenApiParameter.QUERY,
+                description="User ID",
+                type=OpenApiTypes.INT,
+            )
+        ]
+    )
+    @action(detail=False, methods=["GET"])
     def avatar(self, request):
-        user_id = request.query_params.get('user')
+        user_id = request.query_params.get("user")
         social_account = SocialAccount.objects.filter(user_id=user_id).first()
         if social_account:
             return HttpResponseRedirect(social_account.get_avatar_url())
@@ -70,14 +77,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             profile = Profile.objects.get(user_id=user_id)
         except Profile.DoesNotExist:
             return HttpResponse(status=404)
-        
+
         if profile.avatar:
             with self.storage.open(profile.avatar.name) as f:
-                return HttpResponse(f.read(), content_type='image/jpeg')
-        
+                return HttpResponse(f.read(), content_type="image/jpeg")
+
         return HttpResponse(status=404)
 
 
 def github_callback(request):
     params = urllib.parse.urlencode(request.GET)
-    return redirect(f'http://localhost:3000/callback/github/?{params}')
+    return redirect(f"http://localhost:3000/callback/github/?{params}")

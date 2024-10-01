@@ -1,5 +1,3 @@
-
-
 """
 Django settings for mysite project.
 
@@ -25,92 +23,91 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sb69!w*a4%3ojbrc29b&tkl6$s9-@b-2j3s)dy09u$3^%)uk^n'
+SECRET_KEY = "django-insecure-sb69!w*a4%3ojbrc29b&tkl6$s9-@b-2j3s)dy09u$3^%)uk^n"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', "*").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'dj_rest_auth',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.github',
-    'django_filters',
-    'drf_spectacular',  
-    'blogs.apps.BlogsConfig',
-    'users.apps.UsersConfig',
-    'comments.apps.CommentsConfig',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
+    "django_filters",
+    "drf_spectacular",
+    "blogs.apps.BlogsConfig",
+    "users.apps.UsersConfig",
+    "comments.apps.CommentsConfig",
 ]
 SITE_ID = 9
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 REST_AUTH = {
-    'USE_JWT': True,
+    "USE_JWT": True,
 }
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 
+ROOT_URLCONF = "mysite.urls"
 
-ROOT_URLCONF = 'mysite.urls'
 
-
-WSGI_APPLICATION = 'mysite.wsgi.application'
+WSGI_APPLICATION = "mysite.wsgi.application"
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTAuthentication',
-        'rest_framework.authentication.TokenAuthentication'
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
-
-DATABASE_URL = urlparse(os.environ.get('DATABASE_URL', "mysql://demo:12345678@192.168.1.5:3306/DJANGO"))
+DATABASE_URL = urlparse(
+    os.environ.get("DATABASE_URL", "mysql://demo:12345678@192.168.1.5:3306/DJANGO")
+)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': DATABASE_URL.path[1:],
-        'USER': DATABASE_URL.username,
-        'PASSWORD': DATABASE_URL.password,
-        'HOST': DATABASE_URL.hostname,
-        'PORT': DATABASE_URL.port,
-        'OPTIONS': {
-            'charset': 'utf8mb4',  # The characterset you need
-            'use_unicode': True,
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": DATABASE_URL.path[1:],
+        "USER": DATABASE_URL.username,
+        "PASSWORD": DATABASE_URL.password,
+        "HOST": DATABASE_URL.hostname,
+        "PORT": DATABASE_URL.port,
+        "OPTIONS": {
+            "charset": "utf8mb4",  # The characterset you need
+            "use_unicode": True,
         },
-        'TEST': {
-            'NAME': 'django_test',
+        "TEST": {
+            "NAME": "django_test",
         },
     },
 }
@@ -121,16 +118,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -138,9 +135,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -150,13 +147,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # ACCOUNT_LOGOUT_ON_GET = True
@@ -167,27 +164,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
 # STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
 
-MINIO_STORAGE_URL = urlparse(os.environ.get('MINIO_STORAGE_URL', 'http://192.168.1.10:9000/django'))
-MINIO_STORAGE_USE_HTTPS = MINIO_STORAGE_URL.scheme == 'https'
+MINIO_STORAGE_URL = urlparse(
+    os.environ.get("MINIO_STORAGE_URL", "http://192.168.1.10:9000/django")
+)
+MINIO_STORAGE_USE_HTTPS = MINIO_STORAGE_URL.scheme == "https"
 MINIO_STORAGE_ENDPOINT = MINIO_STORAGE_URL.netloc
-MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_STORAGE_ACCESS_KEY', 'Z2UEZevaUAlmeX3t0W2K')
-MINIO_STORAGE_SECRET_KEY = os.environ.get('MINIO_STORAGE_SECRET_KEY', 'nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg')
+MINIO_STORAGE_ACCESS_KEY = os.environ.get(
+    "MINIO_STORAGE_ACCESS_KEY", "Z2UEZevaUAlmeX3t0W2K"
+)
+MINIO_STORAGE_SECRET_KEY = os.environ.get(
+    "MINIO_STORAGE_SECRET_KEY", "nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg"
+)
 MINIO_STORAGE_MEDIA_BUCKET_NAME = MINIO_STORAGE_URL.path[1:]
 MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
 
 
-
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_REQUIRED = False
 
 
-
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Blog API',
-    'VERSION': '3.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'SCHEMA_PATH_PREFIX': '^/api/',
+    "TITLE": "Blog API",
+    "VERSION": "3.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "^/api/",
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
         "persistAuthorization": True,
@@ -196,51 +197,51 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
 }
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'stream': sys.stdout,  # Log to stdout
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "stream": sys.stdout,  # Log to stdout
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',  # or 'INFO'
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",  # or 'INFO'
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
         },
-        'django.request': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Logs HTTP requests
-            'propagate': False,
+        "django.request": {
+            "handlers": ["console"],
+            "level": "DEBUG",  # Logs HTTP requests
+            "propagate": False,
         },
     },
 }
