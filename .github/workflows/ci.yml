@@ -98,8 +98,8 @@ jobs:
             
       - name: Log Django container
         run: | 
+          sleep 10
           docker logs django-app
-          curl http://django-app:8000/api/blog/
 
       - name: Install Node.js
         uses: actions/setup-node@v3
