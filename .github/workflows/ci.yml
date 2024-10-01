@@ -51,7 +51,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Set up Docker Buildx
+      - name: Set up Docker `
         uses: docker/setup-buildx-action@v2
 
       - name: Install system dependencies
@@ -105,6 +105,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
+
+       - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
       - name: Install dependencies
         working-directory: ./frontend
@@ -163,6 +171,10 @@ jobs:
         with:
           name: my-nextjs-app
           path: my-nextjs-app.tar.gz
+          
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
 
       - name: Create release
         uses: softprops/action-gh-release@v1
@@ -170,12 +182,12 @@ jobs:
           files: |
             my-django-app.tar.gz
             my-nextjs-app.tar.gz
-          tag_name: ${{ github.sha }}
+          tag_name: ${{ steps.slug.outputs.sha7 }}  # Use the short SHA as the tag name
           body: |
             This is an automated release.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push release
-        run: echo "Release pushed with tag ${{ github.sha }}!"
+        run: echo "Release pushed with tag ${{ steps.slug.outputs.sha7 }}!"
         
