@@ -155,10 +155,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Save Django Docker image
-        run: docker save my-django-app:latest | gzip > my-django-app.tar.gz
+        run: |
+          docker save my-django-app:latest -o my-django-app.tar  # Save the image without compression
+          ls -lh my-django-app.tar  # Check the size of the image to ensure it was saved properly
+          gzip my-django-app.tar  # Compress the image after confirming it's saved
+          ls -lh my-django-app.tar.gz  # Check the compressed size
 
       - name: Save Next.js Docker image
-        run: docker save my-nextjs-app:latest | gzip > my-nextjs-app.tar.gz
+        run: |
+          docker save my-nextjs-app:latest -o my-nextjs-app.tar  # Save the image without compression
+          ls -lh my-nextjs-app.tar  # Check the size of the image to ensure it was saved properly
+          gzip my-nextjs-app.tar  # Compress the image after confirming it's saved
+          ls -lh my-nextjs-app.tar.gz  # Check the compressed size
 
       - name: Upload Django Docker image
         uses: actions/upload-artifact@v4
