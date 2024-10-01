@@ -35,7 +35,6 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl --fail http://loca
 RUN printenv
 
 # Start the migration and collect static files
-CMD python manage.py makemigrations && \
-    python manage.py migrate && \
+CMD python manage.py migrate && \
     python manage.py collectstatic --noinput && \
     gunicorn --workers=$(( 2 * $(nproc) + 1 )) --bind=0.0.0.0:8000 mysite.wsgi:application

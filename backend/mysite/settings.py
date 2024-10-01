@@ -96,7 +96,7 @@ REST_FRAMEWORK = {
 
 
 
-DATABASE_URL = urlparse(os.environ.get('DATABASE_URL', "mysql://demo:12345678@192.168.1.5:3306/MYSQL_DATABASE"))
+DATABASE_URL = urlparse(os.environ.get('DATABASE_URL', "mysql://demo:12345678@192.168.1.5:3306/DJANGO"))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 

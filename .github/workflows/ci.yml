@@ -63,18 +63,6 @@ jobs:
           pip install --upgrade pip
           pip install -r backend/requirements.txt
       
-      - name: Set up Django
-        run: |
-          cd backend
-          python manage.py makemigrations
-          python manage.py migrate
-        env:
-          DJANGO_ALLOWED_HOSTS: localhost
-          DATABASE_URL: mysql://root:root@mysql:3306/django_db
-          MINIO_STORAGE_URL: http://minio:9000/blog
-          MINIO_STORAGE_ACCESS_KEY: minio
-          MINIO_STORAGE_SECRET_KEY: minio123 
-
       - name: Test Django application
         run: |
           cd backend
