@@ -1,4 +1,3 @@
-
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
@@ -12,7 +11,8 @@ class BlogPermission(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return request.user.is_admin
-    
+
+
 class TagPermission(BasePermission):
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS:
@@ -23,7 +23,8 @@ class TagPermission(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return request.user.is_admin
-    
+
+
 class CategoryPermission(BasePermission):
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS:
