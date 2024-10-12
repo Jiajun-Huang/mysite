@@ -55,9 +55,7 @@ jobs:
       #     name: my-nextjs-app
       #     path: my-nextjs-app.tar.gz
 
-      - name: make dummy files
-        run: echo "dummy" > dummy.txt
-
+      
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
         with:

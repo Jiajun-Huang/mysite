@@ -255,14 +255,15 @@ jobs:
           name: my-nextjs-app
           path: my-nextjs-app.tar.gz
 
-      - name: Upload tarballs to server
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
-          chmod 600 id_rsa
-          scp -i id_rsa -P ${{ secrets.SERVER_PORT }} \
-          my-django-app.tar.gz my-nextjs-app.tar.gz \
-          ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}  # Use SCP to upload files to the server
-          rm id_rsa
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "my-django-app.tar.gz,my-nextjs-app.tar.gz"
+          target: ${{ secrets.SERVER_PATH }}
 
       - name: SSH into server using SSH key
         uses: appleboy/ssh-action@master
