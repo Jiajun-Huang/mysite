@@ -38,7 +38,6 @@ jobs:
 
       - name: Start WireGuard Client
         run: |
-          sudo cat /etc/wireguard/wg0.conf
           sudo wg-quick up wg0
           sleep 5
 
