@@ -10,6 +10,14 @@ jobs:
     environment: DJANGO_ALLOWED_HOSTS
     runs-on: ubuntu-latest
     steps:
+      - name: Cache apt packages
+        uses: actions/cache@v3
+        with:
+          path: /var/cache/apt
+          key: wireguard-${{ runner.os }}-apt-${{ hashFiles('**/setup.sh') }}
+          restore-keys: |
+            wireguard-${{ runner.os }}-apt-
+                
       - name: Install WireGuard client
         run: |
           sudo apt-get update
