@@ -1,10 +1,10 @@
-name: Django and Next.js CI/CD
+name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [cd]
   pull_request:
-    branches: [main]
+    branches: [cd]
 
 jobs:
   ci:
@@ -98,11 +98,6 @@ jobs:
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 django-app" \
             my-django-app:latest
 
-      - name: Log Django container
-        run: |
-          sleep 10
-          docker logs django-app
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -176,7 +171,23 @@ jobs:
         with:
           name: my-nextjs-app
           path: my-nextjs-app.tar.gz
-          
+
+  release:
+    needs: [ci]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download django artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: my-django-app
+          path: my-django-app.tar.gz
+
+      - name: Download nextjs artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: my-nextjs-app
+          path: my-nextjs-app.tar.gz
+
       - name: Get short SHA
         id: slug
         run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
@@ -187,7 +198,7 @@ jobs:
           files: |
             my-django-app.tar.gz
             my-nextjs-app.tar.gz
-          tag_name: ${{ steps.slug.outputs.sha7 }}  # Use the short SHA as the tag name
+          tag_name: ${{ steps.slug.outputs.sha7 }} # Use the short SHA as the tag name
           body: |
             This is an automated release.
         env:
@@ -195,4 +206,73 @@ jobs:
 
       - name: Push release
         run: echo "Release pushed with tag ${{ steps.slug.outputs.sha7 }}!"
-        
+
+  cd:
+    needs: [ci]
+    environment: DJANGO_ALLOWED_HOSTS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache apt packages
+        uses: actions/cache@v3
+        with:
+          path: /var/cache/apt
+          key: wireguard-${{ runner.os }}-apt-${{ hashFiles('**/setup.sh') }}
+          restore-keys: |
+            wireguard-${{ runner.os }}-apt-
+
+      - name: Install WireGuard client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard
+
+      - name: Setup WireGuard Configuration
+        run: |
+          umask 077
+          echo "[Interface]
+          PrivateKey = ${{ secrets.WG_CLIENT_PRIVATE_KEY }}
+          Address = 10.253.0.2/32
+
+          [Peer]
+          PresharedKey = ${{ secrets.WG_PRESHARED_KEY }}
+          PublicKey = ${{ secrets.WG_SERVER_PUBLIC_KEY }}
+          Endpoint = ${{ secrets.WG_SERVER_ENDPOINT }}
+          AllowedIPs = 10.253.0.1/32, 192.168.1.0/24" | sudo tee /etc/wireguard/wg0.conf
+
+      - name: Start WireGuard Client
+        run: |
+          sudo wg-quick up wg0
+          sleep 5
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: my-django-app
+          path: .
+
+      - name: Download Next.js artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: my-nextjs-app
+          path: .
+
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "my-django-app.tar.gz,my-nextjs-app.tar.gz"
+          target: ${{ secrets.SERVER_PATH }}
+
+      - name: SSH into server using SSH key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd ${{ secrets.SERVER_PATH }}
+            echo "Commit hash: $(git rev-parse HEAD)" >> commit.txt
+            bash deploy.sh
