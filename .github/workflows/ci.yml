@@ -2,9 +2,9 @@ name: Django and Next.js CI/CD
 
 on:
   push:
-    branches: [cd]
+    branches: [cdd]
   pull_request:
-    branches: [cd]
+    branches: [cdd]
 
 jobs:
   ci:
