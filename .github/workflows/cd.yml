@@ -1,9 +1,10 @@
 # run on commit on main branch and after
 on:
-  push:
+  workflow_run:
+    workflows: ["Django and Next.js CI/CD"]
     branches: [cd]
-  pull_request:
-    branches: [cd]
+    types:
+      - completed
 
 jobs:
   cd:
