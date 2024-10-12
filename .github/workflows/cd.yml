@@ -1,0 +1,67 @@
+# run on commit on main branch and after
+on:
+  workflow_run:
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install WireGuard client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard
+
+      - name: Setup WireGuard Configuration
+        run: |
+          umask 077
+          echo "[Interface]
+          PrivateKey = ${{ secrets.WG_CLIENT_PRIVATE_KEY }}
+          Address = 10.253.0.2/32
+
+          [Peer]
+          PresharedKey = ${{ secrets.WG_PRESHARED_KEY }}
+          PublicKey = ${{ secrets.WG_SERVER_PUBLIC_KEY }}
+          Endpoint = ${{ secrets.WG_SERVER_ENDPOINT }}
+          AllowedIPs = 0.0.0.0/0" | sudo tee /etc/wireguard/wg0.conf
+        env:
+          WG_CLIENT_PRIVATE_KEY: ${{ secrets.WG_CLIENT_PRIVATE_KEY }}
+          WG_PRESHARED_KEY: ${{ secrets.WG_PRESHARED_KEY }}
+          WG_SERVER_PUBLIC_KEY: ${{ secrets.WG_SERVER_PUBLIC_KEY }}
+          WG_SERVER_ENDPOINT: ${{ secrets.WG_SERVER_ENDPOINT }}
+
+      - name: Start WireGuard Client
+        run: |
+          sudo wg-quick up wg0
+          sudo wg
+          sleep 5
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: my-django-app
+          path: my-django-app.tar.gz
+
+      - name: Download Next.js artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: my-nextjs-app
+          path: my-nextjs-app.tar.gz
+
+      - name: SSH into server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd ${{ secrets.SERVER_PATH }}
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          SERVER_PATH: ${{ secrets.SERVER_PATH }}
