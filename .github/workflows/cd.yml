@@ -34,7 +34,7 @@ jobs:
           PresharedKey = ${{ secrets.WG_PRESHARED_KEY }}
           PublicKey = ${{ secrets.WG_SERVER_PUBLIC_KEY }}
           Endpoint = ${{ secrets.WG_SERVER_ENDPOINT }}
-          AllowedIPs = 0.0.0.0/0" | sudo tee /etc/wireguard/wg0.conf
+          AllowedIPs = 10.253.0.1/32, 192.168.1.0/24" | sudo tee /etc/wireguard/wg0.conf
 
       - name: Start WireGuard Client
         run: |
