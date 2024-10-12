@@ -197,6 +197,7 @@ jobs:
         run: echo "Release pushed with tag ${{ steps.slug.outputs.sha7 }}!"
 
   cd:
+    needs: [ci]
     environment: DJANGO_ALLOWED_HOSTS
     runs-on: ubuntu-latest
     steps:
