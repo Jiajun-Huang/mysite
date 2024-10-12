@@ -1,11 +1,10 @@
 name: Continuous Deployment
 
-
 on:
-  push:
-    branches: [cd]
-  pull_request:
-    branches: [cd]
+  workflow_run:
+    workflows: [CI]
+    types:
+      - completed
 
 jobs:
   cd:
@@ -55,7 +54,6 @@ jobs:
       #     name: my-nextjs-app
       #     path: my-nextjs-app.tar.gz
 
-      
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -64,8 +62,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           source: "dummy.txt"
-          target: ${{ secrets.SERVER_PATH }} 
-          
+          target: ${{ secrets.SERVER_PATH }}
 
       - name: SSH into server using SSH key
         uses: appleboy/ssh-action@master
