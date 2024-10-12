@@ -7,6 +7,7 @@ on:
 
 jobs:
   cd:
+    environment: DJANGO_ALLOWED_HOSTS
     runs-on: ubuntu-latest
     steps:
       - name: Install WireGuard client
@@ -26,11 +27,6 @@ jobs:
           PublicKey = ${{ secrets.WG_SERVER_PUBLIC_KEY }}
           Endpoint = ${{ secrets.WG_SERVER_ENDPOINT }}
           AllowedIPs = 0.0.0.0/0" | sudo tee /etc/wireguard/wg0.conf
-        env:
-          WG_CLIENT_PRIVATE_KEY: ${{ secrets.WG_CLIENT_PRIVATE_KEY }}
-          WG_PRESHARED_KEY: ${{ secrets.WG_PRESHARED_KEY }}
-          WG_SERVER_PUBLIC_KEY: ${{ secrets.WG_SERVER_PUBLIC_KEY }}
-          WG_SERVER_ENDPOINT: ${{ secrets.WG_SERVER_ENDPOINT }}
 
       - name: Start WireGuard Client
         run: |
