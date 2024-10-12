@@ -56,14 +56,15 @@ jobs:
           path: .
 
       - name: List files
-        run: ls -la  
+        run: |
+          pwd
+          ls
 
       - name: Upload tarballs to server
         run: |
           scp -i ${{ secrets.SSH_PRIVATE_KEY }} -P ${{ secrets.SERVER_PORT }} \
             my-django-app.tar.gz my-nextjs-app.tar.gz \
             ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}
-
 
       - name: SSH into server using SSH key
         uses: appleboy/ssh-action@master
