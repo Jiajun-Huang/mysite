@@ -176,15 +176,17 @@ jobs:
     needs: [ci]
     runs-on: ubuntu-latest
     steps:
-      - name: Download Django Docker image
-        uses: actions/download-artifact@v3
+      - name: Download django artifacts
+        uses: actions/download-artifact@v4
         with:
           name: my-django-app
+          path: my-django-app.tar.gz
 
-      - name: Download Next.js Docker image
-        uses: actions/download-artifact@v3
+      - name: Download nextjs artifacts
+        uses: actions/download-artifact@v4
         with:
           name: my-nextjs-app
+          path: my-nextjs-app.tar.gz
 
       - name: Get short SHA
         id: slug
@@ -255,9 +257,12 @@ jobs:
 
       - name: Upload tarballs to server
         run: |
-          scp -i <(echo "${{ secrets.SSH_PRIVATE_KEY }}") -P ${{ secrets.SERVER_PORT }} \
-            my-django-app.tar.gz my-nextjs-app.tar.gz \
-            ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
+          chmod 600 id_rsa
+          scp -i id_rsa -P ${{ secrets.SERVER_PORT }} \
+          my-django-app.tar.gz my-nextjs-app.tar.gz \
+          ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}  # Use SCP to upload files to the server
+          rm id_rsa
 
       - name: SSH into server using SSH key
         uses: appleboy/ssh-action@master
