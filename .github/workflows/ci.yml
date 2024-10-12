@@ -98,11 +98,6 @@ jobs:
             -e DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 django-app" \
             my-django-app:latest
 
-      - name: Log Django container
-        run: |
-          sleep 10
-          docker logs django-app
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:

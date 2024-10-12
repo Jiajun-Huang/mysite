@@ -47,19 +47,23 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: my-django-app
-          path: my-django-app.tar.gz
+          path: .
 
       - name: Download Next.js artifacts
         uses: actions/download-artifact@v4
         with:
           name: my-nextjs-app
-          path: my-nextjs-app.tar.gz
+          path: .
+
+      - name: List files
+        run: ls -la  
 
       - name: Upload tarballs to server
         run: |
           scp -i ${{ secrets.SSH_PRIVATE_KEY }} -P ${{ secrets.SERVER_PORT }} \
             my-django-app.tar.gz my-nextjs-app.tar.gz \
             ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}
+
 
       - name: SSH into server using SSH key
         uses: appleboy/ssh-action@master
