@@ -17,7 +17,7 @@ jobs:
           key: wireguard-${{ runner.os }}-apt-${{ hashFiles('**/setup.sh') }}
           restore-keys: |
             wireguard-${{ runner.os }}-apt-
-                
+
       - name: Install WireGuard client
         run: |
           sudo apt-get update
@@ -38,8 +38,8 @@ jobs:
 
       - name: Start WireGuard Client
         run: |
+          sudo cat /etc/wireguard/wg0.conf
           sudo wg-quick up wg0
-          cat /etc/wireguard/wg0.conf
           sudo wg
           sleep 5
 
