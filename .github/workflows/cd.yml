@@ -1,7 +1,8 @@
-# run on commit on main branch and after
+name: Continuous Deployment
+
 on:
   workflow_run:
-    workflows: ["Django and Next.js CI/CD"]
+    workflows: ["Django and Next.js CI/CD"] # This must be exactly the same.
     branches: [cd]
     types:
       - completed
