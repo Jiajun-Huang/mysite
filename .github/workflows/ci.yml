@@ -172,6 +172,20 @@ jobs:
           name: my-nextjs-app
           path: my-nextjs-app.tar.gz
 
+  release:
+    needs: [ci]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Django Docker image
+        uses: actions/download-artifact@v3
+        with:
+          name: my-django-app
+
+      - name: Download Next.js Docker image
+        uses: actions/download-artifact@v3
+        with:
+          name: my-nextjs-app
+
       - name: Get short SHA
         id: slug
         run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
@@ -241,7 +255,7 @@ jobs:
 
       - name: Upload tarballs to server
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} -P ${{ secrets.SERVER_PORT }} \
+          scp -i <(echo "${{ secrets.SSH_PRIVATE_KEY }}") -P ${{ secrets.SERVER_PORT }} \
             my-django-app.tar.gz my-nextjs-app.tar.gz \
             ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}
 
