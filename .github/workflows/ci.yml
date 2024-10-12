@@ -247,13 +247,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: my-django-app
-          path: my-django-app.tar.gz
+          path: .
 
       - name: Download Next.js artifacts
         uses: actions/download-artifact@v4
         with:
           name: my-nextjs-app
-          path: my-nextjs-app.tar.gz
+          path: .
 
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
