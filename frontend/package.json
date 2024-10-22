@@ -14,7 +14,7 @@
     "clsx": "^2.1.1",
     "frontend": "file:",
     "lucide-react": "^0.436.0",
-    "mermaid": "^10.9.1",
+    "mermaid": "^10.9.3",
     "next": "^14.2.13",
     "playwright": "^1.45.2",
     "react": "^18.3.1",
