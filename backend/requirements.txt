@@ -1,5 +1,5 @@
 dj_rest_auth==6.0.0
-Django==5.1.1
+Django==5.1.4
 django_allauth==0.61.1
 djangorestframework==3.15.2
 drf-spectacular===0.27.2
