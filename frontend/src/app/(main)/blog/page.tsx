@@ -5,6 +5,7 @@ import style from "./page.module.scss";
 export default async function Home() {
   const data = await fetch(BASE_URL + "/api/blog/", {
     method: "GET",
+    next: { revalidate: 60 },
   });
   const fakeData: Blog[] = await data.json();
 

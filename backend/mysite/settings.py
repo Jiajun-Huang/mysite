@@ -163,7 +163,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
-# STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
+STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
 
 MINIO_STORAGE_URL = urlparse(
     os.environ.get("MINIO_STORAGE_URL", "http://192.168.1.10:9000/django")
@@ -245,6 +245,11 @@ LOGGING = {
             "propagate": False,
         },
         'django.utils.autoreload': {
+            'handlers': ['console'],
+            'level': 'ERROR',  # Change to WARNING or ERROR to suppress debug/info messages
+            'propagate': False,
+        },
+        "django.db.backends": {
             'handlers': ['console'],
             'level': 'ERROR',  # Change to WARNING or ERROR to suppress debug/info messages
             'propagate': False,

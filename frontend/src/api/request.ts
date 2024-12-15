@@ -3,3 +3,6 @@ export const BASE_URL =
 console.log(BASE_URL);
 export const STORGE_URL =
   process.env.MINIO_STORAGE_URL || process.env.NEXT_PUBLIC_STORAGE_ADDR;
+
+
+  

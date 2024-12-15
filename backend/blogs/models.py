@@ -22,7 +22,6 @@ class Category(models.Model):
 
 
 def upload_to(instance, filename):
-    print(instance)
     return f"blog/{instance.uri}/text.md"
 
 

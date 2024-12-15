@@ -17,7 +17,7 @@ from rest_framework.decorators import action
 
 from .models import Profile
 from .serializers import UserProfileSerializer
-
+from django.core.files.storage import default_storage
 
 # https://michaeldel.github.io/posts/django-rest-auth-social-tutorial/
 class GitHubLogin(SocialLoginView):
@@ -53,7 +53,7 @@ def custom_oauth2_login(request, *args, **kwargs):
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = UserProfileSerializer
-    storage = MinioMediaStorage()
+    storage = default_storage
 
     # get the user avatar
     @extend_schema(

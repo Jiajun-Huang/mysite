@@ -1,4 +1,4 @@
-import { BASE_URL, STORGE_URL } from "@/api/request";
+import { BASE_URL } from "@/api/request";
 import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: Prop): Promise<Metadata> {
   const uri = params.uri;
   const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
     method: "GET",
+    next: { revalidate: 3600 },
   });
 
   if (response.status === 404) {
@@ -50,12 +51,11 @@ export default async function Index({ params }: Prop) {
 
   tags = tags || [];
 
-  console.log("sdf", files);
-
-  const text = await fetch(files).then((res) => res.text());
-  // const text = "";
-  const storageUrl = files.split("/").slice(0, -1).join("/");
-
+  const id = data.id;
+  const text = await fetch(BASE_URL + "/api/blog/file/" + id, {
+    method: "GET",
+    cache: "no-cache",
+  }).then((res) => res.text());
   const dateStr = printDate(created_at || "");
 
   return (
@@ -83,7 +83,13 @@ export default async function Index({ params }: Prop) {
             <MarkDown
               urlTransform={(url, key, node) => {
                 if (key === "src" && node.tagName === "img") {
-                  const newUrl = STORGE_URL + "/blog/" + uri + "/" + url;
+                  const newUrl =
+                    BASE_URL +
+                    "/api/blog/image/" +
+                    uri +
+                    "?" +
+                    new URLSearchParams({ url }).toString();
+                  console.log(newUrl);
                   return newUrl;
                 }
               }}

@@ -1,9 +1,12 @@
+import os
 from argparse import Action
 
 from blogs.filter import *
 from blogs.models import *
 from blogs.permission import *
 from blogs.serializers import *
+from django.core.files.storage import default_storage
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from minio_storage.storage import MinioMediaStorage
@@ -262,6 +265,31 @@ class BlogSet(viewsets.ModelViewSet):
             return Response(status=404)
         else:
             return Response(BlogDetailSerializer(blog).data)
+        
+    @action(detail=False, methods=["get"], url_path="file/(?P<pk>[^/.]+)")
+    def get_blog_text_file(self, request, pk):
+        # retrieve blog md from storage
+        blog = get_object_or_404(Blog, pk=pk)
+        file = MinioMediaStorage().open(blog.files.name).read()
+        return HttpResponse(file, content_type="text/plain")
+    
+    # get blog from uri and get image from storage
+   
+    @action(detail=False, methods=["get"], url_path="image/(?P<uri>[^/.]+)")
+    def get_blog_image_file(self, request, uri):
+        # Get the `path` query parameter
+        path = request.query_params.get("path")
+        # Get the image from the storage
+        path = get_object_or_404(Blog, uri=uri).files.name
+
+        path = os.path.dirname(path)
+        filename = request.query_params.get("url")
+        print(f"{path}/{filename}")
+        file = MinioMediaStorage().open(f"{path}/{filename}").read()
+
+        return HttpResponse(file, content_type="image/jpeg")
+        
+        
 
 
 class CategorySet(viewsets.ModelViewSet):
