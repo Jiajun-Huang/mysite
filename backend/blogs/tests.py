@@ -42,3 +42,18 @@ class BLogTestCase(TestCase):
         response = self.client.get("/api/category/")
         self.assertEqual(response.status_code, 200)
         print(response.json())
+
+    def test_create_blog(self):
+        response = self.client.post(
+            "/api/blog/",
+            {
+                "title": "Test Blog",
+                "description": "This is a test blog",
+                "category": 1,
+                "tags": [1, 2],
+                
+            },
+            HTTP_AUTHORIZATION=f"Bearer {self.token}",
+        )
+        self.assertEqual(response.status_code, 201)
+        print(response.json())

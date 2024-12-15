@@ -10,7 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os, sys
+import os
+import sys
 from datetime import timedelta
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -92,7 +93,7 @@ REST_FRAMEWORK = {
 
 
 DATABASE_URL = urlparse(
-    os.environ.get("DATABASE_URL", "mysql://demo:12345678@192.168.1.5:3306/DJANGO")
+    os.environ.get("DATABASE_URL", "mysql://demo:12345678@192.168.1.5:3306/MYSQL_DATABASE")
 )
 DATABASES = {
     "default": {
@@ -230,7 +231,7 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "DEBUG",  # or 'INFO'
+        "level": "INFO",  # or 'INFO'
     },
     "loggers": {
         "django": {
@@ -242,6 +243,11 @@ LOGGING = {
             "handlers": ["console"],
             "level": "DEBUG",  # Logs HTTP requests
             "propagate": False,
+        },
+        'django.utils.autoreload': {
+            'handlers': ['console'],
+            'level': 'ERROR',  # Change to WARNING or ERROR to suppress debug/info messages
+            'propagate': False,
         },
     },
 }
