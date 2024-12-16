@@ -39,6 +39,7 @@ export default async function Index({ params }: Prop) {
   const uri = params.uri;
   const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
     method: "GET",
+    next: { revalidate: 60 },
   });
   if (response.status === 404) {
     return <h1>404 Not Found</h1>;
