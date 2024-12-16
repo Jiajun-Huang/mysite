@@ -8,7 +8,7 @@ export default async function About() {
   const data = await fs.readFileSync(filePath, "utf8");
 
   return (
-    <div>
+    <div style={{ padding: "1rem", maxWidth: "800px", margin: "0 auto" }}>
       <h1>About</h1>
       <MarkDown>{data}</MarkDown>
     </div>
