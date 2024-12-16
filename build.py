@@ -14,6 +14,7 @@ os.environ['BACKEND_ADDR'] = 'http://192.168.1.5:8000'
 os.environ['NEXT_PUBLIC_BACKEND_ADDR'] = 'https://jiajunhuang.cc'
 os.environ['STORAGE_ADDR'] = '192.168.1.10'
 os.environ['NEXT_PUBLIC_STORAGE_ADDR'] = os.environ['STORAGE_ADDR']
+os.environ['NEXT_SHARP_PATH'] = os.path.join(os.getcwd(), 'frontend', "node_modules", "sharp")
 
 # Function to run a shell command and handle errors
 def run_command(command, error_message):
@@ -78,7 +79,7 @@ def backend():
 def frontend():
     os.chdir('frontend')
     print("Building Next.js Docker image...")
-    run_command("npm run build", "Next.js build failed")
+    # run_command("npm run build", "Next.js build failed")
     run_command("docker build -t my-nextjs-app:latest .", "Next.js build")
     os.chdir('..')
     os.makedirs('build', exist_ok=True)
