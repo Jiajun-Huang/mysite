@@ -3,7 +3,7 @@
 // print the env
 //
 const backend_url = process.env.BACKEND_ADDR;
-
+const backend_url_obj = new URL(backend_url);
 const nextConfig = {
   async rewrites() {
     return [
@@ -42,8 +42,9 @@ const nextConfig = {
         hostname: "192.168.1.5",
       },
       {
-        protocol: "http",
-        hostname: process.env.STORAGE_ADDR,
+        protocol: backend_url_obj.protocol.slice(0,-1),
+        hostname: backend_url_obj.hostname,
+        port: backend_url.port
       },
     ],
   },

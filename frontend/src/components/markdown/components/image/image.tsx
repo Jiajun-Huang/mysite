@@ -13,7 +13,7 @@ export default function MdImage(
       alt={props.alt || ""}
       width={0}
       height={0}
-      placeholder="blur"
+      // placeholder="blur"
       sizes="500"
       style={{
         width: "auto",

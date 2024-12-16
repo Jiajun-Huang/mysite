@@ -29,8 +29,9 @@ class GitHubLogin(SocialLoginView):
     def callback_url(self):
         # use the same callback url as defined in your GitHub app, this url
         # must be absolute:
-
-        return self.request.build_absolute_uri(reverse("github_callback"))
+        call_b = self.request.build_absolute_uri(reverse("github_callback"))
+        print(call_b)
+        return call_b
 
 
 def custom_oauth2_login(request, *args, **kwargs):
@@ -53,7 +54,7 @@ def custom_oauth2_login(request, *args, **kwargs):
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = UserProfileSerializer
-    storage = default_storage
+    storage = MinioMediaStorage()
 
     # get the user avatar
     @extend_schema(
@@ -71,7 +72,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         user_id = request.query_params.get("user")
         social_account = SocialAccount.objects.filter(user_id=user_id).first()
         if social_account:
-            return HttpResponseRedirect(social_account.get_avatar_url())
+            return HttpResponse (social_account.get_avatar_url())
 
         try:
             profile = Profile.objects.get(user_id=user_id)

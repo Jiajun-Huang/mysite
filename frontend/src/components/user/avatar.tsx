@@ -9,6 +9,7 @@ interface Props {
 }
 
 export default function Avatar({ user, width, height }: Props) {
+  console.log(BASE_URL + `/api/user/avatar?user=${user}`);
   return (
     <Image
       src={BASE_URL + `/api/user/avatar?user=${user}`}
