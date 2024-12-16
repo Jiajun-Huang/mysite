@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Disallow: /api/*
+
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://jiajunhuang.cc
+
+# Sitemaps
+Sitemap: https://jiajunhuang.cc/sitemap.xml
