@@ -31,7 +31,11 @@ const nextConfig = {
       },
       {
         protocol: "http",
-        hostname: "192.168.1.7",
+        hostname: "192.168.1.9",
+      },
+      {
+        protocol: "https",
+        hostname: "jiajunhuang.cc",
       },
       {
         protocol: "https",
@@ -42,9 +46,9 @@ const nextConfig = {
         hostname: "192.168.1.5",
       },
       {
-        protocol: backend_url_obj.protocol.slice(0,-1),
+        protocol: backend_url_obj.protocol.slice(0, -1),
         hostname: backend_url_obj.hostname,
-        port: backend_url.port
+        port: backend_url.port,
       },
     ],
   },

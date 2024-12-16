@@ -20,6 +20,7 @@ from .serializers import UserProfileSerializer
 from django.core.files.storage import default_storage
 
 # https://michaeldel.github.io/posts/django-rest-auth-social-tutorial/
+# https://www.freecodecamp.org/news/set-up-github-oauth-on-django-for-user-authentication/
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
     client_class = OAuth2Client
@@ -72,7 +73,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         user_id = request.query_params.get("user")
         social_account = SocialAccount.objects.filter(user_id=user_id).first()
         if social_account:
-            return HttpResponse (social_account.get_avatar_url())
+            return HttpResponseRedirect(social_account.get_avatar_url())
 
         try:
             profile = Profile.objects.get(user_id=user_id)
@@ -88,4 +89,4 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 def github_callback(request):
     params = urllib.parse.urlencode(request.GET)
-    return redirect(f"http://localhost:3000/callback/github/?{params}")
+    return redirect(f"https://jiajunhuang.cc/callback/github/?{params}")

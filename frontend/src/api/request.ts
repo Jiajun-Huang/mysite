@@ -1,5 +1,10 @@
+
 export const BASE_URL =
-  process.env.BACKEND_ADDR || process.env.NEXT_PUBLIC_BACKEND_ADDR;
+  process.env.BACKEND_ADDR || currentHost();
+
+function currentHost() {
+  return window.location.protocol + "//" + window.location.host;
+}
 
 
   
