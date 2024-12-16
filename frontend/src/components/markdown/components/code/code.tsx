@@ -6,7 +6,6 @@ const MdCode = (props: any) => {
   const { node, children, className, ...rest } = props;
   const match = /language-(\w+)/.exec(className || "");
   if (className === "language-mermaid") {
-    console.log("mermaid", className);
     return <Mermaid>{children}</Mermaid>;
   } else if (match) {
     return (

@@ -45,13 +45,13 @@ run_command("docker save my-nextjs-app:latest -o ../build/my-nextjs-app.tar.gz",
 
 # Securely copy Docker images to Unraid server
 print("Copying Django image to Unraid...")
-run_command("scp ../build/my-django-app.tar.gz unraid:/mnt/user/appdata/my-django-app.tar.gz", "Failed to copy Django image")
+run_command("scp -C ../build/my-django-app.tar.gz unraid:/mnt/user/appdata/my-django-app.tar.gz", "Failed to copy Django image")
 
 print("Copying Next.js image to Unraid...")
-run_command("scp ../build/my-nextjs-app.tar.gz unraid:/mnt/user/appdata/my-nextjs-app.tar.gz", "Failed to copy Next.js image")
+run_command("scp -C ../build/my-nextjs-app.tar.gz unraid:/mnt/user/appdata/my-nextjs-app.tar.gz", "Failed to copy Next.js image")
 
 # SSH into Unraid and run deployment script
 print("Running deployment on Unraid...")
-run_command("ssh unraid 'bash /mnt/user/appdata/deploy.sh'", "Deployment script")
+run_command('ssh unraid "cd /mnt/user/appdata && bash deploy.sh"', "Deployment script")
 
 print("Build and deployment completed successfully!")

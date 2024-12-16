@@ -89,7 +89,6 @@ export default async function Index({ params }: Prop) {
                     uri +
                     "?" +
                     new URLSearchParams({ url }).toString();
-                  console.log(newUrl);
                   return newUrl;
                 }
               }}
