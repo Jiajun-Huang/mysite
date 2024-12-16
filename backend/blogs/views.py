@@ -288,7 +288,7 @@ class BlogSet(viewsets.ModelViewSet):
         try:
             file = MinioMediaStorage().open(f"{path}/{filename}").read()
         except Exception as e:
-            print(e)
+            print("Expection:" + path)
             return Response(status=404)
 
         return HttpResponse(file, content_type="image/jpeg")

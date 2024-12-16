@@ -2,8 +2,8 @@
 FROM python:3.11.9-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set the working directory in the container
 WORKDIR /app
@@ -37,4 +37,4 @@ RUN printenv
 # Start the migration and collect static files
 CMD python manage.py migrate && \
     python manage.py collectstatic --noinput && \
-    gunicorn --workers=$(( $(nproc) + 1 )) --bind=0.0.0.0:8000 mysite.wsgi:application
+    gunicorn --workers=$(( 2 * $(nproc) + 1 )) --bind=0.0.0.0:8000 mysite.wsgi:application

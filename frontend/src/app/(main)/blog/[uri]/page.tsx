@@ -54,7 +54,7 @@ export default async function Index({ params }: Prop) {
   const id = data.id;
   const text = await fetch(BASE_URL + "/api/blog/file/" + id, {
     method: "GET",
-    cache: "no-cache",
+    next: { revalidate: 60 },
   }).then((res) => res.text());
   const dateStr = printDate(created_at || "");
 

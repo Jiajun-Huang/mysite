@@ -5,8 +5,8 @@ FROM node:18-alpine AS base
 WORKDIR /app
 
 # Set environment variables
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Create a non-root user and group to run the application
 RUN addgroup --system --gid 1001 nodejs \
@@ -30,7 +30,7 @@ USER nextjs
 EXPOSE 3000
 
 # Set the PORT environment variable
-ENV PORT 3000
+ENV PORT=3000
 
 # Copy the startup script
 COPY docker_start.sh /docker_start.sh
