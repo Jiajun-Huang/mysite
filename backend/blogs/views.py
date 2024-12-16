@@ -285,7 +285,13 @@ class BlogSet(viewsets.ModelViewSet):
         path = os.path.dirname(path)
         filename = request.query_params.get("url")
         print(f"{path}/{filename}")
-        file = MinioMediaStorage().open(f"{path}/{filename}").read()
+        
+        # if path is not found return 404
+        try:
+            file = MinioMediaStorage().open(f"{path}/{filename}").read()
+        except Exception as e:
+            print(e)
+            return Response(status=404)
 
         return HttpResponse(file, content_type="image/jpeg")
         
