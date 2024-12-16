@@ -32,9 +32,11 @@ I have a wide range of interests in technology, with a primary focus on **Embedd
 
 These are tools I've play around and used for smaller projects:
 
-- Altium Designer, JDL EDA, Unreal Engine, Unity
+- Altium Designer, JLC EDA, Unreal Engine, Unity
 
----
+### Contact Link
+
+[Github](https://github.com/Jiajun-Huang), [LinkedIn](https://www.linkedin.com/in/jiajun-huang-engineer/)
 
 ## About This Website
 
@@ -53,4 +55,4 @@ Updates to the website will be made whenever I have time.
 
 - Post search functionality.
 - Email registration and login.
-- A music page.
+- Refactor frontend UI with a UI library
