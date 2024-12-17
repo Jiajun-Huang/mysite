@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function BlogCard({ data }: { data: Blog }) {
   return (
-    <div className="w-full max-w-4xl hover:cursor-pointer hover:scale-10 transform transition-transform duration-300">
+    <div className="w-full max-w-4xl hover:cursor-pointer hover:scale-105 transform transition-transform duration-300 active:scale-100">
       <Card>
         <Link href={`/blog/${data.uri}`}>
           <CardHeader>

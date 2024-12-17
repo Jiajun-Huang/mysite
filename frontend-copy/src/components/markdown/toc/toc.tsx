@@ -7,11 +7,11 @@ interface TocItem {
   text: string;
 }
 
-function Toc() {
+function Toc({ queryId }: { queryId: string }) {
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
 
   useEffect(() => {
-    const contentElement = document.getElementById("blog-body");
+    const contentElement = document.getElementById(queryId);
 
     if (!contentElement) {
       console.error("Element with id 'body-body' not found.");
@@ -41,6 +41,7 @@ function Toc() {
           <li
             key={item.id}
             style={{ marginLeft: `${(item.level - 2) * 20}px` }}
+            className="hover:text-secondary"
           >
             <a href={`#${item.id}`}>{item.text}</a>
           </li>
