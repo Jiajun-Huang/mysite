@@ -2,7 +2,13 @@
 
 import { UserProvider } from "@/components/user/state";
 import { ReactNode } from "react";
+import { NextUIProvider } from "@nextui-org/system";
+
 
 export default function Providers({ children }: { children: ReactNode }) {
-  return <UserProvider>{children}</UserProvider>;
+  return (
+    <NextUIProvider>
+      <UserProvider>{children}</UserProvider>);
+    </NextUIProvider>
+  );
 }

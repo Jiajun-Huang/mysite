@@ -2,6 +2,8 @@ import "@/app/globals.css";
 import Providers from "@/app/providers";
 import Nav from "@/components/nav/nav";
 import Tools from "@/components/tools/tools";
+import { Button } from "@nextui-org/button";
+import { DatePicker } from "@nextui-org/date-picker";
 import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
 import style from "./page.module.scss";
@@ -21,6 +23,8 @@ export default function RootLayout({
       <body className={style.body}>
         <Providers>
           <Nav />
+          <Button>Click me</Button>
+          <DatePicker className="max-w-[284px]" label="Birth date" />
           <main className={style.main}>{children}</main>
           <Tools />
         </Providers>
