@@ -12,7 +12,6 @@ export default async function Home() {
     });
 
     blogData = await data.json();
-    console.log(blogData);
   } catch (error) {
     blogData = [];
     console.error(error);

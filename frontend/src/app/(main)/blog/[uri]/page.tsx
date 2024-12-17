@@ -1,8 +1,10 @@
 import { BASE_URL } from "@/api/request";
+import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
+import { printDate } from "@/util/util";
+import { Divider } from "@nextui-org/divider";
 import "katex/dist/katex.min.css";
-import Comment from "@/components/comment/comment";
 
 interface Prop {
   params: {
@@ -21,7 +23,7 @@ export default async function BlogDetail({ params }: Prop) {
     return <h1>404 Not Found</h1>;
   }
 
-  let { created_at, likes, views, tags, category, files, ...data }: Data =
+  let { created_at, likes, views, tags, category, files, ...data } =
     await response.json();
 
   tags = tags || [];
@@ -32,9 +34,28 @@ export default async function BlogDetail({ params }: Prop) {
     next: { revalidate: 60 },
   }).then((res) => res.text());
 
+  const dateStr = printDate(created_at);
   return (
     <div>
-      <h1>{data.title}</h1>
+      <h1 className="text-4xl font-bold mb-7">{data.title}</h1>
+      <div className="flex gap-x-4 flex-col text-default-400">
+        <div>Created at: {dateStr}</div>
+        {/* <div className="flex gap-x-4">
+          <span>{likes} likes</span>
+          <span>{views} views</span>
+        </div> */}
+        <div>Category : {category.name}</div>
+        <div className="flex gap-x-1">
+          <span>Tags:</span>
+          {tags.map((tag, index) => (
+            <span size="sm" key={index}>
+              {tag.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <Divider className="my-4" />
       <div className="flex gap-x-16">
         <div id="content" className="w-3/4">
           <MarkDown
@@ -54,7 +75,7 @@ export default async function BlogDetail({ params }: Prop) {
           </MarkDown>
         </div>
         <div className="w-1/4 ">
-          <div className="sticky top-20">
+          <div className="sticky top-36">
             <Toc queryId="content" />
           </div>
         </div>

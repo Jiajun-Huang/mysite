@@ -33,29 +33,28 @@
   overflow-x: scroll;
 }
 
+/* use title to replay h1 tag */
 .markdown h1 {
   font-size: 2rem;
+  display: none !important;
 }
 
 .markdown h1::before {
   font-size: 2rem;
-  content: "# ";
-  position: absolute;
 }
 
 .markdown h2 {
   font-size: 1.7rem;
-  margin: 2rem 0 1rem 0;
+  margin: 2rem 0 0.5rem 0;
 }
 
 .markdown h2::before {
   font-size: 1.7rem;
-  content: "## ";
 }
 
 .markdown h3 {
   font-size: 1.5rem;
-  margin: 1rem 0 1rem 0;
+  margin: 1rem 0 0.5rem 0;
 }
 
 .markdown h4 {
@@ -72,7 +71,7 @@
   }
 
   .markdown p {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
   }
 
   .markdown a {
