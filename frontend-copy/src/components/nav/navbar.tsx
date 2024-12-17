@@ -15,7 +15,8 @@ import NextLink from "next/link";
 import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
-import SignInButton from "./auth/signInButton";
+import SignInButton from "../auth/signInButton";
+import NavUserAvartar from "./navUserAvartar";
 
 export const Navbar = () => {
   return (
@@ -51,7 +52,7 @@ export const Navbar = () => {
 
       <NavbarContent className=" sm:basis-full" justify="end">
         <ThemeSwitch />
-        <SignInButton />
+        <NavUserAvartar />
       </NavbarContent>
 
       <NavbarMenu>
@@ -80,6 +81,7 @@ export const Navbar = () => {
               >
                 {item.label}
               </Link>
+              <SignInButton />
             </NavbarMenuItem>
           ))}
         </div>

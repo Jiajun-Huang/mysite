@@ -36,7 +36,7 @@ export type Blog = {
 };
 
 export type User = {
-  id: number;
+  pk: number;
   username: string;
 
   [key: string]: any;

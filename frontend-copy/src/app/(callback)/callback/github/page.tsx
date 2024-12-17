@@ -36,7 +36,6 @@ export function Callback() {
         const token = data.access;
         localStorage.setItem("token", token);
         const currentUrl = localStorage.getItem("currentUrl");
-
         if (currentUrl) {
           localStorage.removeItem("currentUrl");
           router.push(currentUrl);
