@@ -12,7 +12,6 @@ interface TocItem {
 function Toc({ queryId }: { queryId: string }) {
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
-
   // Track the scroll position and set isScrolled if it's greater than 100vh
   useEffect(() => {
     const handleScroll = () => {

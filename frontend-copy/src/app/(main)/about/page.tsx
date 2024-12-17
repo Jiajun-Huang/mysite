@@ -1,32 +1,16 @@
-import { BASE_URL } from "@/api/request";
-import BlogCard from "@/components/blogCard";
-import { Blog } from "@/types/";
+import MarkDown from "@/components/markdown/markdown";
+import fs from "fs";
+import path from "path";
 
-export default async function Home() {
-  let blogData: Blog[];
-
-  try {
-    const data = await fetch(BASE_URL + "/api/blog/", {
-      method: "GET",
-      next: { revalidate: 60 },
-    });
-
-    blogData = await data.json();
-    console.log(blogData);
-  } catch (error) {
-    blogData = [];
-    console.error(error);
-  }
+export default async function About() {
+  const filePath = path.join(process.cwd(), "src/app/(main)/about/about.md");
+  console.log(filePath);
+  const data = await fs.readFileSync(filePath, "utf8");
 
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      {blogData.map((data, index) => {
-        return (
-          <div key={index} className="w-full max-w-4xl">
-            <BlogCard data={data} />
-          </div>
-        );
-      })}
-    </section>
+    <div style={{ padding: "1rem", maxWidth: "800px", margin: "0 auto" }}>
+      <h1>About</h1>
+      <MarkDown>{data}</MarkDown>
+    </div>
   );
 }
