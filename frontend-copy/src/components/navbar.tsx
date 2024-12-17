@@ -15,6 +15,7 @@ import NextLink from "next/link";
 import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
+import SignInButton from "./auth/signInButton";
 
 export const Navbar = () => {
   return (
@@ -50,12 +51,7 @@ export const Navbar = () => {
 
       <NavbarContent className=" sm:basis-full" justify="end">
         <ThemeSwitch />
-        <NavbarBrand as="li" className="gap-3 max-w-fit hidden sm:flex">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">Jiajun Huang</p>
-          </NextLink>
-        </NavbarBrand>
+        <SignInButton />
       </NavbarContent>
 
       <NavbarMenu>

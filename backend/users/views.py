@@ -89,4 +89,4 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 def github_callback(request):
     params = urllib.parse.urlencode(request.GET)
-    return redirect(f"https://jiajunhuang.cc/callback/github/?{params}")
+    return redirect(f"http://localhost:3000/callback/github/?{params}")
