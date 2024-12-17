@@ -2,6 +2,7 @@ import { BASE_URL } from "@/api/request";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
 import "katex/dist/katex.min.css";
+import Comment from "@/components/comment/comment";
 
 interface Prop {
   params: {
@@ -58,6 +59,7 @@ export default async function BlogDetail({ params }: Prop) {
           </div>
         </div>
       </div>
+      <Comment placeholder="write a comment" blog={data.id} type={0}></Comment>
     </div>
   );
 }

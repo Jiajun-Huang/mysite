@@ -6,7 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/modal";
-import Devider from "../devider";
+import DividerWithText from "../dividerWithText";
 import { GithubIcon } from "../icons";
 import SignInForm from "./signInForm";
 import SocialSignInButton from "./socialSignInButton";
@@ -26,7 +26,7 @@ export default function SignInModal({
         <ModalHeader className="flex flex-col gap-1">Sign In</ModalHeader>
         <ModalBody>
           <SignInForm />
-          <Devider text="Or With" />
+          <DividerWithText text="Or With" />
           <div className="flex">
             <SocialSignInButton
               icon={GithubIcon}

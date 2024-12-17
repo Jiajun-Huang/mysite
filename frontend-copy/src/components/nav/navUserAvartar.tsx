@@ -14,7 +14,7 @@ import SignInButton from "../auth/signInButton";
 import UserAvartar from "../user/userAvartar";
 
 export default function NavUserAvartar() {
-  const { user, login } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<any>(null);
   console.log(user);
@@ -50,7 +50,13 @@ export default function NavUserAvartar() {
         }}
       >
         <DropdownSection>
-          <DropdownItem data-hover key={"logout"}>
+          <DropdownItem
+            data-hover
+            key={"logout"}
+            onPress={() => {
+              logout();
+            }}
+          >
             Logout
           </DropdownItem>
         </DropdownSection>

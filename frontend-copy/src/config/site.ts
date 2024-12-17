@@ -8,6 +8,7 @@ export const siteConfig = {
       label: "About",
       href: "/about",
     },
+    { label: "Comments", href: "/comment" },
   ],
   navMenuItems: [
     {

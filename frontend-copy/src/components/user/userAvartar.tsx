@@ -16,6 +16,7 @@ export default function UserAvartar({
       alt="avatar"
       width={width}
       height={height}
+      className="object-contain object-top"
     />
   );
 }

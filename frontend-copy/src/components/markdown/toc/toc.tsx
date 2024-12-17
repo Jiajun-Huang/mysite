@@ -1,6 +1,8 @@
 "use client";
 
+import { Divider } from "@nextui-org/divider";
 import { useEffect, useState } from "react";
+
 interface TocItem {
   id: string;
   level: number;
@@ -9,6 +11,23 @@ interface TocItem {
 
 function Toc({ queryId }: { queryId: string }) {
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Track the scroll position and set isScrolled if it's greater than 100vh
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > window.innerHeight) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const contentElement = document.getElementById(queryId);
@@ -29,10 +48,10 @@ function Toc({ queryId }: { queryId: string }) {
     });
 
     setTocItems(tocItems);
-  }, []);
+  }, [queryId]);
 
   return (
-    <div>
+    <div className={`transition-all duration-300`}>
       <div>
         <strong>Table of Contents</strong>
       </div>
@@ -47,6 +66,12 @@ function Toc({ queryId }: { queryId: string }) {
           </li>
         ))}
       </ul>
+      <div
+        className={`${isScrolled ? "opacity-100" : "opacity-0"} transition-opacity duration-300 opacity-0 ${isScrolled ? "opacity-100" : ""}`}
+      >
+        <Divider className="my-4"/>
+        <a href="#top">Back to top</a>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,69 @@
+"use client";
+
+import { submitComment } from "@/api/action";
+import { UserContext } from "@/components/auth/context";
+import { Button } from "@nextui-org/button";
+import { useContext } from "react";
+import SignInButton from "../auth/signInButton";
+import Avatar from "../user/userAvartar";
+
+interface Props {
+  placeholder: string;
+  blog: number | null;
+  root: number | null;
+  reply: number | null;
+  avartar?: boolean;
+  type: number | null;
+  onSubmit: () => void;
+}
+
+export default function CommentInput({
+  placeholder,
+  blog,
+  root,
+  type,
+  reply,
+  avartar = true,
+  onSubmit,
+}: Props) {
+  const { user } = useContext(UserContext);
+
+  return (
+    <form
+      className="flex flex-col py-2.5"
+      action={async (formdata: FormData) => {
+        const content = formdata.get("inputField") as string;
+        await submitComment({
+          content: content ?? "",
+          path: window.location.pathname,
+          token: localStorage.getItem("token") ?? "",
+          blog,
+          root,
+          type,
+          reply,
+        });
+        console.log("submit");
+        onSubmit();
+      }}
+    >
+      <div className="flex items-center mb-2.5">
+        {avartar && user ? (
+          <Avatar user={user.pk} width={50} height={50} />
+        ) : null}
+        <textarea
+          name="inputField"
+          placeholder={user ? placeholder : "Please log in to comment"}
+          className="flex-1 ml-2.5 p-2.5 border border-gray-300 rounded-md text-base resize-none"
+          disabled={user == null}
+        />
+      </div>
+      <div className="flex justify-end mt-2.5">
+        {user == null ? (
+          <SignInButton />
+        ) : (
+          <Button color="primary">Submit</Button>
+        )}
+      </div>
+    </form>
+  );
+}

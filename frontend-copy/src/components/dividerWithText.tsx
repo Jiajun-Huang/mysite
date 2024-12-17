@@ -1,4 +1,4 @@
-export default function Devider({text} : {text: string}) {
+export default function DividerWithText({ text }: { text: string }) {
   return (
     <div className="flex items-center">
       <div className="flex-grow border-t border-gray-300"></div>
