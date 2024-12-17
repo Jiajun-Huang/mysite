@@ -1,14 +1,34 @@
 "use client";
 
-import { UserProvider } from "@/components/user/state";
-import { ReactNode } from "react";
+import type { ThemeProviderProps } from "next-themes";
+
+import { UserProvider } from "@/components/auth/context";
 import { NextUIProvider } from "@nextui-org/system";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 
+export interface ProvidersProps {
+  children: React.ReactNode;
+  themeProps?: ThemeProviderProps;
+}
 
-export default function Providers({ children }: { children: ReactNode }) {
+declare module "@react-types/shared" {
+  interface RouterConfig {
+    routerOptions: NonNullable<
+      Parameters<ReturnType<typeof useRouter>["push"]>[1]
+    >;
+  }
+}
+
+export function Providers({ children, themeProps }: ProvidersProps) {
+  const router = useRouter();
+
   return (
-    <NextUIProvider>
-      <UserProvider>{children}</UserProvider>);
-    </NextUIProvider>
+    <UserProvider>
+      <NextUIProvider navigate={router.push}>
+        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+      </NextUIProvider>
+    </UserProvider>
   );
 }

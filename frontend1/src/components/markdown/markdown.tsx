@@ -1,10 +1,8 @@
 import ReactMarkdown, { UrlTransform } from "react-markdown";
-
 import MdCode from "./components/code/code";
 import MdImage from "./components/image/image";
 import { rehypePlugins, remarkPlugins } from "./config";
-import "./markdown.css";
-
+import style from "./markdown.module.scss";
 interface Props {
   children: string;
   urlTransform?: UrlTransform;
@@ -12,19 +10,19 @@ interface Props {
 
 const MarkDown = ({ children, urlTransform, ...otherProps }: Props) => {
   if (!children) {
-    return <div />;
+    return <div className="Markdown"></div>;
   }
 
   return (
-    <div className="markdown">
+    <div className={style.markdown} id="blog-body">
       <ReactMarkdown
+        remarkPlugins={remarkPlugins}
+        rehypePlugins={rehypePlugins}
+        urlTransform={urlTransform}
         components={{
           code: MdCode,
           img: MdImage,
         }}
-        rehypePlugins={rehypePlugins}
-        remarkPlugins={remarkPlugins}
-        urlTransform={urlTransform}
       >
         {children}
       </ReactMarkdown>

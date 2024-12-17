@@ -1,9 +1,9 @@
 "use client";
 
-import Avatar from "@/components/user/userAvartar";
-import { Comment } from "@/types/";
 import { printDate } from "@/util/util";
 import { useState } from "react";
+import Avatar from "../user/avatar";
+import style from "./comment.module.scss";
 import CommentInput from "./commentInput";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
   blog: number | null;
   type: number | null;
   parentComment: Comment | null;
-  setRootState: ((comment: Comment) => void) | null;
+  setRootState: (comment: Comment) => void;
 };
 
 export default function CommentBlock({
@@ -29,19 +29,18 @@ export default function CommentBlock({
 
   const dateStr = printDate(created_at);
   return (
-    <div className="flex space-x-2 mb-4" id={`comment-${comment.id}`}>
+    <div className={style.commentBLock} id={`comment-${comment.id}`}>
       <Avatar user={user.id} width={50} height={50} />
-      <div className="flex-1">
-        <p className="font-semibold">
+      <div className={style.commentBody}>
+        <p className={style.user}>
           {parentComment
             ? `${user.username} > ${parentComment.user.username}`
             : user.username}
         </p>
-        <p className="my-2">{content}</p>
-        <div className="text-sm text-default-400">
+        <p className={style.content}>{content}</p>
+        <div className={style.meta}>
           <span>{dateStr}</span>
           <span
-            className="cursor-pointer ml-2 hover:text-primary"
             onClick={() => {
               setReply(!reply);
             }}
@@ -68,10 +67,10 @@ export default function CommentBlock({
             />
           ) : null}
         </div>
-        <div className="mt-4">
+        <div>
           {replies?.map((reply) => {
             let replyTo = null;
-            if (reply.reply !== reply.root) {
+            if (reply.reply != reply.root) {
               // if the comment is a reply to another comment (not the root comment)
               replyTo = replies.find((r) => r.id === reply.reply); // find the comment under which this comment is replied
 

@@ -2,7 +2,7 @@
 
 // print the env
 //
-const backend_url = process.env.BACKEND_ADDR;
+const backend_url = process.env.BACKEND_ADDR || "http://127.0.0.1:8000";
 const backend_url_obj = new URL(backend_url);
 const nextConfig = {
   async rewrites() {

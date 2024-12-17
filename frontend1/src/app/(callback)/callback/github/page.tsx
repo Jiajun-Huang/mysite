@@ -1,6 +1,6 @@
 "use client";
 
-import { UserContext } from "@/components/auth/context";
+import { UserContext } from "@/components/user/state";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
@@ -36,6 +36,7 @@ export function Callback() {
         const token = data.access;
         localStorage.setItem("token", token);
         const currentUrl = localStorage.getItem("currentUrl");
+
         if (currentUrl) {
           localStorage.removeItem("currentUrl");
           router.push(currentUrl);

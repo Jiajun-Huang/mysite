@@ -1,35 +1,20 @@
 "use client";
 
-import { Divider } from "@nextui-org/divider";
 import { useEffect, useState } from "react";
-
+import style from "./toc.module.scss";
 interface TocItem {
   id: string;
   level: number;
   text: string;
 }
 
-function Toc({ queryId }: { queryId: string }) {
+function Toc() {
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
-  const [isScrolled, setIsScrolled] = useState(false);
-  // Track the scroll position and set isScrolled if it's greater than 100vh
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > window.innerHeight) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   useEffect(() => {
-    const contentElement = document.getElementById(queryId);
+    const contentElement = document.getElementById("blog-body");
+    const htmlElement = document.querySelector("html");
+ 
 
     if (!contentElement) {
       console.error("Element with id 'body-body' not found.");
@@ -38,7 +23,6 @@ function Toc({ queryId }: { queryId: string }) {
 
     const headers = contentElement.querySelectorAll("h2, h3, h4, h5, h6");
     const tocItems: TocItem[] = [];
-
     headers.forEach((header) => {
       const level = parseInt(header.tagName[1]);
       const id = header.id;
@@ -47,10 +31,10 @@ function Toc({ queryId }: { queryId: string }) {
     });
 
     setTocItems(tocItems);
-  }, [queryId]);
+  }, []);
 
   return (
-    <div className={`transition-all duration-300`}>
+    <div className={style.toc}>
       <div>
         <strong>Table of Contents</strong>
       </div>
@@ -59,18 +43,11 @@ function Toc({ queryId }: { queryId: string }) {
           <li
             key={item.id}
             style={{ marginLeft: `${(item.level - 2) * 20}px` }}
-            className="hover:text-secondary"
           >
             <a href={`#${item.id}`}>{item.text}</a>
           </li>
         ))}
       </ul>
-      <div
-        className={`${isScrolled ? "opacity-100" : "opacity-0"} transition-opacity duration-300 opacity-0 ${isScrolled ? "opacity-100" : ""}`}
-      >
-        <Divider className="my-4"/>
-        <a href="#top">Back to top</a>
-      </div>
     </div>
   );
 }
