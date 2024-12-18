@@ -19,7 +19,7 @@ export default function NavUserAvartar() {
   const [timeoutId, setTimeoutId] = useState<any>(null);
   console.log(user);
   if (!user || !user.pk) return <SignInButton />;
-  const delay = 1000;
+  const delay = 200;
   return (
     <Dropdown isOpen={isOpen}>
       <DropdownTrigger>
