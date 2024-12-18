@@ -9,6 +9,7 @@ export const siteConfig = {
       href: "/about",
     },
     { label: "Comments", href: "/comment" },
+    { label: "Music", href: "/music" },
   ],
   navMenuItems: [
     {
@@ -20,5 +21,6 @@ export const siteConfig = {
       href: "/about",
     },
     { label: "Comments", href: "/comment" },
+    { label: "Music", href: "/music" },
   ],
 };

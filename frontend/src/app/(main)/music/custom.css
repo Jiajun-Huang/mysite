@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  #aplayer {
+    @apply bg-default;
+  }
+
+  #aplayer .aplayer-list-title {
+    @apply text-default-foreground;
+  }
+
+  #aplayer .aplayer-lrc-current {
+    @apply text-default-foreground;
+  }
+
+  #aplayer .aplayer-lrc::after {
+    display: none;
+  }
+
+  #aplayer .aplayer-lrc::before {
+    display: none;
+  }
+
+  #aplayer .aplayer-list {
+    max-height: 50vh !important;
+  }
+
+  #aplayer ol {
+    max-height: 50vh !important;
+  }
+
+  #aplayer .aplayer-list-author,
+  #aplayer .aplayer-list-index {
+    @apply text-default-500;
+  }
+
+  #aplayer .aplayer-list-light,
+  #aplayer .aplayer-list ol li:hover {
+    @apply bg-default-100;
+  }
+
+  /* #aplayer *,
+  ::before,
+  ::after {
+    color: var(--nextui-default-foreground);
+  } */
+
+  #aplayer li {
+    border: 0.25px solid
+      hsl(
+        var(--nextui-divider) /
+          var(--nextui-divider-opacity, var(--tw-bg-opacity))
+      ) !important;
+  }
+}

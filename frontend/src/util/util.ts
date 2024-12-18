@@ -9,3 +9,4 @@ export function printDate(date: string) {
   });
   return formatter.format(new Date(date));
 }
+
