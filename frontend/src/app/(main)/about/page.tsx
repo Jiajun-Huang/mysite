@@ -9,7 +9,6 @@ export default async function About() {
 
   return (
     <div style={{ padding: "1rem", maxWidth: "800px", margin: "0 auto" }}>
-      <h1>About</h1>
       <MarkDown>{data}</MarkDown>
     </div>
   );

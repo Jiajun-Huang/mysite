@@ -14,12 +14,12 @@ export default function MdImage(
       height={0}
       placeholder="blur" // Set blur effect while loading
       blurDataURL={"/icons8-loading-circle.gif"} // Set a base64 image as placeholder
+      className="my-4 sm:my-6"
       sizes="500"
       style={{
         width: "auto",
         height: "auto",
         display: "block",
-        margin: "1rem auto",
       }}
       // onError={(e) => {
       //   console.error(e);
