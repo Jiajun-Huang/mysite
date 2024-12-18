@@ -21,7 +21,7 @@ export default function SocialSignInButton({
       variant="light"
       color="secondary"
       className="flex-grow"
-      onClick={async () => {
+      onPress={async () => {
         const response = await fetch(requestUrl, {
           method: "HEAD",
         });
