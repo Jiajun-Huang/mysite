@@ -79,7 +79,7 @@ def backend():
 def frontend():
     os.chdir('frontend')
     print("Building Next.js Docker image...")
-    # run_command("npm run build", "Next.js build failed")
+    run_command("npm run build", "Next.js build failed")
     run_command("docker build -t my-nextjs-app:latest .", "Next.js build")
     os.chdir('..')
     os.makedirs('build', exist_ok=True)

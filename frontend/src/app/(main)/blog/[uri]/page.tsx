@@ -3,51 +3,27 @@ import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
 import { printDate } from "@/util/util";
-import { Metadata } from "next/types";
-import style from "./page.module.scss";
-
-interface Data extends Blog {
-  text: string;
-}
+import { Divider } from "@nextui-org/divider";
+import "katex/dist/katex.min.css";
 
 interface Prop {
   params: {
     uri: string;
   };
 }
-export async function generateMetadata({ params }: Prop): Promise<Metadata> {
-  const uri = params.uri;
-  const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
-    method: "GET",
-    next: { revalidate: 3600 },
-  });
 
-  if (response.status === 404) {
-    return {
-      title: "404 Not Found",
-      description: "404 Not Found",
-    };
-  }
-  let { title, description }: Data = await response.json();
-  return {
-    title: title || "404 Not Found",
-    description: description || "404 Not Found",
-  };
-}
-
-export default async function Index({ params }: Prop) {
-  const uri = params.uri;
+export default async function BlogDetail({ params }: Prop) {
+  const { uri } = await params;
   const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
     method: "GET",
     next: { revalidate: 60 },
   });
+
   if (response.status === 404) {
     return <h1>404 Not Found</h1>;
   }
 
-  // console.log(await response.text());
-
-  let { created_at, likes, views, tags, category, files, ...data }: Data =
+  let { created_at, likes, views, tags, category, files, ...data } =
     await response.json();
 
   tags = tags || [];
@@ -57,65 +33,61 @@ export default async function Index({ params }: Prop) {
     method: "GET",
     next: { revalidate: 60 },
   }).then((res) => res.text());
-  const dateStr = printDate(created_at || "");
 
+  const dateStr = printDate(created_at);
   return (
-    <div className={style.page}>
-      <h1 className={style.title}>{data.title}</h1>
-      <div className={style.infos}>
-        <div>
-          <span>{dateStr}</span>
-          {/* <span>{likes} likes</span>
-          <span>{views} views</span> */}
-        </div>
-        {/* <div>
-          tags:{" "}
+    <div>
+      <h1 className="text-4xl font-bold mb-7">{data.title}</h1>
+      <div className="flex gap-x-4 flex-col text-default-400">
+        <div>Created at: {dateStr}</div>
+        {/* <div className="flex gap-x-4">
+          <span>{likes} likes</span>
+          <span>{views} views</span>
+        </div> */}
+        <div>Category : {category.name}</div>
+        <div className="flex gap-x-1">
+          <span>Tags:</span>
           {tags.map((tag, index) => (
-            <span key={index} className={style.tag}>
+            <span size="sm" key={index}>
               {tag.name}
             </span>
           ))}
-          <span className={style.category}>{category?.name}</span>
-        </div> */}
-      </div>
-      <div className={style.layout}>
-        <div className={style.content}>
-          <div className={style.page}>
-            <MarkDown
-              urlTransform={(url, key, node) => {
-                if (key === "src" && node.tagName === "img") {
-                  const newUrl =
-                    BASE_URL +
-                    "/api/blog/image/" +
-                    uri +
-                    "?" +
-                    new URLSearchParams({ url }).toString();
-                  return newUrl;
-                }
-              }}
-            >
-              {text}
-            </MarkDown>
-          </div>
         </div>
-        <input
-          type="checkbox"
-          id={style.sidebarActive}
-          style={{ display: "none" }}
-        />
+      </div>
 
-        <label htmlFor={style.sidebarActive} className={style.toogleCheckbox}>
-          &#9776;
-        </label>
-        <div className={style.tocContainer}>
-          <label id={style.overlay} htmlFor={style.sidebarActive}></label>
-          <div className={style.toc}>
-            <Toc />
+      <Divider className="my-4" />
+      <div className="flex justify-between">
+        <div id="content" className="w-11/12 md:w-3/4">
+          <MarkDown
+            urlTransform={(url, key, node) => {
+              if (key === "src" && node.tagName === "img") {
+                const newUrl =
+                  BASE_URL +
+                  "/api/blog/image/" +
+                  uri +
+                  "?" +
+                  new URLSearchParams({ url }).toString();
+                return newUrl;
+              }
+            }}
+          >
+            {text}
+          </MarkDown>
+        </div>
+        <div className="w-1/12 md:w-1/4 mt-4 sm:mt-0">
+          <div className="sticky top-36">
+            <Toc queryId="content" />
           </div>
         </div>
       </div>
-      <h2>Comments</h2>
-      <Comment placeholder="write a comment" blog={data.id} type={0}></Comment>
+      <Divider className="my-4" />
+      <div id="comments-ff">
+        <Comment
+          placeholder="write a comment"
+          blog={data.id}
+          type={0}
+        ></Comment>
+      </div>
     </div>
   );
 }

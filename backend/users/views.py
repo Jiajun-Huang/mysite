@@ -2,11 +2,12 @@
 # from .serializers import CustomRegisterSerializer
 import urllib.parse
 
-from allauth.socialaccount.models import SocialAccount
+from allauth.socialaccount.models import SocialAccount, SocialApp
 from allauth.socialaccount.providers.github import views as github_views
 from allauth.socialaccount.providers.github.views import GitHubOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialConnectView, SocialLoginView
+from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -17,7 +18,7 @@ from rest_framework.decorators import action
 
 from .models import Profile
 from .serializers import UserProfileSerializer
-from django.core.files.storage import default_storage
+
 
 # https://michaeldel.github.io/posts/django-rest-auth-social-tutorial/
 # https://www.freecodecamp.org/news/set-up-github-oauth-on-django-for-user-authentication/
@@ -89,4 +90,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 def github_callback(request):
     params = urllib.parse.urlencode(request.GET)
-    return redirect(f"https://jiajunhuang.cc/callback/github/?{params}")
+    redirect_site = SocialApp.objects.get(provider="github").sites.first()
+    return redirect(f"{redirect_site}/?{params}")

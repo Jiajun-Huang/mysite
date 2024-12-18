@@ -6,21 +6,25 @@ export default function MdImage(
     HTMLImageElement
   >
 ) {
-
   return (
     <Image
       src={props.src || ""}
       alt={props.alt || ""}
       width={0}
       height={0}
-      // placeholder="blur"
+      placeholder="blur" // Set blur effect while loading
+      blurDataURL={"/icons8-loading-circle.gif"} // Set a base64 image as placeholder
       sizes="500"
       style={{
         width: "auto",
         height: "auto",
         display: "block",
-        margin: "0 auto",
+        margin: "1rem auto",
       }}
+      // onError={(e) => {
+      //   console.error(e);
+      //   e.currentTarget.src = "/icons8-error.gif";
+      // }}
     />
   );
 }

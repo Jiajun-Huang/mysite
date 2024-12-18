@@ -1,5 +1,6 @@
 "use client";
 
+import { Comment } from "@/types/";
 import { useCallback, useEffect, useState } from "react";
 import CommentBlock from "./commentBlock";
 import CommentInput from "./commentInput";
@@ -48,9 +49,7 @@ export default function Comments({ placeholder, type, blog }: Prop) {
           blog={blog}
           type={type}
           parentComment={null}
-          setRootState={function (comment: Comment): void {
-            throw new Error("Function not implemented.");
-          }}
+          setRootState={null}
         />
       ))}
     </div>
