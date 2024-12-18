@@ -80,8 +80,9 @@ export default async function BlogDetail({ params }: Prop) {
           </div>
         </div>
       </div>
-      <Divider className="my-4" />
+      <Divider className="my-10" />
       <div id="comments-ff">
+        <h2 className="text-2xl font-bold">Comments</h2>
         <Comment
           placeholder="write a comment"
           blog={data.id}

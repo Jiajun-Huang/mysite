@@ -1,6 +1,6 @@
 import { Divider } from "@nextui-org/divider";
-import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { TocItem } from "./toc";
+import TocContent from "./tocContent";
 
 export default function TocDisplayBig({
   tocItems,
@@ -13,17 +13,7 @@ export default function TocDisplayBig({
     <>
       <nav className="text-1xl font-bold">Table of Contents</nav>
       <div className="overflow-y-auto h-[calc(100vh-4rem)]">
-        <Listbox>
-          {tocItems.map((item) => (
-            <ListboxItem
-              key={item.id}
-              style={{ paddingLeft: `${(item.level - 2) * 20 + 10}px` }}
-              className="hover:text-secondary"
-            >
-              <a href={`#${item.id}`}>{item.text}</a>
-            </ListboxItem>
-          ))}
-        </Listbox>
+        <TocContent tocItems={tocItems} onClose={() => {}} />
         <div
           className={`${isScrolled ? "opacity-100" : "opacity-0"} transition-opacity duration-300 opacity-0 ${isScrolled ? "opacity-100" : ""}`}
         >

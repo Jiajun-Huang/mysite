@@ -15,7 +15,6 @@ import NextLink from "next/link";
 import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
-import SignInButton from "../auth/signInButton";
 import NavUserAvartar from "./navUserAvartar";
 
 export const Navbar = () => {
@@ -81,7 +80,6 @@ export const Navbar = () => {
               >
                 {item.label}
               </Link>
-              <SignInButton />
             </NavbarMenuItem>
           ))}
         </div>

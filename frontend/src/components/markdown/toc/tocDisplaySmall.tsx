@@ -7,9 +7,9 @@ import {
   DrawerFooter,
   DrawerHeader,
 } from "@nextui-org/drawer";
-import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { useDisclosure } from "@nextui-org/modal";
 import { TocItem } from "./toc";
+import TocContent from "./tocContent";
 
 export default function TocDisplaySmall({
   tocItems,
@@ -23,7 +23,7 @@ export default function TocDisplaySmall({
     <div>
       <Button
         onPress={onOpen}
-        className="absolute right-0 translate-x-1/2 top-1/2 transform -translate-y-1/2 hover:translate-x-0 transition-transform duration-300 px-4 py-2 rounded-md shadow-lg"
+        className="fixed right-0 translate-x-1/2 top-1/2 transform -translate-y-1/2 hover:translate-x-0 transition-transform duration-300 px-4 py-2 rounded-md shadow-lg z-50"
       >
         TOC
       </Button>
@@ -35,27 +35,24 @@ export default function TocDisplaySmall({
                 Table of Contents
               </DrawerHeader>
               <DrawerBody className="overflow-y-auto h-[calc(100vh-4rem)]">
-                <Listbox>
-                  {tocItems.map((item) => (
-                    <ListboxItem
-                      key={item.id}
-                      style={{ paddingLeft: `${(item.level - 2) * 20 + 10}px` }}
-                      className="hover:text-secondary"
-                      onClick={onClose}
-                    >
-                      <a href={`#${item.id}`}>{item.text}</a>
-                    </ListboxItem>
-                  ))}
-                </Listbox>
+                <TocContent tocItems={tocItems} onClose={onClose} />
                 <div
                   className={`transition-all duration-300`}
                   style={{ display: isScrolled ? "block" : "none" }}
                 >
                   <Divider className="my-4" />
-                  <a href="#top" className="hover:text-secondary block">
+                  <a
+                    href="#top"
+                    className="hover:text-secondary block"
+                    onClick={onClose}
+                  >
                     Back to top
                   </a>
-                  <a href="#comments-ff" className="hover:text-secondary block">
+                  <a
+                    href="#comments-ff"
+                    className="hover:text-secondary block"
+                    onClick={onClose}
+                  >
                     Go to Comment
                   </a>
                 </div>

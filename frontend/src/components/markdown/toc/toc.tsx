@@ -18,8 +18,15 @@ function Toc({ queryId }: { queryId: string }) {
     const handleScroll = () => {
       if (window.scrollY > window.innerHeight) {
         setIsScrolled(true);
+        // chanage --scroll-padding-top css variable to 4rem if isScrolled is true
+        document.documentElement.style.setProperty(
+          "--scroll-padding-top",
+          "4rem"
+        );
       } else {
         setIsScrolled(false);
+        // chanage --scroll-padding-top css variable to 0 if isScrolled is false
+        document.documentElement.style.setProperty("--scroll-padding-top", "0");
       }
     };
 
