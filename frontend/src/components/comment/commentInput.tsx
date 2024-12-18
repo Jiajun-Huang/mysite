@@ -61,7 +61,9 @@ export default function CommentInput({
         {user == null ? (
           <SignInButton />
         ) : (
-          <Button color="primary">Submit</Button>
+          <Button color="primary" type="submit">
+            Submit
+          </Button>
         )}
       </div>
     </form>
