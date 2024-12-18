@@ -15,6 +15,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
 import { Link } from "@nextui-org/link";
 import NavUserAvartar from "./navUserAvartar";
+import { Divider } from "@nextui-org/divider";
 
 export const Navbar = () => {
   return (
@@ -62,15 +63,19 @@ export const Navbar = () => {
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          <NavbarBrand as="li" className="flex text-default">
-            <Link
-              className="flex justify-start items-center gap-1 text-default"
-              href="/"
-            >
-              <Logo />
-              <p className="font-bold text-inherit">ACME</p>
-            </Link>
-          </NavbarBrand>
+          <NavbarBrand as="li" className="gap-3 max-w-fit text-xl">
+          <Link
+            className={clsx(
+              linkStyles({ color: "foreground" }),
+              "data-[active=true]:text-primary data-[active=true]:font-medium"
+            )}
+            href="/"
+          >
+            <Logo />
+            <p className="font-bold text-inherit">Jiajun Huang</p>
+          </Link>
+        </NavbarBrand>
+        <Divider />
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link

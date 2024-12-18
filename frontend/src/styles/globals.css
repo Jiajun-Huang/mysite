@@ -1,9 +1,18 @@
+@import url("https://static.zeoseven.com/zsft/292/main/result.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+body {
+  font-family: "LXGW WenKai" !important;
+  font-weight: normal;
+
+}
+
 :root {
   --scroll-padding-top: 0;
+  font-size: 18px;
 }
 html {
   /* scoll padding */
