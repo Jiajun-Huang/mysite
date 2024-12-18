@@ -1,9 +1,10 @@
 "use client";
 
-import { Divider } from "@nextui-org/divider";
 import { useEffect, useState } from "react";
+import TocDisplayBig from "./tocDisplayBig";
+import TocDisplaySmall from "./tocDisplaySmall";
 
-interface TocItem {
+export interface TocItem {
   id: string;
   level: number;
   text: string;
@@ -51,25 +52,11 @@ function Toc({ queryId }: { queryId: string }) {
 
   return (
     <div className={`transition-all duration-300`}>
-      <div>
-        <strong>Table of Contents</strong>
+      <div className="hidden md:block">
+        <TocDisplayBig tocItems={tocItems} isScrolled />
       </div>
-      <ul>
-        {tocItems.map((item) => (
-          <li
-            key={item.id}
-            style={{ marginLeft: `${(item.level - 2) * 20}px` }}
-            className="hover:text-secondary"
-          >
-            <a href={`#${item.id}`}>{item.text}</a>
-          </li>
-        ))}
-      </ul>
-      <div
-        className={`${isScrolled ? "opacity-100" : "opacity-0"} transition-opacity duration-300 opacity-0 ${isScrolled ? "opacity-100" : ""}`}
-      >
-        <Divider className="my-4"/>
-        <a href="#top">Back to top</a>
+      <div className="md:hidden">
+        <TocDisplaySmall tocItems={tocItems} isScrolled />
       </div>
     </div>
   );

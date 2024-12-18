@@ -56,8 +56,8 @@ export default async function BlogDetail({ params }: Prop) {
       </div>
 
       <Divider className="my-4" />
-      <div className="flex gap-x-16">
-        <div id="content" className="w-3/4">
+      <div className="flex justify-between">
+        <div id="content" className="w-11/12 md:w-3/4">
           <MarkDown
             urlTransform={(url, key, node) => {
               if (key === "src" && node.tagName === "img") {
@@ -74,13 +74,20 @@ export default async function BlogDetail({ params }: Prop) {
             {text}
           </MarkDown>
         </div>
-        <div className="w-1/4 ">
+        <div className="w-1/12 md:w-1/4 mt-4 sm:mt-0">
           <div className="sticky top-36">
             <Toc queryId="content" />
           </div>
         </div>
       </div>
-      <Comment placeholder="write a comment" blog={data.id} type={0}></Comment>
+      <Divider className="my-4" />
+      <div id="comments-ff">
+        <Comment
+          placeholder="write a comment"
+          blog={data.id}
+          type={0}
+        ></Comment>
+      </div>
     </div>
   );
 }
