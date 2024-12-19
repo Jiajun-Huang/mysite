@@ -40,7 +40,7 @@ export const Navbar = () => {
             href="/"
           >
             <Logo />
-            <p className="font-bold text-inherit">Jiajun Huang</p>
+            <p className="font-bold text-inherit text-lg">Jiajun Huang</p>
           </Link>
         </NavbarBrand>
         <NavbarMenuToggle
@@ -56,7 +56,7 @@ export const Navbar = () => {
               <Link
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium text-lg"
                 )}
                 color="foreground"
                 href={item.href}
@@ -96,7 +96,7 @@ export const Navbar = () => {
                 color="foreground"
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium text-xl"
                 )}
                 href={item.href}
                 isBlock

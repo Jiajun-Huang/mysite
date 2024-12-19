@@ -44,9 +44,8 @@ export default function Music() {
         const handleMediaKeyEvent = (event) => {
           console.log(event.code);
           switch (event.code) {
-            case "MediaPlayPause":
             case "Space":
-              console.log("toggle");
+            case "MediaPlayPause":
               ap.toggle(); // Play/Pause
               break;
 
