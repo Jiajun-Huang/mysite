@@ -45,8 +45,7 @@ export const Navbar = () => {
         </NavbarBrand>
         <NavbarMenuToggle
           className="sm:hidden"
-          // onPress={() => setIsMenuOpen(!isMenuOpen)}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onPress={() => setIsMenuOpen(!isMenuOpen)}
         />
       </NavbarContent>
 
