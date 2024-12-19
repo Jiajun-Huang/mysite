@@ -1,9 +1,17 @@
+@import url('https://static.zeoseven.com/zsft/95/main/result.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+/* body {
+   font-family: "LXGW WenKai GB" !important;
+   font-weight: normal;
+}
+ */
+
 body {
-  font-family: "LXGWBright", sans-serif !important;
+  font-family:  "LXGWBright", sans-serif !important;
   font-weight: normal;
 }
 

@@ -47,7 +47,7 @@
     color: var(--nextui-default-foreground);
   } */
   #aplayer {
-    font-family: "LXGWBright", sans-serif !important;
+    font-family: inherit !important;
     font-size: 1rem;
   }
   #aplayer li {
