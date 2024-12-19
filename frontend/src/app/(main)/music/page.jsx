@@ -5,6 +5,7 @@ import "./APlayer.min.css";
 import "./custom.css";
 
 // https://bbs.125.la/thread-14767706-1-1.html
+// one ap :https://api.i-meto.com/meting/api?server=netease&type=playlist&id=7353465344
 export default function Music() {
   useEffect(() => {
     let ap = null; // Declare APlayer instance

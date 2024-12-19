@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "blogs.apps.BlogsConfig",
     "users.apps.UsersConfig",
     "comments.apps.CommentsConfig",
+    "music.apps.MusicConfig",
 ]
 SITE_ID = 10
 MIDDLEWARE = [
