@@ -31,7 +31,6 @@ export default function Music() {
         order: "random",
         preload: "auto",
       });
-      console.log(theme);
     };
 
     asyncFunction();

@@ -55,7 +55,7 @@ export default async function BlogDetail({ params }: Prop) {
 
       <Divider className="my-4" />
       <div className="flex justify-between">
-        <div id="content" className="w-11/12 md:w-3/4">
+        <div id="content" className="w-11/12 md:w-3/4 pr-4">
           <MarkDown
             urlTransform={(url, key, node) => {
               if (key === "src" && node.tagName === "img") {

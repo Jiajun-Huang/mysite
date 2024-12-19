@@ -1,3 +1,5 @@
+"use client";
+
 import {
   NavbarBrand,
   NavbarContent,
@@ -13,13 +15,21 @@ import clsx from "clsx";
 import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
-import { Link } from "@nextui-org/link";
-import NavUserAvartar from "./navUserAvartar";
 import { Divider } from "@nextui-org/divider";
+import { Link } from "@nextui-org/link";
+import { useState } from "react";
+import NavUserAvartar from "./navUserAvartar";
 
 export const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <NextUINavbar maxWidth="xl" position="sticky" isBordered>
+    <NextUINavbar
+      maxWidth="2xl"
+      position="sticky"
+      isBordered
+      isMenuOpen={isMenuOpen}
+    >
       <NavbarContent className=" sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit hidden sm:flex">
           <Link
@@ -33,7 +43,11 @@ export const Navbar = () => {
             <p className="font-bold text-inherit">Jiajun Huang</p>
           </Link>
         </NavbarBrand>
-        <NavbarMenuToggle className="sm:hidden" />
+        <NavbarMenuToggle
+          className="sm:hidden"
+          // onPress={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        />
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex  sm:basis-full" justify="center">
@@ -64,18 +78,19 @@ export const Navbar = () => {
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
           <NavbarBrand as="li" className="gap-3 max-w-fit text-xl">
-          <Link
-            className={clsx(
-              linkStyles({ color: "foreground" }),
-              "data-[active=true]:text-primary data-[active=true]:font-medium"
-            )}
-            href="/"
-          >
-            <Logo />
-            <p className="font-bold text-inherit">Jiajun Huang</p>
-          </Link>
-        </NavbarBrand>
-        <Divider />
+            <Link
+              className={clsx(
+                linkStyles({ color: "foreground" }),
+                "data-[active=true]:text-primary data-[active=true]:font-medium"
+              )}
+              href="/"
+              onPress={() => setIsMenuOpen(false)}
+            >
+              <Logo />
+              <p className="font-bold text-inherit">Jiajun Huang</p>
+            </Link>
+          </NavbarBrand>
+          <Divider />
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
@@ -86,6 +101,7 @@ export const Navbar = () => {
                 )}
                 href={item.href}
                 isBlock
+                onPress={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>

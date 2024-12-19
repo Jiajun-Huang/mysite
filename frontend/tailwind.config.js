@@ -16,5 +16,12 @@ module.exports = {
     },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui(),
+    function ({ addBase }) {
+      addBase({
+        html: { fontSize: "20px" },
+      });
+    },
+  ],
 };
