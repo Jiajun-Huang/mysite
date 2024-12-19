@@ -1,19 +1,4 @@
-import Link from "next/link";
-
-import React from "react";
-
 // https://github.com/nextui-org/nextui/issues/3206
-
-interface RemixLinkProps extends Omit<LinkProps, "to"> {
-  href: string;
-}
-
-const RemixLink = React.forwardRef<HTMLAnchorElement, RemixLinkProps>(
-  ({ href, ...props }, ref) => {
-    delete props["onClick"];
-    return <Link ref={ref} {...props} />;
-  }
-);
 
 export default function TocContent({
   tocItems,
@@ -38,7 +23,7 @@ export default function TocContent({
     //     ></ListboxItem>
     //   ))}
     // </Listbox>
-    <div>
+    <nav>
       {tocItems.map((item) => (
         <a
           key={item.id}
@@ -51,6 +36,6 @@ export default function TocContent({
           {item.text}
         </a>
       ))}
-    </div>
+    </nav>
   );
 }

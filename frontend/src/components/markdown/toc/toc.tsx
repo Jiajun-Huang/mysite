@@ -25,7 +25,6 @@ function Toc({ queryId }: { queryId: string }) {
         );
       } else {
         setIsScrolled(false);
-        // chanage --scroll-padding-top css variable to 0 if isScrolled is false
         document.documentElement.style.setProperty("--scroll-padding-top", "0");
       }
     };
@@ -60,10 +59,10 @@ function Toc({ queryId }: { queryId: string }) {
   return (
     <div className={`transition-all duration-300`}>
       <div className="hidden md:block">
-        <TocDisplayBig tocItems={tocItems} isScrolled />
+        <TocDisplayBig tocItems={tocItems} isScrolled={isScrolled} />
       </div>
       <div className="md:hidden">
-        <TocDisplaySmall tocItems={tocItems} isScrolled />
+        <TocDisplaySmall tocItems={tocItems} isScrolled={isScrolled} />
       </div>
     </div>
   );

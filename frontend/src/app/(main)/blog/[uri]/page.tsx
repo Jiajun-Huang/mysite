@@ -48,9 +48,7 @@ export default async function BlogDetail({ params }: Prop) {
         <div className="flex gap-x-1">
           <span>Tags:</span>
           {tags.map((tag, index) => (
-            <span size="sm" key={index}>
-              {tag.name}
-            </span>
+            <span key={index}>{tag.name}</span>
           ))}
         </div>
       </div>

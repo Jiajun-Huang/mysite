@@ -46,7 +46,10 @@
   ::after {
     color: var(--nextui-default-foreground);
   } */
-
+  #aplayer {
+    font-family: "LXGWBright", sans-serif !important;
+    font-size: 1rem;
+  }
   #aplayer li {
     border: 0.25px solid
       hsl(

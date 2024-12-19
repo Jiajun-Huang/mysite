@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import "./APlayer.min.css";
 import "./custom.css";
 
-
+// https://bbs.125.la/thread-14767706-1-1.html
 export default function Music() {
   useEffect(() => {
     let ap = null; // Declare APlayer instance
