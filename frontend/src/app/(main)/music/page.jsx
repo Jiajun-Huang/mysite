@@ -1,5 +1,6 @@
 "use client"; // Ensures the page is treated as a client-side component
 
+import { BASE_URL } from "@/api/request";
 import { useEffect } from "react";
 import "./APlayer.min.css";
 import "./custom.css";
@@ -14,13 +15,14 @@ export default function Music() {
     const asyncFunction = async () => {
       try {
         const response = await fetch(
-          "https://api.i-meto.com/meting/api?server=netease&type=playlist&id=7353465344"
+          BASE_URL + "/api/music/songlist/?id=7353465344&server=wyy"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch playlist data");
         }
 
         const json = await response.json();
+        console.log(json)
         const audioData = json.map((song) => ({
           name: song.title,
           artist: song.author,
@@ -40,21 +42,60 @@ export default function Music() {
           preload: "auto",
         });
 
-        // Handle media key events (play/pause, next, previous)
+        // Media Session API integration
+        if ("mediaSession" in navigator) {
+          console.log("sdfasdf");
+          const updateMediaSession = (index) => {
+            const currentSong = ap.list.audios[index];
+            console.log(currentSong);
+            if (!currentSong) return;
+
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: currentSong.name,
+              artist: currentSong.artist,
+              album: "Playlist",
+              artwork: [
+                { src: currentSong.cover, sizes: "512x512", type: "image/png" },
+              ],
+            });
+          };
+
+          // Update metadata for the current song
+          ap.on("listswitch", function (e) {
+            console.log(e);
+            updateMediaSession(e.index);
+          });
+
+          updateMediaSession(ap.list.index); // Initialize metadata for the first song
+
+          navigator.mediaSession.setActionHandler("play", () => ap.play());
+          navigator.mediaSession.setActionHandler("pause", () => ap.pause());
+          navigator.mediaSession.setActionHandler("previoustrack", () =>
+            ap.skipBack()
+          );
+          navigator.mediaSession.setActionHandler("nexttrack", () =>
+            ap.skipForward()
+          );
+
+          navigator.mediaSession.setActionHandler("seekto", (seekTime) => {
+            // Seek to the provided time (in seconds)
+            console.log(`Seeking to ${seekTime} seconds`);
+            ap.seek(seekTime); // `ap.seek` is used to seek to the specific time in APlayer
+          });
+        }
+
+        // Handle media key events
         const handleMediaKeyEvent = (event) => {
-          console.log(event.code);
           switch (event.code) {
             case "Space":
             case "MediaPlayPause":
               ap.toggle(); // Play/Pause
               break;
-
             case "KeyD":
             case "ArrowRight":
             case "MediaTrackNext":
               ap.skipForward(); // Next
               break;
-
             case "KeyA":
             case "ArrowLeft":
             case "MediaTrackPrevious":
