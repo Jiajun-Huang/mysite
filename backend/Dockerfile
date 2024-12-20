@@ -13,6 +13,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     gcc \
     default-libmysqlclient-dev \
     pkg-config \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy only requirements.txt first to leverage Docker layer caching

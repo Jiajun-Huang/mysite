@@ -10,7 +10,7 @@ wyy_cookie = "MUSIC_A_T=1464702467470; MUSIC_R_T=1464702604011; NMTID=00OeXfjn2A
 
 
 def get_callback_url(request):
-    protocol = request.scheme
+    protocol = request.headers.get("X-Forwarded-Proto", request.scheme) or request.scheme
     host = request.headers.get("X-Forwarded-Host") or request.headers.get("Host")
     
     if not host:
