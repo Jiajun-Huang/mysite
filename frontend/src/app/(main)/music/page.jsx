@@ -7,9 +7,34 @@ import "./custom.css";
 
 // https://bbs.125.la/thread-14767706-1-1.html
 // one ap :https://api.i-meto.com/meting/api?server=netease&type=playlist&id=7353465344
+
+
+
 export default function Music() {
   useEffect(() => {
     let ap = null; // Declare APlayer instance
+    const handleMediaKeyEvent = (event) => {
+      if (ap) {
+        switch (event.code) {
+          case "Space":
+          case "MediaPlayPause":
+            ap.toggle(); // Play/Pause
+            break;
+          case "KeyD":
+          case "ArrowRight":
+          case "MediaTrackNext":
+            ap.skipForward(); // Next
+            break;
+          case "KeyA":
+          case "ArrowLeft":
+          case "MediaTrackPrevious":
+            ap.skipBack(); // Previous
+            break;
+          default:
+            break;
+        }
+      }
+    };
 
     // Async function to fetch music data
     const asyncFunction = async () => {
@@ -22,7 +47,7 @@ export default function Music() {
         }
 
         const json = await response.json();
-        console.log(json)
+        console.log(json);
         const audioData = json.map((song) => ({
           name: song.title,
           artist: song.author,
@@ -78,48 +103,11 @@ export default function Music() {
           );
 
           navigator.mediaSession.setActionHandler("seekto", (seekTime) => {
-            // Seek to the provided time (in seconds)
-            console.log(`Seeking to ${seekTime} seconds`);
             ap.seek(seekTime); // `ap.seek` is used to seek to the specific time in APlayer
           });
         }
-
-        // Handle media key events
-        const handleMediaKeyEvent = (event) => {
-          switch (event.code) {
-            case "Space":
-            case "MediaPlayPause":
-              ap.toggle(); // Play/Pause
-              break;
-            case "KeyD":
-            case "ArrowRight":
-            case "MediaTrackNext":
-              ap.skipForward(); // Next
-              break;
-            case "KeyA":
-            case "ArrowLeft":
-            case "MediaTrackPrevious":
-              ap.skipBack(); // Previous
-              break;
-            default:
-              break;
-          }
-        };
-
         // Add event listener for media keys
         window.addEventListener("keydown", handleMediaKeyEvent);
-
-        // Cleanup on unmount
-        return () => {
-          if (ap) {
-            ap.destroy(); // Destroy APlayer instance
-            ap = null;
-            console.log("APlayer instance destroyed.");
-          }
-
-          // Clean up media key event listener
-          window.removeEventListener("keydown", handleMediaKeyEvent);
-        };
       } catch (error) {
         console.error("Error loading playlist data: ", error);
       }
@@ -127,6 +115,16 @@ export default function Music() {
 
     // Invoke async function
     asyncFunction();
+
+    return () => {
+      // Cleanup function on unmount
+      if (ap) {
+        ap.destroy(); // Destroy APlayer instance
+        ap = null;
+      }
+      // Remove event listener for media keys
+      window.removeEventListener("keydown", handleMediaKeyEvent);
+    };
   }, []); // You can pass `theme` or other dependencies if needed
 
   return <div id="aplayer"></div>;
