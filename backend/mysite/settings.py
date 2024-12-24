@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     "comments.apps.CommentsConfig",
     "music.apps.MusicConfig",
 ]
-SITE_ID = 10
+SITE_ID = 14
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
