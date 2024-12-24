@@ -34,10 +34,20 @@ export default function NavUserAvartar() {
             const id = setTimeout(() => setIsOpen(false), delay);
             setTimeoutId(id);
           }}
-          onPressUp={() => {
-            console.log("press up");
+          // onPress={() => {
+          //   console.log("press");
+          //   clearTimeout(timeoutId);
+          //   setIsOpen(true);
+          // }}
+          // onClickCapture={() => {
+          //   console.log("click capture");
+          //   clearTimeout(timeoutId);
+          //   setIsOpen(true);
+          // }}
+          onPressEnd={() => {
+            console.log("press end");
             clearTimeout(timeoutId);
-            setIsOpen(true);
+            setIsOpen((prev) => !prev);
           }}
         >
           <UserAvartar user={user.pk} width={40} height={40} />

@@ -6,7 +6,6 @@ import { Metadata, Viewport } from "next";
 
 import { Providers } from "../providers";
 
-import LXGWBright from "@/components/fonts";
 import { Navbar } from "@/components/nav/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
@@ -44,9 +43,8 @@ export default function RootLayout({
             "min-h-screen bg-background font-sans antialiased",
             fontSans.variable,
             "text-small sm:text-base" // Responsive font sizes
-          ) +
-          " " +
-          LXGWBright.className
+          ) + " "
+          // LXGWBright.className
         }
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
