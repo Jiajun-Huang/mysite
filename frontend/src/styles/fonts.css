@@ -1,41 +1,41 @@
 @font-face {
   font-family: "LXGWBright";
-  src: url("./fonts/LXGWBright-Medium.ttf") format("truetype");
+  src: url("./fonts/LXGWBright-Medium.woff") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "LXGWBright";
-  src: url("./fonts/LXGWBright-Italic.ttf") format("truetype");
+  src: url("./fonts/LXGWBright-Italic.woff") format("truetype");
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
   font-family: "LXGWBright";
-  src: url("./fonts/LXGWBright-Light.ttf") format("truetype");
+  src: url("./fonts/LXGWBright-Light.woff") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: "LXGWBright";
-  src: url("./fonts/LXGWBright-LightItalic.ttf") format("truetype");
+  src: url("./fonts/LXGWBright-LightItalic.woff") format("truetype");
   font-weight: 300;
   font-style: italic;
 }
 
 @font-face {
   font-family: "LXGWBright";
-  src: url("./fonts/LXGWBright-Medium.ttf") format("truetype");
+  src: url("./fonts/LXGWBright-Medium.woff") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "LXGWBright";
-  src: url("./fonts/LXGWBright-MediumItalic.ttf") format("truetype");
+  src: url("./fonts/LXGWBright-MediumItalic.woff") format("truetype");
   font-weight: 500;
   font-style: italic;
 }

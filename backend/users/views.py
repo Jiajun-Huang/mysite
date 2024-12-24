@@ -19,28 +19,33 @@ from rest_framework.decorators import action
 from .models import Profile
 from .serializers import UserProfileSerializer
 
-
 # https://michaeldel.github.io/posts/django-rest-auth-social-tutorial/
 # https://www.freecodecamp.org/news/set-up-github-oauth-on-django-for-user-authentication/
+
+# if you get the code but login fails, you can use this view to get the url 
+# https://github.com/iMerica/dj-rest-auth/issues/525
+
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
     client_class = OAuth2Client
 
-    # github_callback = "http://localhost:8080/api/auth/callback/github/"
+    # needs to match the callback url in your GitHub app settings
+    # gets called after the user logs in with GitHub, needs to match the callback host
     @property
     def callback_url(self):
         # use the same callback url as defined in your GitHub app, this url
         # must be absolute:
-        call_b = self.request.build_absolute_uri(reverse("github_callback"))
-        print(call_b)
+        call_b = SocialApp.objects.get(provider="github").sites.first()
         return call_b
 
-
+# will make url for oauth2 login to github with redirect url 
 def custom_oauth2_login(request, *args, **kwargs):
     # Call the original oauth2_login view
-    # print(str(request))
-    # get request url
-
+    if "HTTP_X_FORWARDED_HOST" in request.META:
+        request.META["HTTP_HOST"] = request.META["HTTP_X_FORWARDED_HOST"]
+    if "HTTP_X_FORWARDED_PROTO" in request.META:
+        request.META["wsgi.url_scheme"] = request.META["HTTP_X_FORWARDED_PROTO"]    
+        
     response = github_views.oauth2_login(request, *args, **kwargs)
 
     # make request to github
@@ -88,7 +93,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         return HttpResponse(status=404)
 
 
+# the url path to here needs to match the callback url in your GitHub app settings
+# the url it points to is the url of the frontend which will do the login
 def github_callback(request):
     params = urllib.parse.urlencode(request.GET)
-    redirect_site = SocialApp.objects.get(provider="github").sites.first()
+    protocol = request.headers.get("X-Forwarded-Proto", request.scheme) or request.scheme
+    host = request.headers.get("X-Forwarded-Host") or request.headers.get("Host")
+    redirect_site = f"{protocol}://{host}/callback/github"
+    # redirect_site = "http://localhost:3000/callback/github"
     return redirect(f"{redirect_site}/?{params}")

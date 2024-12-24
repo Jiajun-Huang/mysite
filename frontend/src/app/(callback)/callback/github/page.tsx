@@ -29,6 +29,8 @@ export function Callback() {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        } else {
+          throw new Error("Login failed");
         }
       })
       .then((data) => {

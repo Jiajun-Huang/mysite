@@ -17,7 +17,7 @@ export default function NavUserAvartar() {
   const { user, logout } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<any>(null);
-  console.log(user);
+
   if (!user || !user.pk) return <SignInButton />;
   const delay = 200;
   return (
@@ -33,6 +33,21 @@ export default function NavUserAvartar() {
           onMouseLeave={() => {
             const id = setTimeout(() => setIsOpen(false), delay);
             setTimeoutId(id);
+          }}
+          // onPress={() => {
+          //   console.log("press");
+          //   clearTimeout(timeoutId);
+          //   setIsOpen(true);
+          // }}
+          // onClickCapture={() => {
+          //   console.log("click capture");
+          //   clearTimeout(timeoutId);
+          //   setIsOpen(true);
+          // }}
+          onPressEnd={() => {
+            console.log("press end");
+            clearTimeout(timeoutId);
+            setIsOpen((prev) => !prev);
           }}
         >
           <UserAvartar user={user.pk} width={40} height={40} />
