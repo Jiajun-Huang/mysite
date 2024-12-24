@@ -1,16 +1,24 @@
 from allauth.socialaccount.providers.github import views as github_views
 from django.contrib import admin
 from django.urls import include, path
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 from users.views import *
 
 router = routers.DefaultRouter()
 router.register(r"user", UserProfileViewSet)
 
+@csrf_exempt
+def wap(request):
+    f = GitHubLogin.as_view()
+    a = f(request)
+    return a
+
+
 urlpatterns = [
     path("auth/", include("dj_rest_auth.urls")),
     path("auth/registration/", include("dj_rest_auth.registration.urls")),
-    path("auth/github/", GitHubLogin.as_view(), name="github_login"),
+    path("auth/github/", wap, name="github_login"),
     path("auth/github/url/", custom_oauth2_login, name="github_url"),
     path("auth/github/callback/", github_callback, name="github_callback"),
     path("", include(router.urls)),

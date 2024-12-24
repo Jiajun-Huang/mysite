@@ -30,14 +30,15 @@ class GitHubLogin(SocialLoginView):
     client_class = OAuth2Client
 
     # needs to match the callback url in your GitHub app settings
+    # gets called after the user logs in with GitHub, needs to match the callback host
     @property
     def callback_url(self):
         # use the same callback url as defined in your GitHub app, this url
         # must be absolute:
-        call_b = self.request.build_absolute_uri(reverse("github_callback"))
+        call_b = SocialApp.objects.get(provider="github").sites.first()
         return call_b
 
-
+# will make url for oauth2 login to github with redirect url 
 def custom_oauth2_login(request, *args, **kwargs):
     # Call the original oauth2_login view
     if "HTTP_X_FORWARDED_HOST" in request.META:
@@ -99,4 +100,5 @@ def github_callback(request):
     protocol = request.headers.get("X-Forwarded-Proto", request.scheme) or request.scheme
     host = request.headers.get("X-Forwarded-Host") or request.headers.get("Host")
     redirect_site = f"{protocol}://{host}/callback/github"
+    # redirect_site = "http://localhost:3000/callback/github"
     return redirect(f"{redirect_site}/?{params}")
