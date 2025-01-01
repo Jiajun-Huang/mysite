@@ -16,7 +16,7 @@ def get_callback_url(request):
     if not host:
         host = "localhost:8000"
     host = host + "/api"
-    HOST = protocol + '://' + host + '/'
+    HOST = protocol + '://' + host
     return HOST
 
 def set_no_cache(res):

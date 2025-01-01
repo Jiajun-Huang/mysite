@@ -11,6 +11,10 @@ const nextConfig = {
         source: "/api/:path*",
         destination: `${backend_url}/api/:path*/`,
       },
+      {
+        source: "/static-page/:path*",
+        destination: "/static-page/:path*/index.html",
+      },
     ];
   },
   trailingSlash: true,
