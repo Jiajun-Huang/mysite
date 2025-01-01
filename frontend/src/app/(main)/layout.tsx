@@ -1,8 +1,8 @@
+import "@/styles/fonts.css";
 import "@/styles/globals.css";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
-import "@/styles/fonts.css";
 
 import { Providers } from "../providers";
 
@@ -38,11 +38,14 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <head />
       <body
-        className={clsx(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-          "text-small sm:text-base" // Responsive font sizes
-        )}
+        className={
+          clsx(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable,
+            "text-small sm:text-base" // Responsive font sizes
+          ) + " "
+          // LXGWBright.className
+        }
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex flex-col h-screen">
