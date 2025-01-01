@@ -860,6 +860,12 @@ const shellNames = Object.keys(shellTypes);
 
 function init() {
   // Remove loading state
+  document.addEventListener("DOMContentLoaded", () => {
+    const music = document.getElementById("background-music");
+    music.play().catch((error) => {
+      console.error("Autoplay failed:", error);
+    });
+  });
   document.querySelector(".loading-init").remove();
   appNodes.stageContainer.classList.remove("remove");
 
