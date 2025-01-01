@@ -1,6 +1,7 @@
+import argparse
 import os
 import subprocess
-import argparse
+import sys
 
 # Set environment variables
 os.environ['DJANGO_ALLOWED_HOSTS'] = 'localhost 127.0.0.1'
@@ -91,20 +92,50 @@ def frontend():
     run_command('ssh unraid "cd /mnt/user/appdata && bash deploy.sh"', "Deployment script")
     print("Frontend build and deployment completed successfully!")
     
+
+def start_frontend():
+    # cd into frontend directory
+    os.chdir('frontend')
+    # Run the start script
+    run_command("npm run dev", "Failed to start frontend")
+    
     
 def main():
-    parser = argparse.ArgumentParser(description='Build and deploy Django and Next.js apps to Unraid server')
-    parser.add_argument('app', choices=['all', 'backend', 'frontend'], help='Choose which app to build and deploy')
-    args = parser.parse_args()
-    if args.app == 'all':
-        all()
-    elif args.app == 'backend':
-        backend()
-    elif args.app == 'frontend':
-        frontend()
+    # parser = argparse.ArgumentParser(description='Build and deploy Django and Next.js apps to Unraid server')
+    # parser.add_argument('app', choices=['all', 'backend', 'frontend'], help='Choose which app to build and deploy')
+    # args = parser.parse_args()
+    # if args.app == 'all':
+    #     all()
+    # elif args.app == 'backend':
+    #     backend()
+    # elif args.app == 'frontend':
+    #     frontend()
+    # else:
+    #     print("Invalid argument")
+    #     exit(1)
+        
+    # get first argument [build, start]
+    app = sys.argv[1] 
+    
+    # get second argument [frontend, backend]
+    action = sys.argv[2]
+    
+    if app == 'build':
+        if action == 'frontend':
+            frontend()
+        elif action == 'backend':
+            backend()
+        else:
+            print("Invalid argument")
+            exit(1)
+    elif app == 'start':
+        if action == 'frontend':
+            start_frontend()
+        else:
+            print("Invalid argument")
+            exit(1)
     else:
         print("Invalid argument")
         exit(1)
-        
 if __name__ == '__main__':
     main()
