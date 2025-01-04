@@ -1,0 +1,11 @@
+@import "./variable.scss";
+
+body {
+  background-color: $globalBackgroundColor;
+}
+
+.global-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
