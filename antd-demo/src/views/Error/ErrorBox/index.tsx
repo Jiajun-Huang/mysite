@@ -1,8 +1,7 @@
-import { notFound } from "@/types/error";
 import { ApiTwoTone } from "@ant-design/icons";
 import { Button, Space } from "antd";
 import { useNavigate } from "react-router";
-import error404 from "~/images/404-Airbnb_final-d652ff855b1335dd3eedc3baa8dc8b69.gif";
+import { notFound } from "../../../types/error";
 import styled from "./index.module.scss";
 const NotFound: notFound = (props) => {
   const { notFoundBox, text } = styled;
@@ -26,7 +25,6 @@ const NotFound: notFound = (props) => {
           </Button>
         </p>
       </div>
-      <img src={error404} alt="" />
     </div>
   );
 };

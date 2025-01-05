@@ -1,11 +1,3 @@
-// import { useEffect, useState } from "react";
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-// import ModuleScss from "@/views/StyleIsolation/ModuleScss";
-// import StyledComponents from "@/views/StyleIsolation/StyledComponents";
-// import AntdButton from "@/views/TestAntd/AntdButton";
-// import AntdIcons from "@/views/TestAntd/AntdIcons";
 import React from "react";
 import { useRoutes } from "react-router";
 import router from "./router";

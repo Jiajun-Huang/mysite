@@ -1,12 +1,5 @@
 import { getItemType, menuClick, MenuItem } from "@/types/mainMenu";
-import {
-  DesktopOutlined,
-  FileOutlined,
-  HomeOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -30,18 +23,11 @@ const getItem: getItemType = function getItem(
 
 const items: MenuItem[] = [
   getItem("Home", "/home", <HomeOutlined />),
-  getItem("About", "/about", <PieChartOutlined />),
-  getItem("Page", "/page", <DesktopOutlined />),
-  getItem("User", "/user", <UserOutlined />, [
+  getItem("Blog", "/user", <UserOutlined />, [
     getItem("Menu", "/user/menu"),
     getItem("User-02", "/user/user-02"),
     getItem("User-03", "/user/user-03"),
   ]),
-  getItem("Team", "/team", <TeamOutlined />, [
-    getItem("Team-01", "/team/team-01"),
-    getItem("Team-02", "/team/team-02"),
-  ]),
-  getItem("Files", "/files", <FileOutlined />),
 ];
 
 const rootSubmenuKeys = ["/user", "/team"];
