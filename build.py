@@ -99,7 +99,12 @@ def start_frontend():
     # Run the start script
     run_command("npm run dev", "Failed to start frontend")
     
-    
+
+def start_backend():
+    # cd into backend directory
+    os.chdir('backend')
+    # Run the start script
+    run_command("python manage.py runserver", "Failed to start backend")
 def main():
     # parser = argparse.ArgumentParser(description='Build and deploy Django and Next.js apps to Unraid server')
     # parser.add_argument('app', choices=['all', 'backend', 'frontend'], help='Choose which app to build and deploy')
@@ -125,12 +130,17 @@ def main():
             frontend()
         elif action == 'backend':
             backend()
+        elif action == 'all':
+            frontend()
+            backend()
         else:
             print("Invalid argument")
             exit(1)
     elif app == 'start':
         if action == 'frontend':
             start_frontend()
+        elif action == 'backend':
+            start_backend()
         else:
             print("Invalid argument")
             exit(1)

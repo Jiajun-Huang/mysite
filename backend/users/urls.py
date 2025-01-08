@@ -22,5 +22,5 @@ urlpatterns = [
     path("auth/github/url/", custom_oauth2_login, name="github_url"),
     path("auth/github/callback/", github_callback, name="github_callback"),
     path("", include(router.urls)),
-    # path('accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
