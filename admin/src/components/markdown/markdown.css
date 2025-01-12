@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.markdown {
+  cursor: default;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5 {
+  font-weight: bold;
+  position: relative;
+}
+
+.markdown table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border: 1px solid;
+  border-radius: 0.5rem;
+}
+
+.markdown li {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin: 0.5rem 0 0.5rem 1.5rem;
+}
+
+.markdown pre {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+/* use title to replay h1 tag */
+.markdown h1 {
+  font-size: 2rem;
+  display: none !important;
+}
+
+.markdown h1::before {
+  font-size: 2rem;
+}
+
+.markdown h2 {
+  font-size: 1.5rem;
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.markdown h3 {
+  font-size: 1.3rem;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.markdown h4 {
+  font-size: 1.1rem;
+}
+
+.markdown h5 {
+  font-size: 1rem;
+}
+
+@layer base {
+  .markdown strong:hover {
+    @apply text-primary;
+  }
+
+  .markdown p {
+    margin: 0.5rem 0;
+  }
+
+  .markdown a {
+    @apply text-primary;
+  }
+
+  .markdown a:hover {
+    @apply text-primary-500;
+    text-decoration: underline;
+  }
+
+  .markdown a:active {
+    @apply text-primary-300;
+  }
+
+  /* .markdown a:visited {
+    @apply text-primary-600;
+  } */
+}
