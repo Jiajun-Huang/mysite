@@ -7,33 +7,33 @@ const { TextArea } = Input;
 const BlogCreate = () => {
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  
   const onSaveAsDraft = async (values) => {
     setIsSubmitting(true);
     try {
       const mdContent = values.content;
       const mdFile = new File([mdContent], `${values.titleEn}.md`, {
-        type: "text/markdown",
+        type: 'text/markdown'
       });
-
+      
       const formData = new FormData();
-      formData.append("files", mdFile);
-      formData.append("titleZh", values.titleZh);
-      formData.append("titleEn", values.titleEn);
-      formData.append("category", values.category);
-      formData.append("tags", JSON.stringify(values.tags));
-      formData.append("content", mdContent);
-
-      const response = await fetch("/api/blog", {
-        method: "POST",
+      formData.append('files', mdFile);
+      formData.append('titleZh', values.titleZh);
+      formData.append('titleEn', values.titleEn);
+      formData.append('category', values.category);
+      formData.append('tags', JSON.stringify(values.tags));
+      formData.append('content', mdContent);
+      
+      const response = await fetch('/api/blog', {
+        method: 'POST',
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save markdown");
+        throw new Error('Failed to save markdown');
       }
 
-      message.success("Successfully saved as draft!");
+      message.success('Successfully saved as draft!');
     } catch (err) {
       message.error(err.message);
     } finally {
@@ -46,28 +46,28 @@ const BlogCreate = () => {
     try {
       const mdContent = values.content;
       const mdFile = new File([mdContent], `${values.titleEn}.md`, {
-        type: "text/markdown",
+        type: 'text/markdown'
       });
-
+      
       const formData = new FormData();
-      formData.append("files", mdFile);
-      formData.append("titleZh", values.titleZh);
-      formData.append("titleEn", values.titleEn);
-      formData.append("category", values.category);
-      formData.append("tags", JSON.stringify(values.tags));
-      formData.append("content", mdContent);
-      formData.append("status", "published");
-
-      const response = await fetch("/api/blog", {
-        method: "POST",
+      formData.append('files', mdFile);
+      formData.append('titleZh', values.titleZh);
+      formData.append('titleEn', values.titleEn);
+      formData.append('category', values.category);
+      formData.append('tags', JSON.stringify(values.tags));
+      formData.append('content', mdContent);
+      formData.append('status', 'published');
+      
+      const response = await fetch('/api/blog', {
+        method: 'POST',
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error("Failed to publish markdown");
+        throw new Error('Failed to publish markdown');
       }
 
-      message.success("Successfully published!");
+      message.success('Successfully published!');
     } catch (err) {
       message.error(err.message);
     } finally {
@@ -82,11 +82,11 @@ const BlogCreate = () => {
         layout="horizontal"
         onFinish={onSaveAsDraft}
       >
-        <Row>
+        <Row justify="space-between">
           <Col span={12}>
             <Form.Item
               name="titleZh"
-              label="Title"
+              label="中文标题"
               rules={[{ required: true, message: "请输入中文标题!" }]}
             >
               <Input />
@@ -95,7 +95,7 @@ const BlogCreate = () => {
           <Col span={12}>
             <Form.Item
               name="titleEn"
-              label="URL"
+              label="英文标题"
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
               rules={[{ required: true, message: "请输入英文标题!" }]}
@@ -105,13 +105,11 @@ const BlogCreate = () => {
           </Col>
         </Row>
 
-        <Row gutter={16}>
+        <Row justify="space-between">
           <Col span={8}>
             <Form.Item
               name="category"
               label="分类"
-              labelCol={{ span: 9 }}
-              wrapperCol={{ span: 15 }}
               rules={[{ required: true, message: "请选择分类!" }]}
             >
               <Select>
