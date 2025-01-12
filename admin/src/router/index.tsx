@@ -2,6 +2,9 @@ import React, { lazy } from "react";
 import { Navigate } from "react-router";
 import SkeletonLoading from "../components/SkeletonLoading";
 import { routesType } from "../types/route";
+import BlogCreate from "../views/Blog/blogCreate";
+import BlogEdit from "../views/Blog/blogEdit";
+import BlogList from "../views/Blog/blogList";
 import Top from "../views/Layout/Top";
 import Login from "../views/Login";
 
@@ -38,6 +41,18 @@ const routes: routesType[] = [
       {
         path: "/home",
         element: withLoadingComponent(<Home />),
+      },
+      {
+        path: "/blog",
+        element: withLoadingComponent(<BlogList />),
+      },
+      {
+        path: "/blog/:id",
+        element: withLoadingComponent(<BlogEdit />),
+      },
+      {
+        path: "/blog/create",
+        element: withLoadingComponent(<BlogCreate />),
       },
     ],
   },

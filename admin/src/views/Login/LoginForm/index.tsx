@@ -27,8 +27,6 @@ const App: React.FC = () => {
       ""
     );
     const token = window.btoa(arg);
-    // let encodedData = window.btoa("Hello, world"); // 编码
-    // let decodedData = window.atob(encodedData);  // 解码
     console.log(token);
 
     Cookie.set("token", token); // 模拟 token

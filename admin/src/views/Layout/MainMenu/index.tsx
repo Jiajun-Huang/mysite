@@ -23,11 +23,7 @@ const getItem: getItemType = function getItem(
 
 const items: MenuItem[] = [
   getItem("Home", "/home", <HomeOutlined />),
-  getItem("Blog", "/user", <UserOutlined />, [
-    getItem("Menu", "/user/menu"),
-    getItem("User-02", "/user/user-02"),
-    getItem("User-03", "/user/user-03"),
-  ]),
+  getItem("Blog", "/blog", <UserOutlined />),
 ];
 
 const rootSubmenuKeys = ["/user", "/team"];
