@@ -1,13 +1,34 @@
 import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
 import { Button, Col, Form, Input, Row, Select, Space } from "antd";
 import { useState } from "react";
+import { fetchCategories, fetchTags } from "../../apis/blog";
 import MarkdownEditor from "../../components/markdown/editor";
 
 const { TextArea } = Input;
 
 const BlogCreate = () => {
+  // query the tag and category
+  const tagQuery = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchTags,
+  });
+  
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const categoryQuery = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchCategories,
+  });
+
+  if (tagQuery.isLoading || categoryQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (tagQuery.isError || categoryQuery.isError) {
+    return <div>Error...</div>;
+  }
+
 
   const onSaveAsDraft = async (values) => {
     setIsSubmitting(true);
@@ -107,7 +128,9 @@ const BlogCreate = () => {
             <Form.Item
               name="category"
               label="Category"
-              rules={[{ required: true, message: "Please choose the category" }]}
+              rules={[
+                { required: true, message: "Please choose the category" },
+              ]}
             >
               <Select>
                 <Select.Option value="javascript">
