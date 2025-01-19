@@ -11,8 +11,11 @@ export const getAllCookies = () => Cookies.get();
  * @param name cookie 名字
  * @param data 存储的数据
  */
-export const setCookie = <T>(name: string, data: T) =>
-  Cookies.set(name, String(data));
+export const setCookie = <T>(name: string, data: T, maxAgeDays = 30) => {
+  Cookies.set(name, String(data), {
+    expires: maxAgeDays, // Persistent cookie, valid for `maxAgeDays` days
+  });
+};
 
 /**
  *  获取指定 cookie
@@ -30,3 +33,9 @@ export const removeAllCookies = () => {
     Cookies.remove(value);
   });
 };
+
+/**
+ * 删除指定 cookie
+ * @param name cookie 名字
+ */
+export const removeCookie = (name: string) => Cookies.remove(name);

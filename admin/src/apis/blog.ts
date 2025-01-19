@@ -1,5 +1,5 @@
 export const fetchTags = async () => {
-  const response = await fetch("api/tag/");
+  const response = await fetch("/api/tag/");
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -7,7 +7,7 @@ export const fetchTags = async () => {
 };
 
 export const fetchCategories = async () => {
-  const response = await fetch("api/category/");
+  const response = await fetch("/api/category/");
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

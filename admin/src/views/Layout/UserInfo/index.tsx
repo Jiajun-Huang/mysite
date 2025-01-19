@@ -1,40 +1,27 @@
 // import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Dropdown } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { removeAllCookies } from "../../../utils/cookies.ts";
-import { localStorageRemoveItemAll } from "../../../utils/localStorage.ts";
+import { useAuth } from "../../../provider/auth.tsx";
 import Clock from "../NowTime";
 
 const UserInfo: React.FC = () => {
   const navigateTo = useNavigate();
+  const { userInfo, logout, getUserInfo } = useAuth();
+  useEffect(() => {
+    console.log("userInfo", userInfo);
+    if (!userInfo) {
+      getUserInfo();
+    }
+  }, [userInfo, getUserInfo]);
 
   const LogoutClick = () => {
-    removeAllCookies();
-    localStorageRemoveItemAll();
+    logout();
     navigateTo("/login");
   };
 
   const items: MenuProps["items"] = [
-    // {
-    //   label: (
-    //     <a
-    //       className="text-3xl font-bold underline"
-    //       href="https://www.antgroup.com"
-    //     >
-    //       1st menu item
-    //     </a>
-    //   ),
-    //   key: "0",
-    // },
-    // {
-    //   label: <a href="https://www.aliyun.com">2nd menu item</a>,
-    //   key: "1",
-    // },
-    // {
-    //   type: "divider",
-    // },
     {
       label: (
         <a href="#" onClick={LogoutClick}>
@@ -63,7 +50,7 @@ const UserInfo: React.FC = () => {
           gap={4}
           onClick={(e) => e?.preventDefault()}
         >
-          {"卢"}
+          {userInfo?.username}
         </Avatar>
       </Dropdown>
     </div>

@@ -1,6 +1,6 @@
+import "katex/dist/katex.min.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "katex/dist/katex.min.css";
 // 样式顺序 初始化样式最前面
 // 全局配置初始化 css 文件
 // 全局样式 为了覆盖业务 UI 组件样式
@@ -12,6 +12,7 @@ import App from "./App.tsx";
 // import Router from "@/router/index.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router";
+import { AuthProvider } from "./provider/auth.tsx";
 
 // import './index.css'
 const queryClient = new QueryClient({
@@ -26,7 +27,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>

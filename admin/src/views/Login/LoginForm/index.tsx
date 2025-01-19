@@ -1,42 +1,29 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
-import Cookie from "js-cookie";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import { localStorageSetItem } from "../../../utils/localStorage";
+import { useAuth } from "../../../provider/auth";
 import styles from "./index.module.scss";
-
-const formData = {
-  username: "admin",
-  password: "123456",
-};
 
 const App: React.FC = () => {
   const navigateTo = useNavigate();
   const { loginFormBox, loginFormButton, formTitle } = styles;
   const [loadings, setLoadings] = useState<boolean[]>([]);
+  const { login } = useAuth(); // Use the login hook from the provider
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log("Received values of form: ", values);
-    localStorageSetItem("userInfo", values);
-    const arg = Object.entries(values).reduce(
-      (pre, cur, index, array) => (
-        (pre += `${cur[0]}=${cur[1]}${index === array.length - 1 ? "" : "&"}`),
-        pre
-      ),
-      ""
-    );
-    const token = window.btoa(arg);
-    console.log(token);
-
-    Cookie.set("token", token); // 模拟 token
-    Cookie.set("userInfo", arg);
-
     setLoadings([true]);
 
-    setTimeout(() => {
-      navigateTo("/");
-    }, 3000);
+    const success = await login(values.username, values.password);
+    if (success) {
+      setTimeout(() => {
+        navigateTo("/");
+      }, 3000);
+    } else {
+      setLoadings([false]);
+      console.error("Login failed");
+    }
   };
 
   return (
@@ -54,7 +41,6 @@ const App: React.FC = () => {
         <Form.Item
           name="username"
           rules={[{ required: true, message: "请填写账号！" }]}
-          initialValue={formData.username}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -64,7 +50,6 @@ const App: React.FC = () => {
         <Form.Item
           name="password"
           rules={[{ required: true, message: "请填写密码！" }]}
-          initialValue={formData.password}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
@@ -96,10 +81,6 @@ const App: React.FC = () => {
           >
             登录
           </Button>
-
-          {/* <span style={{ float: 'right' }}>
-          Or <a href="">register now!</a>
-          </span> */}
         </Form.Item>
       </Form>
     </div>

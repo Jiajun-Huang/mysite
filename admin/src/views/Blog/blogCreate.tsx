@@ -1,6 +1,6 @@
 import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Col, Form, Input, Row, Select, Space } from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Space } from "antd";
 import { useState } from "react";
 import { fetchCategories, fetchTags } from "../../apis/blog";
 import MarkdownEditor from "../../components/markdown/editor";
@@ -13,7 +13,7 @@ const BlogCreate = () => {
     queryKey: ["users"],
     queryFn: fetchTags,
   });
-  
+
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const categoryQuery = useQuery({
@@ -28,7 +28,6 @@ const BlogCreate = () => {
   if (tagQuery.isError || categoryQuery.isError) {
     return <div>Error...</div>;
   }
-
 
   const onSaveAsDraft = async (values) => {
     setIsSubmitting(true);
@@ -46,7 +45,7 @@ const BlogCreate = () => {
       formData.append("tags", JSON.stringify(values.tags));
       formData.append("content", mdContent);
 
-      const response = await fetch("/api/blog", {
+      const response = await fetch("/api/blog/", {
         method: "POST",
         body: formData,
       });
@@ -80,7 +79,7 @@ const BlogCreate = () => {
       formData.append("content", mdContent);
       formData.append("status", "published");
 
-      const response = await fetch("/api/blog", {
+      const response = await fetch("/api/blog/", {
         method: "POST",
         body: formData,
       });
@@ -133,9 +132,11 @@ const BlogCreate = () => {
               ]}
             >
               <Select>
-                <Select.Option value="javascript">
-                  JavaScript 常见问题
-                </Select.Option>
+                {categoryQuery.data.map((category) => (
+                  <Select.Option key={category.id} value={category.id}>
+                    {category.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
@@ -150,17 +151,19 @@ const BlogCreate = () => {
                 mode="tags"
                 style={{ width: "100%" }}
                 placeholder="添加标签"
-                defaultValue={["JavaScript", "模块化"]}
               >
-                <Select.Option value="javascript">JavaScript</Select.Option>
-                <Select.Option value="模块化">模块化</Select.Option>
+                {tagQuery.data.map((tag) => (
+                  <Select.Option key={tag.id} value={tag.id}>
+                    {tag.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
               label="Created at"
-              labelCol={{ span: 6 }}
+              labelCol={{ span: 8 }}
               wrapperCol={{ span: 18 }}
             >
               <Input disabled defaultValue={new Date().toLocaleString()} />
