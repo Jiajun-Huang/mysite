@@ -1,4 +1,4 @@
-import { Col, Form, Input, Row } from "antd";
+import { Input } from "antd";
 import React, { useState } from "react";
 import MarkDown from "./markdown"; // The Markdown renderer component
 
@@ -20,41 +20,42 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   };
 
   return (
-    <Form.Item
-      name={name}
-      label={label}
-      initialValue={initialValue}
-      rules={[{ required: true, message: "This field is required!" }]}
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "70vh",
+      }}
     >
-      <Row gutter={16}>
-        {/* Input Area */}
-        <Col span={12}>
-          <Input.TextArea
-            rows={12}
-            value={markdownText}
-            onChange={handleInputChange}
-            placeholder="Type your Markdown here..."
-            style={{ height: "100%", resize: "none" }}
-          />
-        </Col>
-        {/* Rendered Markdown Preview */}
-        <Col span={12}>
-          <div
-            className="markdown-preview"
-            style={{
-              border: "1px solid #d9d9d9",
-              padding: "8px",
-              height: "100%",
-              overflowY: "auto",
-            }}
-          >
-            <MarkDown>
-              {markdownText || "Your rendered Markdown will appear here."}
-            </MarkDown>
-          </div>
-        </Col>
-      </Row>
-    </Form.Item>
+      <Input.TextArea
+        rows={12}
+        value={markdownText}
+        onChange={handleInputChange}
+        placeholder="Type your Markdown here..."
+        style={{
+          width: "50%",
+
+          resize: "none",
+          border: "none",
+          borderRight: "1px solid #333", // Single dividing line
+          borderRadius: 0,
+          padding: "16px",
+          fontFamily: "monospace",
+        }}
+      />
+      <div
+        style={{
+          width: "50%",
+
+          padding: "16px",
+          overflowY: "scroll",
+        }}
+      >
+        <MarkDown>
+          {markdownText || "Your rendered Markdown will appear here."}
+        </MarkDown>
+      </div>
+    </div>
   );
 };
 

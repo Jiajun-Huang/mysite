@@ -83,19 +83,19 @@ const BlogCreate = () => {
           <Col span={12}>
             <Form.Item
               name="titleZh"
-              label="中文标题"
-              rules={[{ required: true, message: "请输入中文标题!" }]}
+              label="Title"
+              rules={[{ required: true, message: "Please enter the title!" }]}
             >
               <Input />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="titleEn"
-              label="英文标题"
+              name="url"
+              label="URL"
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
-              rules={[{ required: true, message: "请输入英文标题!" }]}
+              rules={[{ required: true, message: "Please enter the URL " }]}
             >
               <Input />
             </Form.Item>
@@ -106,8 +106,8 @@ const BlogCreate = () => {
           <Col span={8}>
             <Form.Item
               name="category"
-              label="分类"
-              rules={[{ required: true, message: "请选择分类!" }]}
+              label="Category"
+              rules={[{ required: true, message: "Please choose the category" }]}
             >
               <Select>
                 <Select.Option value="javascript">
@@ -119,7 +119,7 @@ const BlogCreate = () => {
           <Col span={8}>
             <Form.Item
               name="tags"
-              label="标签"
+              label="Tags"
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
             >
@@ -136,7 +136,7 @@ const BlogCreate = () => {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="时间"
+              label="Created at"
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
             >
