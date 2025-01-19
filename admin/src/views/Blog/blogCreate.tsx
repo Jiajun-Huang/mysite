@@ -4,20 +4,24 @@ import { Button, Col, Form, Input, message, Row, Select, Space } from "antd";
 import { useState } from "react";
 import { fetchCategories, fetchTags } from "../../apis/blog";
 import MarkdownEditor from "../../components/markdown/editor";
+import { useAuth } from "../../provider/auth";
 
 const { TextArea } = Input;
 
 const BlogCreate = () => {
   // query the tag and category
   const tagQuery = useQuery({
-    queryKey: ["users"],
+    queryKey: ["tags"],
     queryFn: fetchTags,
   });
 
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { accessToken } = useAuth();
+  const [mdText, setMdText] = useState("");
+
   const categoryQuery = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["categories"],
     queryFn: fetchCategories,
   });
 
@@ -29,66 +33,41 @@ const BlogCreate = () => {
     return <div>Error...</div>;
   }
 
-  const onSaveAsDraft = async (values) => {
+  const handlePost = async (values, status) => {
     setIsSubmitting(true);
     try {
-      const mdContent = values.content;
-      const mdFile = new File([mdContent], `${values.titleEn}.md`, {
+      const mdContent = mdText;
+      const mdFile = new File([mdContent], `${values.title}.md`, {
         type: "text/markdown",
       });
 
       const formData = new FormData();
       formData.append("files", mdFile);
-      formData.append("titleZh", values.titleZh);
-      formData.append("titleEn", values.titleEn);
+      formData.append("title", values.title);
+      formData.append("description", values.description);
       formData.append("category", values.category);
-      formData.append("tags", JSON.stringify(values.tags));
-      formData.append("content", mdContent);
-
+      formData.append("tags", values.tags);
+      formData.append("uri", values.uri);
+      console.log(values);
       const response = await fetch("/api/blog/", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save markdown");
+        throw new Error(
+          status === "draft" ? "Failed to save draft" : "Failed to publish post"
+        );
       }
 
-      message.success("Successfully saved as draft!");
-    } catch (err) {
-      message.error(err.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const onPublish = async (values) => {
-    setIsSubmitting(true);
-    try {
-      const mdContent = values.content;
-      const mdFile = new File([mdContent], `${values.titleEn}.md`, {
-        type: "text/markdown",
-      });
-
-      const formData = new FormData();
-      formData.append("files", mdFile);
-      formData.append("titleZh", values.titleZh);
-      formData.append("titleEn", values.titleEn);
-      formData.append("category", values.category);
-      formData.append("tags", JSON.stringify(values.tags));
-      formData.append("content", mdContent);
-      formData.append("status", "published");
-
-      const response = await fetch("/api/blog/", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to publish markdown");
-      }
-
-      message.success("Successfully published!");
+      message.success(
+        status === "draft"
+          ? "Successfully saved as draft!"
+          : "Successfully published!"
+      );
     } catch (err) {
       message.error(err.message);
     } finally {
@@ -98,11 +77,15 @@ const BlogCreate = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Form form={form} layout="horizontal" onFinish={onSaveAsDraft}>
+      <Form
+        form={form}
+        layout="horizontal"
+        onFinish={(values) => handlePost(values, "draft")}
+      >
         <Row justify="space-between">
           <Col span={12}>
             <Form.Item
-              name="titleZh"
+              name="title"
               label="Title"
               rules={[{ required: true, message: "Please enter the title!" }]}
             >
@@ -111,11 +94,11 @@ const BlogCreate = () => {
           </Col>
           <Col span={12}>
             <Form.Item
-              name="url"
+              name="uri"
               label="URL"
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
-              rules={[{ required: true, message: "Please enter the URL " }]}
+              rules={[{ required: true, message: "Please enter the URL!" }]}
             >
               <Input />
             </Form.Item>
@@ -123,7 +106,7 @@ const BlogCreate = () => {
         </Row>
 
         <Row justify="space-between">
-          <Col span={8}>
+          <Col span={12}>
             <Form.Item
               name="category"
               label="Category"
@@ -140,7 +123,7 @@ const BlogCreate = () => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={8}>
+          <Col span={12}>
             <Form.Item
               name="tags"
               label="Tags"
@@ -160,18 +143,21 @@ const BlogCreate = () => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={8}>
+        </Row>
+        <Row>
+          <Col span={24}>
             <Form.Item
-              label="Created at"
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 18 }}
+              name="description"
+              label="Description"
+              rules={[{ required: true, message: "Please add a description!" }]}
             >
-              <Input disabled defaultValue={new Date().toLocaleString()} />
+              <TextArea rows={3} />
             </Form.Item>
           </Col>
         </Row>
-
-        <MarkdownEditor name="content" label="内容" />
+        <Form.Item wrapperCol={{ span: 24 }}>
+          <MarkdownEditor text={mdText} setText={setMdText} />
+        </Form.Item>
 
         <Form.Item wrapperCol={{ span: 24 }}>
           <Space style={{ float: "right" }}>
@@ -185,7 +171,7 @@ const BlogCreate = () => {
             <Button
               type="primary"
               icon={<UploadOutlined />}
-              onClick={() => onPublish(form.getFieldsValue())}
+              onClick={() => handlePost(form.getFieldsValue(true), "published")}
               loading={isSubmitting}
             >
               更新文章

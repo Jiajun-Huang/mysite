@@ -1,22 +1,15 @@
 import { Input } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import MarkDown from "./markdown"; // The Markdown renderer component
 
 interface MarkdownEditorProps {
-  name: string; // The name for the Form.Item
-  label: string; // The label for the Form.Item
-  initialValue?: string; // Initial value for the Markdown editor
+  text: string;
+  setText: (text: string) => void;
 }
 
-const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
-  name,
-  label,
-  initialValue = "",
-}) => {
-  const [markdownText, setMarkdownText] = useState(initialValue);
-
+const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ text, setText }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMarkdownText(e.target.value);
+    setText(e.target.value);
   };
 
   return (
@@ -29,7 +22,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
     >
       <Input.TextArea
         rows={12}
-        value={markdownText}
+        value={text}
         onChange={handleInputChange}
         placeholder="Type your Markdown here..."
         style={{
@@ -52,7 +45,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         }}
       >
         <MarkDown>
-          {markdownText || "Your rendered Markdown will appear here."}
+          {text || "Start with second level heading (##)"}
         </MarkDown>
       </div>
     </div>

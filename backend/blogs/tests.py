@@ -95,3 +95,6 @@ class BlogTestCase(TestCase):
         )
         print(response.json())
         self.assertEqual(response.status_code, 201)  # Verify the blog was created
+        # check if the file was uploaded
+        blog = Blog.objects.get(title="Test Blog")
+        self.assertTrue(blog.files)

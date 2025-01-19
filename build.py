@@ -131,6 +131,9 @@ def main():
     elif app == 'start':
         if action == 'frontend':
             start_frontend()
+        elif action == 'backend':
+            print("Backend does not have a start command")
+            exit(1)
         else:
             print("Invalid argument")
             exit(1)
