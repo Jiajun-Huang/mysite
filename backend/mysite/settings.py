@@ -164,6 +164,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # REST_SESSION_LOGIN = True
 # ACCOUNT_EMAIL_REQUIRED = False
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+STORAGES = {  # -- ADDED IN Django 5.1
+    "default": {
+        "BACKEND": "minio_storage.storage.MinioMediaStorage",
+    },
+   "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
 

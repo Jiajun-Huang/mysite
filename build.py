@@ -6,7 +6,7 @@ import sys
 # Set environment variables
 os.environ['DJANGO_ALLOWED_HOSTS'] = 'localhost 127.0.0.1'
 os.environ['DATABASE_URL'] = 'mysql://demo:12345678@192.168.1.5:3306/MYSQL_DATABASE'
-os.environ['MINIO_STORAGE_URL'] = 'http://192.168.1.10:9000/blog'
+os.environ['MINIO_STORAGE_URL'] = 'http://192.168.1.10:9000/test'
 os.environ['MINIO_STORAGE_ACCESS_KEY'] = 'Z2UEZevaUAlmeX3t0W2K'
 os.environ['MINIO_STORAGE_SECRET_KEY'] = 'nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg'
 
@@ -99,7 +99,11 @@ def start_frontend():
     # Run the start script
     run_command("npm run dev", "Failed to start frontend")
     
-    
+def start_backend():
+    # cd into backend directory
+    os.chdir('backend')
+    # Run the start script
+    run_command("python manage.py runserver", "Failed to start backend")    
 def main():
     # parser = argparse.ArgumentParser(description='Build and deploy Django and Next.js apps to Unraid server')
     # parser.add_argument('app', choices=['all', 'backend', 'frontend'], help='Choose which app to build and deploy')
@@ -132,7 +136,7 @@ def main():
         if action == 'frontend':
             start_frontend()
         elif action == 'backend':
-            print("Backend does not have a start command")
+            start_backend()
             exit(1)
         else:
             print("Invalid argument")
