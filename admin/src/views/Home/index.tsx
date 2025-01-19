@@ -1,14 +1,13 @@
-import Pie from "./Pie";
-import Column from "./Column";
-import VersionMessage from "./VersionMessage";
-import { Card, Avatar } from "antd";
 import {
   DesktopOutlined,
+  HomeOutlined,
   PieChartOutlined,
   UserOutlined,
-  HomeOutlined,
 } from "@ant-design/icons";
+import { Avatar, Card } from "antd";
+import Column from "./Column";
 import styled from "./index.module.scss";
+import Pie from "./Pie";
 
 const gridStyle: React.CSSProperties = {
   width: "49.5%",
@@ -109,9 +108,6 @@ export const Home = () => {
         <Card.Grid style={{ ...gridStyle, float: "right" }}>
           <Pie />
         </Card.Grid>
-      </Card>
-      <Card hoverable title="Version Message List">
-        <VersionMessage />
       </Card>
     </div>
   );

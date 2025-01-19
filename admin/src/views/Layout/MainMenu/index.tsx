@@ -25,6 +25,8 @@ const items: MenuItem[] = [
   getItem("Home", "/home", <HomeOutlined />),
   getItem("Blog", "/blog", <UserOutlined />, [
     getItem("Create", "/blog/create"),
+    getItem("Edit", "/blog/:id"),
+    getItem("List", "/blog"),
   ]),
 ];
 
