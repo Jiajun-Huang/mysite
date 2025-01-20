@@ -18,7 +18,7 @@ const getItem: getItemType = function getItem(
     children,
     label,
     type,
-  } as MenuItem;
+  } as MenuItem;  
 };
 
 const items: MenuItem[] = [
@@ -37,7 +37,7 @@ const MainMenu: React.FC = () => {
 
   const firstOpenKeys = currentRoute.pathname.match(/^\/[\w-]+/)![0];
   const [openKeys, setOpenKeys] = useState([firstOpenKeys]);
-  // 定义状态current（当前菜单）
+ 
   const [current, setCurrent] = useState(currentRoute.pathname);
 
   useEffect(() => {
