@@ -12,6 +12,24 @@ interface Prop {
   };
 }
 
+// meta data
+export async function getMeta({ params }: Prop) {
+  const { uri } = await params;
+  const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
+    method: "GET",
+  });
+
+  if (response.status === 404) {
+    return { title: "404 Not Found" };
+  }
+
+  const data = await response.json();
+  return {
+    title: data.title,
+    description: data.description,
+  };
+}
+
 export default async function BlogDetail({ params }: Prop) {
   const { uri } = await params;
   const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {

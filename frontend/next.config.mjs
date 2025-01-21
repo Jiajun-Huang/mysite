@@ -6,6 +6,11 @@ const backend_url = process.env.BACKEND_ADDR || "http://127.0.0.1:8000";
 const backend_url_obj = new URL(backend_url);
 
 console.log("Connect to: " + backend_url);
+console.log({
+  protocol: backend_url_obj.protocol.slice(0, -1),
+  hostname: backend_url_obj.hostname,
+  port: backend_url.port,
+});
 const nextConfig = {
   async rewrites() {
     return [
@@ -58,7 +63,6 @@ const nextConfig = {
       {
         protocol: backend_url_obj.protocol.slice(0, -1),
         hostname: backend_url_obj.hostname,
-        port: backend_url.port,
       },
     ],
   },

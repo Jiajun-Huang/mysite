@@ -11,7 +11,7 @@ os.environ['MINIO_STORAGE_ACCESS_KEY'] = 'Z2UEZevaUAlmeX3t0W2K'
 os.environ['MINIO_STORAGE_SECRET_KEY'] = 'nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg'
 
 # Frontend environment variables
-os.environ['BACKEND_ADDR'] = 'http://127.0.0.1:8000'
+os.environ['BACKEND_ADDR'] = 'http://192.168.1.7'
 os.environ['NEXT_PUBLIC_BACKEND_ADDR'] = 'https://jiajunhuang.cc'
 os.environ['STORAGE_ADDR'] = '192.168.1.10'
 os.environ['NEXT_PUBLIC_STORAGE_ADDR'] = os.environ['STORAGE_ADDR']
