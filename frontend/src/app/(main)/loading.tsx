@@ -1,6 +1,6 @@
 "use client";
 
-import { Spinner } from "@nextui-org/spinner";
+import { Spinner } from "@heroui/spinner";
 
 export default function Loading() {
   return (

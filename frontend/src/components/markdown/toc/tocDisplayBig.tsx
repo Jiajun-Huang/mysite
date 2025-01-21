@@ -1,4 +1,4 @@
-import { Divider } from "@nextui-org/divider";
+import { Divider } from "@heroui/divider";
 import { TocItem } from "./toc";
 import TocContent from "./tocContent";
 

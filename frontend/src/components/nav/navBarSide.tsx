@@ -1,9 +1,9 @@
 import { Logo } from "@/components/icons";
 import { siteConfig } from "@/config/site";
-import { Divider } from "@nextui-org/divider";
-import { Link } from "@nextui-org/link";
-import { NavbarBrand, NavbarMenu, NavbarMenuItem } from "@nextui-org/navbar";
-import { link as linkStyles } from "@nextui-org/theme";
+import { Divider } from "@heroui/divider";
+import { Link } from "@heroui/link";
+import { NavbarBrand, NavbarMenu, NavbarMenuItem } from "@heroui/navbar";
+import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 
 export default function NavBarSide() {

@@ -2,7 +2,7 @@
 
 import { submitComment } from "@/api/action";
 import { UserContext } from "@/components/auth/context";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { useContext } from "react";
 import SignInButton from "../auth/signInButton";
 import Avatar from "../user/userAvartar";

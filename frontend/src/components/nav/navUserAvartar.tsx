@@ -1,13 +1,13 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-} from "@nextui-org/dropdown";
+} from "@heroui/dropdown";
 import { useContext, useState } from "react";
 import { UserContext } from "../auth/context";
 import SignInButton from "../auth/signInButton";

@@ -1,13 +1,13 @@
-import { Button } from "@nextui-org/button";
-import { Divider } from "@nextui-org/divider";
+import { Button } from "@heroui/button";
+import { Divider } from "@heroui/divider";
 import {
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-} from "@nextui-org/drawer";
-import { useDisclosure } from "@nextui-org/modal";
+} from "@heroui/drawer";
+import { useDisclosure } from "@heroui/modal";
 import { TocItem } from "./toc";
 import TocContent from "./tocContent";
 

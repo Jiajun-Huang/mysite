@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Space, Table, Tag } from "antd";
+import { useNavigate } from "react-router-dom";
 
 interface DataType {
   key: string;
@@ -7,6 +8,14 @@ interface DataType {
   age: number;
   address: string;
   tags: string[];
+}
+
+interface BlogPost {
+  id: number;
+  title: string;
+  created_at: string;
+  category: { name: string };
+  tags: { name: string }[];
 }
 
 const columns = [
@@ -46,7 +55,7 @@ const columns = [
     key: "action",
     render: (_, record) => (
       <Space size="middle">
-        <a>Edit</a>
+        <a onClick={() => handleEdit(record.id)}>Edit</a>
         <a>Delete</a>
       </Space>
     ),
@@ -54,6 +63,12 @@ const columns = [
 ];
 
 export default function BlogList() {
+  const navigate = useNavigate();
+
+  const handleEdit = (id: number) => {
+    navigate(`/blog/edit/${id}`);
+  };
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["blog"],
     queryFn: async () => {

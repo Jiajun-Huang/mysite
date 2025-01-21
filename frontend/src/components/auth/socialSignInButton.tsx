@@ -1,7 +1,7 @@
 "use client";
 
 import { IconSvgProps } from "@/types";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 
 import { FC } from "react";
 

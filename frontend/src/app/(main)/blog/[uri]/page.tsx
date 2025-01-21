@@ -3,7 +3,7 @@ import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
 import { printDate } from "@/util/util";
-import { Divider } from "@nextui-org/divider";
+import { Divider } from "@heroui/divider";
 import "katex/dist/katex.min.css";
 
 interface Prop {
@@ -65,6 +65,7 @@ export default async function BlogDetail({ params }: Prop) {
                   uri +
                   "?" +
                   new URLSearchParams({ url }).toString();
+                console.log(newUrl);
                 return newUrl;
               }
             }}
