@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Space, Table, Tag } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface DataType {
   key: string;

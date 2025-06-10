@@ -1,10 +1,13 @@
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark as CodeStyle } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import Mermaid from "../mermaid/mermaid";
 
 const MdCode = (props: any) => {
   const { node, children, className, ...rest } = props;
   const match = /language-(\w+)/.exec(className || "");
-  if (match) {
+  if (className === "language-mermaid") {
+    return <Mermaid>{children}</Mermaid>;
+  } else if (match) {
     return (
       <SyntaxHighlighter
         {...rest}
