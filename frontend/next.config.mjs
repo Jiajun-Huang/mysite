@@ -61,6 +61,10 @@ const nextConfig = {
         hostname: "192.168.1.5",
       },
       {
+        protocol: "http",
+        hostname: "192.168.1.7",
+      },
+      {
         protocol: backend_url_obj.protocol.slice(0, -1),
         hostname: backend_url_obj.hostname,
       },

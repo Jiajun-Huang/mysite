@@ -13,7 +13,7 @@ interface Prop {
 }
 
 // meta data
-export async function getMeta({ params }: Prop) {
+export async function generateMetadata({ params }: Prop) {
   const { uri } = await params;
   const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
     method: "GET",

@@ -9,20 +9,24 @@ const MdCode = (props: any) => {
     return <Mermaid>{children}</Mermaid>;
   } else if (match) {
     return (
-      <SyntaxHighlighter
-        {...rest}
-        PreTag="div"
-        language={match[1]}
-        style={CodeStyle}
-      >
-        {String(children).replace(/\n$/, "")}
-      </SyntaxHighlighter>
+      <div style={{ fontSize: "0.8rem" }}>
+        <SyntaxHighlighter
+          {...rest}
+          PreTag="div"
+          language={match[1]}
+          style={CodeStyle}
+        >
+          {String(children).replace(/\n$/, "")}
+        </SyntaxHighlighter>
+      </div>
     );
   } else {
     return (
-      <code {...rest} className={className}>
-        {children}
-      </code>
+      <div style={{ fontSize: "0.8rem" }}>
+        <code {...rest} className={className}>
+          {children}
+        </code>
+      </div>
     );
   }
 };

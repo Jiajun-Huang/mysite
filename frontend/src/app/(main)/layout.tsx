@@ -68,6 +68,11 @@ export default function RootLayout({
         </Providers>
       </body>
       <GoogleAnalytics gaId={"G-4KCSE04GPC"} />
+      <script
+        defer
+        src="https://cloud.umami.is/script.js"
+        data-website-id="32f1869d-6a2c-43f8-86d3-c9ce4ed8ebb8"
+      ></script>
     </html>
   );
 }
