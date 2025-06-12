@@ -12,12 +12,13 @@ export default async function Home() {
       method: "GET",
       next: { revalidate: 60 },
     });
+    console.log(await data.text());
     blogData = await data.json();
   } catch (error) {
     blogData = [];
     console.error(error);
   }
-
+  console.log(BASE_URL);
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       {blogData.map((data, index) => {

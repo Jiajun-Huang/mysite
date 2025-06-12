@@ -30,7 +30,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const login = (token: string | null) => {
-    console.log("Token:", token);
     if (!token) return;
     localStorage.setItem("token", token);
     setToken(token);

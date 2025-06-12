@@ -105,8 +105,8 @@ def backend():
 
 def frontend():
     os.chdir("frontend")
-    os.environ["BACKEND_ADDR"] = "http://192.168.1.5:8000/"
-    os.environ["NEXT_PUBLIC_BACKEND_ADDR"] = "http://192.168.1.5:8000/"
+    os.environ["BACKEND_ADDR"] = "http://192.168.1.5:8000"
+    os.environ["NEXT_PUBLIC_BACKEND_ADDR"] = "http://192.168.1.5:8000"
     os.environ["STORAGE_ADDR"] = "192.168.1.10"
     os.environ["NEXT_PUBLIC_STORAGE_ADDR"] = os.environ["STORAGE_ADDR"]
     os.environ["NEXT_SHARP_PATH"] = os.path.join(

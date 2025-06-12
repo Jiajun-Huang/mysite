@@ -11,7 +11,20 @@ class MusicInfo:
     name: str
     artist: str
     id: str
-    
+
+
+LRC_FORMAT = "[{}] {}\n"
+TICK_RATE = 10000000
+
+
+def ticks_to_lrc_format(ticks: int) -> str:
+    if ticks is None:
+        return ""
+    total_seconds = ticks / TICK_RATE
+    minutes = int(total_seconds // 60)
+    seconds = int(total_seconds % 60)
+    hundredths = int((total_seconds - int(total_seconds)) * 100)
+    return f"{minutes:02d}:{seconds:02d}.{hundredths:02d}"
 
 
 class JellyfinProvider:
@@ -61,8 +74,12 @@ class JellyfinProvider:
 
     def get_music_lrc(self, id):
         lyric = LyricsApi(api_client=self.api_client).get_lyrics(item_id=id)
+        ret = ""
 
-        return lyric
+        for line in lyric.lyrics:
+            line = LRC_FORMAT.format(ticks_to_lrc_format(line.start), line.text)
+            ret += line
+        return ret
 
     def get_music_cover(self, id):
         try:
@@ -85,4 +102,4 @@ if __name__ == "__main__":
 
         l = j.get_music_lrc(m.id)
 
-        i = j.get_music_cover("dd82277c831fbe8e34f239e8dc272fc9")
+        i = j.get_music_cover(m.id)
