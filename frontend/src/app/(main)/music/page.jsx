@@ -11,12 +11,16 @@ import "./custom.css";
 
 export default function Music() {
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingText, setLoadingText] = useState("Initializing APlayer...");
   const [ap, setAp] = useState(null);
   const [audioData, setAudioData] = useState([]);
+  const [fetchError, setFetchError] = useState(false);
 
   // Move the async function outside useEffect
   const fetchMusicData = async () => {
     try {
+      setLoadingText("Fetching playlist data...");
+
       const response = await fetch(BASE_URL + "/api/songlist/");
       if (!response.ok) {
         throw new Error("Failed to fetch playlist data");
@@ -38,12 +42,15 @@ export default function Music() {
       return fetchedAudioData;
     } catch (error) {
       console.error("Error loading playlist data: ", error);
+      setFetchError(true);
       throw error;
     }
   };
 
   const initializeAPlayer = async (initialAudioData = []) => {
     try {
+      setLoadingText("Loading APlayer...");
+
       // Dynamically import APlayer
       const APlayer = await import("./APlayer.min.js");
 
@@ -176,35 +183,84 @@ export default function Music() {
         setupMediaSession(aplayerInstance);
       } catch (error) {
         console.error("Error initializing music player: ", error);
-        return <div>Error initializing music player</div>;
+        setLoadingText("Error loading music player");
+        setIsLoading(false);
+      }
+    };
+
+    // Handle page visibility change (when user switches tabs/apps)
+    const handleVisibilityChange = () => {
+      if (document.hidden && ap) {
+        ap.pause();
+      }
+    };
+
+    // Handle beforeunload (when navigating away)
+    const handleBeforeUnload = () => {
+      if (ap) {
+        ap.pause();
       }
     };
 
     // Start the initialization after component mounts
     initializePlayer();
 
+    // Add event listeners for page visibility and beforeunload
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
       // Cleanup function on unmount
       if (ap) {
-        ap.destroy(); // Destroy APlayer instance
+        // Pause the music first
+        try {
+          ap.pause();
+        } catch (error) {
+          console.log("Error pausing audio:", error);
+        }
+
+        // Destroy APlayer instance
+        try {
+          ap.destroy();
+        } catch (error) {
+          console.log("Error destroying APlayer:", error);
+        }
+
         setAp(null);
       }
-      // Remove event listener for media keys
+
+      // Remove all event listeners
       window.removeEventListener("keydown", handleMediaKeyEvent);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []); // Empty dependency array
 
   return (
     <div>
       {/* Always render the APlayer container */}
-      {audioData.length == 0 && ap && <div> Fetching playlist data...</div>}
       <div id="aplayer"></div>
 
-      {/* Show loading overlay when loading */}
+      {/* Show loading overlay when initializing */}
       {isLoading && (
         <div className="flex flex-col items-center justify-center p-8 space-y-4">
           <Spinner size="lg" />
-          <p className="text-gray-600">{"Initializing APlayer..."}</p>
+          <p className="text-gray-600">{loadingText}</p>
+        </div>
+      )}
+
+      {/* Show fetching message when APlayer is ready but no data */}
+      {audioData.length == 0 && ap && !fetchError && (
+        <div className="text-center text-gray-600 p-4 flex items-center justify-center">
+          <Spinner size="sm" className="mr-2" />
+          Fetching playlist data...
+        </div>
+      )}
+
+      {/* Show error message when data fetching fails */}
+      {fetchError && (
+        <div className="text-red-500 text-center p-4">
+          Failed to load playlist. Please try refreshing the page.
         </div>
       )}
     </div>
