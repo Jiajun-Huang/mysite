@@ -5,7 +5,7 @@ import Mermaid from "../mermaid/mermaid";
 const MdCode = (props: any) => {
   const { node, children, className, ...rest } = props;
   const match = /language-(\w+)/.exec(className || "");
-  console.log(props);
+  // console.log(props);
   if (className === "language-mermaid") {
     return <Mermaid>{children}</Mermaid>;
   } else {
@@ -13,10 +13,10 @@ const MdCode = (props: any) => {
       <span style={{ fontSize: "0.8rem" }}>
         <SyntaxHighlighter
           {...rest}
-          PreTag={children == "inline code" ? "span" : "div"}
+          PreTag={node.block ? "div" : "span"}
           language={match ? match[1] : ""}
           style={CodeStyle}
-          className={children == "inline code" ? "inline" : "block-code"}
+          className={node.block ? "block-code" : "inline"}
         >
           {String(children).replace(/\n$/, "")}
         </SyntaxHighlighter>

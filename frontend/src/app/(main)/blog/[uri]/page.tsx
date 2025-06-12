@@ -52,7 +52,7 @@ export default async function BlogDetail({ params }: Prop) {
     method: "GET",
     next: { revalidate: 60 },
   }).then((res) => res.text());
-
+  // console.log(text);
   const dateStr = printDate(created_at);
   return (
     <div>
