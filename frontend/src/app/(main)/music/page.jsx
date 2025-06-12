@@ -197,7 +197,7 @@ export default function Music() {
   return (
     <div>
       {/* Always render the APlayer container */}
-      {isLoading && ap && <div> Fetching playlist data...</div>}
+      {audioData.length == 0 && ap && <div> Fetching playlist data...</div>}
       <div id="aplayer"></div>
 
       {/* Show loading overlay when loading */}
