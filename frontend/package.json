@@ -34,6 +34,7 @@
     "@react-aria/ssr": "3.9.7",
     "@react-aria/visually-hidden": "3.8.19",
     "aplayer": "^1.10.1",
+    "aplayer-react": "^1.6.0",
     "clsx": "2.1.1",
     "framer-motion": "11.13.1",
     "intl-messageformat": "^10.7.14",

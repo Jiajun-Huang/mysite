@@ -1,7 +1,7 @@
 "use client"; // Ensures the page is treated as a client-side component
 
-import { useEffect } from "react";
 import { BASE_URL } from "@/api/request";
+import { useEffect } from "react";
 import "./APlayer.min.css";
 import "./custom.css";
 
@@ -37,10 +37,7 @@ export default function Music() {
     // Async function to fetch music data
     const asyncFunction = async () => {
       try {
-        const response = await fetch(
-          BASE_URL + "/api/music/songlist/?id=7353465344&server=wyy"
-          // "https://api.i-meto.com/meting/api?server=netease&type=playlist&id=7353465344"
-        );
+        const response = await fetch(BASE_URL + "/api/songlist/");
         if (!response.ok) {
           throw new Error("Failed to fetch playlist data");
         }
