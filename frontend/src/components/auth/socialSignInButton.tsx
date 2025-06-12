@@ -1,7 +1,7 @@
 "use client";
 
 import { IconSvgProps } from "@/types";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 
 import { FC } from "react";
 
@@ -21,7 +21,7 @@ export default function SocialSignInButton({
       variant="light"
       color="secondary"
       className="flex-grow"
-      onPress={async () => {
+      onClick={async () => {
         const response = await fetch(requestUrl, {
           method: "HEAD",
         });

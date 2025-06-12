@@ -53,8 +53,8 @@
   #aplayer li {
     border: 0.25px solid
       hsl(
-        var(--nextui-divider) /
-          var(--nextui-divider-opacity, var(--tw-bg-opacity))
+        var(--heroui-divider) /
+          var(--heroui-divider-opacity, var(--tw-bg-opacity))
       ) !important;
   }
 }

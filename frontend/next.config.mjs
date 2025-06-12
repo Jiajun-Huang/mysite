@@ -4,6 +4,13 @@
 //
 const backend_url = process.env.BACKEND_ADDR || "http://127.0.0.1:8000";
 const backend_url_obj = new URL(backend_url);
+
+console.log("Connect to: " + backend_url);
+console.log({
+  protocol: backend_url_obj.protocol.slice(0, -1),
+  hostname: backend_url_obj.hostname,
+  port: backend_url_obj.port,
+});
 const nextConfig = {
   async rewrites() {
     return [
@@ -29,6 +36,7 @@ const nextConfig = {
 
   images: {
     remotePatterns: [
+      { protocol: "http", hostname: "*" },
       {
         protocol: "http",
         hostname: "localhost",
@@ -54,9 +62,12 @@ const nextConfig = {
         hostname: "192.168.1.5",
       },
       {
+        protocol: "http",
+        hostname: "192.168.1.7",
+      },
+      {
         protocol: backend_url_obj.protocol.slice(0, -1),
         hostname: backend_url_obj.hostname,
-        port: backend_url.port,
       },
     ],
   },

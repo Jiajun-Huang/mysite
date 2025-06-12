@@ -34,9 +34,9 @@ These are tools I've play around and used for smaller projects:
 
 *   Altium Designer, JLC EDA, Unreal Engine, Unity
 
-### Contact Link
+<!-- ### Contact Link
 
-[Github](https://github.com/Jiajun-Huang), [LinkedIn](https://www.linkedin.com/in/jiajun-huang-engineer/)
+[Github](https://github.com/Jiajun-Huang), [LinkedIn](https://www.linkedin.com/in/jiajun-huang-engineer/) -->
 
 ## About This Website
 

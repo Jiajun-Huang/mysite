@@ -8,15 +8,15 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
   Navbar as NextUINavbar,
-} from "@nextui-org/navbar";
-import { link as linkStyles } from "@nextui-org/theme";
+} from "@heroui/navbar";
+import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 
 import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
-import { Divider } from "@nextui-org/divider";
-import { Link } from "@nextui-org/link";
+import { Divider } from "@heroui/divider";
+import { Link } from "@heroui/link";
 import { useState } from "react";
 import NavUserAvartar from "./navUserAvartar";
 
@@ -40,12 +40,12 @@ export const Navbar = () => {
             href="/"
           >
             <Logo />
-            <p className="font-bold text-inherit text-lg">Jiajun Huang</p>
+            <p className="font-bold text-inherit text-lg">Jun</p>
           </Link>
         </NavbarBrand>
         <NavbarMenuToggle
           className="sm:hidden"
-          onPress={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
         />
       </NavbarContent>
 
@@ -83,10 +83,10 @@ export const Navbar = () => {
                 "data-[active=true]:text-primary data-[active=true]:font-medium"
               )}
               href="/"
-              onPress={() => setIsMenuOpen(false)}
+              onClick={() => setIsMenuOpen(false)}
             >
               <Logo />
-              <p className="font-bold text-inherit">Jiajun Huang</p>
+              <p className="font-bold text-inherit">Jun</p>
             </Link>
           </NavbarBrand>
           <Divider />
@@ -100,7 +100,7 @@ export const Navbar = () => {
                 )}
                 href={item.href}
                 isBlock
-                onPress={() => setIsMenuOpen(false)}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>

@@ -1,13 +1,13 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-} from "@nextui-org/dropdown";
+} from "@heroui/dropdown";
 import { useContext, useState } from "react";
 import { UserContext } from "../auth/context";
 import SignInButton from "../auth/signInButton";
@@ -34,7 +34,7 @@ export default function NavUserAvartar() {
             const id = setTimeout(() => setIsOpen(false), delay);
             setTimeoutId(id);
           }}
-          // onPress={() => {
+          // onClick={() => {
           //   console.log("press");
           //   clearTimeout(timeoutId);
           //   setIsOpen(true);
@@ -68,7 +68,7 @@ export default function NavUserAvartar() {
           <DropdownItem
             data-hover
             key={"logout"}
-            onPress={() => {
+            onClick={() => {
               logout();
             }}
           >

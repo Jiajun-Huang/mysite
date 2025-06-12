@@ -1,4 +1,4 @@
-import { Divider } from "@nextui-org/divider";
+import { Divider } from "@heroui/divider";
 import { TocItem } from "./toc";
 import TocContent from "./tocContent";
 
@@ -13,7 +13,7 @@ export default function TocDisplayBig({
   return (
     <>
       <nav className="text-1xl font-bold">Table of Contents</nav>
-      <div className="overflow-y-auto h-[calc(100vh-11rem)]">
+      <div className="overflow-y-auto h-[calc(100vh-11rem)] text-small">
         <TocContent tocItems={tocItems} onClose={() => {}} />
         <div
           className={`${isScrolled ? "opacity-100" : "opacity-0"} transition-opacity duration-300 opacity-0 ${isScrolled ? "opacity-100" : ""}`}

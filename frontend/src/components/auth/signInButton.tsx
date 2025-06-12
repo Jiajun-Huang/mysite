@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
-import { useDisclosure } from "@nextui-org/modal";
+import { Button } from "@heroui/button";
+import { useDisclosure } from "@heroui/modal";
 import SignInModal from "./signInModal";
 
 export default function SignInButton() {
@@ -9,7 +9,7 @@ export default function SignInButton() {
 
   return (
     <div>
-      <Button onPress={onOpen}>Sign In</Button>
+      <Button onClick={onOpen}>Sign In</Button>
       <SignInModal
         isOpen={isOpen}
         onOpen={onOpen}

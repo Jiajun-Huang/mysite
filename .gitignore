@@ -2,3 +2,5 @@
 build/
 !.github/
 Makefile
+robots.txt
+sitemap*.xml

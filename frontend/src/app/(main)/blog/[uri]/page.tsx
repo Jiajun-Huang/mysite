@@ -3,12 +3,31 @@ import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
 import { printDate } from "@/util/util";
-import { Divider } from "@nextui-org/divider";
+import { Divider } from "@heroui/divider";
 import "katex/dist/katex.min.css";
 
 interface Prop {
   params: {
     uri: string;
+  };
+}
+
+export const revalidate = 60;
+// meta data
+export async function generateMetadata({ params }: Prop) {
+  const { uri } = await params;
+  const response = await fetch(BASE_URL + "/api/blog/uri/" + uri, {
+    method: "GET",
+  });
+
+  if (response.status === 404) {
+    return { title: "404 Not Found" };
+  }
+
+  const data = await response.json();
+  return {
+    title: data.title,
+    description: data.description,
   };
 }
 
@@ -65,6 +84,7 @@ export default async function BlogDetail({ params }: Prop) {
                   uri +
                   "?" +
                   new URLSearchParams({ url }).toString();
+                console.log(newUrl);
                 return newUrl;
               }
             }}

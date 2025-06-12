@@ -1,7 +1,7 @@
-import { Form } from "@nextui-org/form";
+import { Form } from "@heroui/form";
 
-import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
 import React from "react";
 
 // Fake server used in this example.

@@ -21,12 +21,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 # Copy only requirements.txt first to leverage Docker layer caching
 COPY requirements.txt /app/
 
-# Install Python dependencies
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-
 # Copy the rest of the application code
 COPY . /app
+
+# Install Python dependencies
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # Expose the port the app will run on
 EXPOSE 8000

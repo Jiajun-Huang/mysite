@@ -1,8 +1,8 @@
 import "@/styles/fonts.css";
 import "@/styles/globals.css";
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
 import clsx from "clsx";
-import { Metadata, Viewport } from "next";
+import { Metadata } from "next";
 
 import { Providers } from "../providers";
 
@@ -10,6 +10,7 @@ import { Navbar } from "@/components/nav/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -22,12 +23,12 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
-};
+// export const viewport: Viewport = {
+//   themeColor: [
+//     { media: "(prefers-color-scheme: light)", color: "white" },
+//     { media: "(prefers-color-scheme: dark)", color: "black" },
+//   ],
+// };
 
 export default function RootLayout({
   children,
@@ -42,7 +43,7 @@ export default function RootLayout({
           clsx(
             "min-h-screen bg-background font-sans antialiased",
             fontSans.variable,
-            "text-small sm:text-base" // Responsive font sizes
+            "text-base" // Responsive font sizes
           ) + " "
           // LXGWBright.className
         }
@@ -57,17 +58,22 @@ export default function RootLayout({
               <Link
                 isExternal
                 className="flex items-center gap-1 text-current"
-                href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
-                title="nextui.org homepage"
+                href="https://www.heroui.com/"
+                title="heroui.org homepage"
               >
                 <span className="text-default-600">Powered by</span>
-                <p className="text-primary">NextUI</p>
+                <p className="text-primary">HeroUI</p>
               </Link>
             </footer>
           </div>
         </Providers>
       </body>
       <GoogleAnalytics gaId={"G-4KCSE04GPC"} />
+      <Script
+        defer
+        src="https://cloud.umami.is/script.js"
+        data-website-id="32f1869d-6a2c-43f8-86d3-c9ce4ed8ebb8"
+      ></Script>
     </html>
   );
 }

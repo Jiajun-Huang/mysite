@@ -15,17 +15,10 @@
   position: relative;
 }
 
-.markdown table {
-  border-collapse: collapse;
-  margin: 1rem 0;
-  border: 1px solid;
-  border-radius: 0.5rem;
-}
-
 .markdown li {
   list-style-type: disc;
   margin-left: 1.5rem;
-  margin: 0.5rem 0 0.5rem 1.5rem;
+  margin: 0.1rem 0 0rem 1.5rem;
 }
 
 .markdown pre {
@@ -83,7 +76,27 @@
     @apply text-primary-300;
   }
 
-  /* .markdown a:visited {
-    @apply text-primary-600;
+  .markdown .inline {
+    padding: 0.2rem !important;
+  }
+  .markdown table {
+    @apply rounded-lg m-2;
+  }
+
+  .markdown tr:last-child {
+    @apply border-b-1;
+  }
+
+  .markdown th,
+  .markdown td {
+    @apply px-4 py-3 text-left border-1;
+  }
+
+  .markdown th {
+    @apply font-semibold;
+  }
+
+  /* .markdown tr:hover {
+    @apply;
   } */
 }

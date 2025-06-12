@@ -7,6 +7,7 @@ import os
 import execjs
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
+from 
 
 
 def kugou_music_sign(url):

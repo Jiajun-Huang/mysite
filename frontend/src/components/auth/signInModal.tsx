@@ -1,11 +1,11 @@
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import {
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@nextui-org/modal";
+} from "@heroui/modal";
 import DividerWithText from "../dividerWithText";
 import { GithubIcon } from "../icons";
 import SignInForm from "./signInForm";
@@ -36,7 +36,7 @@ export default function SignInModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button onPress={onOpenChange} variant="light">
+          <Button onClick={onOpenChange} variant="light">
             Close
           </Button>
         </ModalFooter>
