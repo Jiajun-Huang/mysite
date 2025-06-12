@@ -1,7 +1,8 @@
 "use client"; // Ensures the page is treated as a client-side component
 
 import { BASE_URL } from "@/api/request";
-import { useEffect } from "react";
+import { Spinner } from "@heroui/spinner";
+import { useEffect, useState } from "react";
 import "./APlayer.min.css";
 import "./custom.css";
 
@@ -9,119 +10,203 @@ import "./custom.css";
 // one ap :https://api.i-meto.com/meting/api?server=netease&type=playlist&id=7353465344
 
 export default function Music() {
-  useEffect(() => {
-    let ap = null; // Declare APlayer instance
-    const handleMediaKeyEvent = (event) => {
-      if (ap) {
-        switch (event.code) {
-          case "Space":
-          case "MediaPlayPause":
-            ap.toggle(); // Play/Pause
-            break;
-          case "KeyD":
-          case "ArrowRight":
-          case "MediaTrackNext":
-            ap.skipForward(); // Next
-            break;
-          case "KeyA":
-          case "ArrowLeft":
-          case "MediaTrackPrevious":
-            ap.skipBack(); // Previous
-            break;
-          default:
-            break;
-        }
+  const [isLoading, setIsLoading] = useState(true);
+  const [ap, setAp] = useState(null);
+  const [audioData, setAudioData] = useState([]);
+
+  // Move the async function outside useEffect
+  const fetchMusicData = async () => {
+    try {
+      const response = await fetch(BASE_URL + "/api/songlist/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch playlist data");
       }
-    };
 
-    // Async function to fetch music data
-    const asyncFunction = async () => {
-      try {
-        const response = await fetch(BASE_URL + "/api/songlist/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch playlist data");
-        }
+      const json = await response.json();
+      console.log(json);
 
-        const json = await response.json();
-        console.log(json);
-        const audioData = json.map((song) => ({
-          name: song.name,
-          artist: song.artist[0],
-          url: BASE_URL + "/api/audio/" + song.id,
-          cover: BASE_URL + "/api/cover/" + song.id,
-          lrc: BASE_URL + "/api/lrc/" + song.id,
-        }));
+      const fetchedAudioData = json.map((song) => ({
+        name: song.name,
+        artist: song.artist[0],
+        url: BASE_URL + "/api/audio/" + song.id,
+        cover: BASE_URL + "/api/cover/" + song.id,
+        lrc: BASE_URL + "/api/lrc/" + song.id,
+      }));
 
-        // Dynamically import APlayer
-        const APlayer = await import("./APlayer.min.js");
+      // Update audioData state
+      setAudioData(fetchedAudioData);
+      return fetchedAudioData;
+    } catch (error) {
+      console.error("Error loading playlist data: ", error);
+      throw error;
+    }
+  };
 
-        ap = new APlayer.default({
-          container: document.getElementById("aplayer"),
-          lrcType: 3,
-          audio: audioData,
-          order: "random",
-          preload: "auto",
+  const initializeAPlayer = async (initialAudioData = []) => {
+    try {
+      // Dynamically import APlayer
+      const APlayer = await import("./APlayer.min.js");
+
+      const aplayerInstance = new APlayer.default({
+        container: document.getElementById("aplayer"),
+        lrcType: 3,
+        audio: initialAudioData, // Start with empty or provided audio data
+        order: "random",
+        preload: "auto",
+      });
+
+      return aplayerInstance;
+    } catch (error) {
+      console.error("Error initializing APlayer: ", error);
+      throw error;
+    }
+  };
+
+  const updateAPlayerPlaylist = (aplayerInstance, newAudioData) => {
+    try {
+      // Clear existing playlist
+      aplayerInstance.list.clear();
+
+      // Add new songs to the playlist
+      newAudioData.forEach((audio) => {
+        aplayerInstance.list.add(audio);
+      });
+
+      console.log("Playlist updated with", newAudioData.length, "songs");
+    } catch (error) {
+      console.error("Error updating APlayer playlist: ", error);
+    }
+  };
+
+  const setupMediaSession = (aplayerInstance) => {
+    // Media Session API integration
+    if ("mediaSession" in navigator) {
+      console.log("Setting up Media Session API");
+
+      const updateMediaSession = (index) => {
+        const currentSong = aplayerInstance.list.audios[index];
+        console.log(currentSong);
+        if (!currentSong) return;
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: currentSong.name,
+          artist: currentSong.artist,
+          album: "Playlist",
+          artwork: [
+            { src: currentSong.cover, sizes: "512x512", type: "image/png" },
+          ],
         });
+      };
 
-        // Media Session API integration
-        if ("mediaSession" in navigator) {
-          console.log("sdfasdf");
-          const updateMediaSession = (index) => {
-            const currentSong = ap.list.audios[index];
-            console.log(currentSong);
-            if (!currentSong) return;
+      // Update metadata for the current song
+      aplayerInstance.on("listswitch", function (e) {
+        console.log(e);
+        updateMediaSession(e.index);
+      });
 
-            navigator.mediaSession.metadata = new MediaMetadata({
-              title: currentSong.name,
-              artist: currentSong.artist,
-              album: "Playlist",
-              artwork: [
-                { src: currentSong.cover, sizes: "512x512", type: "image/png" },
-              ],
-            });
-          };
+      updateMediaSession(aplayerInstance.list.index); // Initialize metadata for the first song
 
-          // Update metadata for the current song
-          ap.on("listswitch", function (e) {
-            console.log(e);
-            updateMediaSession(e.index);
-          });
+      navigator.mediaSession.setActionHandler("play", () =>
+        aplayerInstance.play()
+      );
+      navigator.mediaSession.setActionHandler("pause", () =>
+        aplayerInstance.pause()
+      );
+      navigator.mediaSession.setActionHandler("previoustrack", () =>
+        aplayerInstance.skipBack()
+      );
+      navigator.mediaSession.setActionHandler("nexttrack", () =>
+        aplayerInstance.skipForward()
+      );
 
-          updateMediaSession(ap.list.index); // Initialize metadata for the first song
+      navigator.mediaSession.setActionHandler("seekto", (seekTime) => {
+        aplayerInstance.seek(seekTime); // `aplayerInstance.seek` is used to seek to the specific time in APlayer
+      });
+    }
+  };
 
-          navigator.mediaSession.setActionHandler("play", () => ap.play());
-          navigator.mediaSession.setActionHandler("pause", () => ap.pause());
-          navigator.mediaSession.setActionHandler("previoustrack", () =>
-            ap.skipBack()
-          );
-          navigator.mediaSession.setActionHandler("nexttrack", () =>
-            ap.skipForward()
-          );
+  const handleMediaKeyEvent = (event) => {
+    if (ap) {
+      switch (event.code) {
+        case "Space":
+        case "MediaPlayPause":
+          ap.toggle(); // Play/Pause
+          break;
+        case "KeyD":
+        case "ArrowRight":
+        case "MediaTrackNext":
+          ap.skipForward(); // Next
+          break;
+        case "KeyA":
+        case "ArrowLeft":
+        case "MediaTrackPrevious":
+          ap.skipBack(); // Previous
+          break;
+        default:
+          break;
+      }
+    }
+  };
 
-          navigator.mediaSession.setActionHandler("seekto", (seekTime) => {
-            ap.seek(seekTime); // `ap.seek` is used to seek to the specific time in APlayer
-          });
-        }
+  useEffect(() => {
+    const initializePlayer = async () => {
+      try {
+        // Wait a bit for the DOM to be ready
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        // First, initialize APlayer with empty audio data
+        const aplayerInstance = await initializeAPlayer(audioData);
+
+        // Store the instance in state
+        setAp(aplayerInstance);
+
         // Add event listener for media keys
         window.addEventListener("keydown", handleMediaKeyEvent);
+
+        // Hide loading state initially (APlayer is ready, even if empty)
+        setIsLoading(false);
+
+        // Then fetch the music data in the background
+        const fetchedAudioData = await fetchMusicData();
+
+        // Update the APlayer with the fetched data
+        updateAPlayerPlaylist(aplayerInstance, fetchedAudioData);
+
+        // Setup media session after data is loaded
+        setupMediaSession(aplayerInstance);
       } catch (error) {
-        console.error("Error loading playlist data: ", error);
+        console.error("Error initializing music player: ", error);
+        return <div>Error initializing music player</div>;
       }
     };
 
-    // Invoke async function
-    asyncFunction();
+    // Start the initialization after component mounts
+    initializePlayer();
 
     return () => {
       // Cleanup function on unmount
       if (ap) {
         ap.destroy(); // Destroy APlayer instance
-        ap = null;
+        setAp(null);
       }
       // Remove event listener for media keys
       window.removeEventListener("keydown", handleMediaKeyEvent);
     };
-  }, []); // You can pass `theme` or other dependencies if needed
+  }, []); // Empty dependency array
 
-  return <div id="aplayer"></div>;
+  return (
+    <div>
+      {/* Always render the APlayer container */}
+      {isLoading && ap && <div> Fetching playlist data...</div>}
+      <div id="aplayer"></div>
+
+      {/* Show loading overlay when loading */}
+      {isLoading && (
+        <div className="flex flex-col items-center justify-center p-8 space-y-4">
+          <Spinner size="lg" />
+          <p className="text-gray-600">{"Initializing APlayer..."}</p>
+        </div>
+      )}
+    </div>
+  );
 }
