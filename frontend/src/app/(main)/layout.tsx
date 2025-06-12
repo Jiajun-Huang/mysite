@@ -43,7 +43,7 @@ export default function RootLayout({
           clsx(
             "min-h-screen bg-background font-sans antialiased",
             fontSans.variable,
-            "text-small sm:text-base" // Responsive font sizes
+            "text-base" // Responsive font sizes
           ) + " "
           // LXGWBright.className
         }
@@ -58,11 +58,11 @@ export default function RootLayout({
               <Link
                 isExternal
                 className="flex items-center gap-1 text-current"
-                href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
-                title="nextui.org homepage"
+                href="https://www.heroui.com/"
+                title="heroui.org homepage"
               >
                 <span className="text-default-600">Powered by</span>
-                <p className="text-primary">NextUI</p>
+                <p className="text-primary">HeroUI</p>
               </Link>
             </footer>
           </div>

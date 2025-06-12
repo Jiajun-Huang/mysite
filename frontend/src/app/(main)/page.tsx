@@ -12,7 +12,6 @@ export default async function Home() {
       method: "GET",
       next: { revalidate: 60 },
     });
-    console.log(await data.text());
     blogData = await data.json();
   } catch (error) {
     blogData = [];
@@ -20,7 +19,7 @@ export default async function Home() {
   }
   console.log(BASE_URL);
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-6">
       {blogData.map((data, index) => {
         return (
           <div key={index} className="w-full max-w-4xl">
