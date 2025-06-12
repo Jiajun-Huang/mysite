@@ -21,7 +21,7 @@ export default function NavBarSide() {
             href="/"
           >
             <Logo />
-            <p className="font-bold text-inherit">Jiajun Huang</p>
+            <p className="font-bold text-inherit">Jun</p>
           </Link>
         </NavbarBrand>
         <Divider />

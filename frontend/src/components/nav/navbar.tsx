@@ -40,7 +40,7 @@ export const Navbar = () => {
             href="/"
           >
             <Logo />
-            <p className="font-bold text-inherit text-lg">Jiajun Huang</p>
+            <p className="font-bold text-inherit text-lg">Jun</p>
           </Link>
         </NavbarBrand>
         <NavbarMenuToggle
@@ -86,7 +86,7 @@ export const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               <Logo />
-              <p className="font-bold text-inherit">Jiajun Huang</p>
+              <p className="font-bold text-inherit">Jun</p>
             </Link>
           </NavbarBrand>
           <Divider />

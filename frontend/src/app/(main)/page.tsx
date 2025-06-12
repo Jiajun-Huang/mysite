@@ -13,6 +13,11 @@ export default async function Home() {
       next: { revalidate: 60 },
     });
     blogData = await data.json();
+    blogData.sort(
+      (a, b) =>
+        new Date(b.created_at ?? 0).getTime() -
+        new Date(a.created_at ?? 0).getTime()
+    );
   } catch (error) {
     blogData = [];
     console.error(error);

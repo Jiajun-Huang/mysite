@@ -11,7 +11,7 @@ const MdCode = (props: any) => {
     return (
       <SyntaxHighlighter
         {...rest}
-        PreTag="div"
+        // PreTag="span"
         language={match[1]}
         style={CodeStyle}
       >
