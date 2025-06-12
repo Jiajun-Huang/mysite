@@ -22,7 +22,7 @@ export default function TocDisplaySmall({
   return (
     <div>
       <Button
-        onPress={onOpen}
+        onClick={onOpen}
         className="fixed right-0 translate-x-1/2 top-1/2 transform -translate-y-1/2 hover:translate-x-0 transition-transform duration-300 px-4 py-2 rounded-md shadow-lg z-50"
       >
         TOC
@@ -58,7 +58,7 @@ export default function TocDisplaySmall({
                 </div>
               </DrawerBody>
               <DrawerFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="danger" variant="light" onClick={onClose}>
                   Close
                 </Button>
               </DrawerFooter>

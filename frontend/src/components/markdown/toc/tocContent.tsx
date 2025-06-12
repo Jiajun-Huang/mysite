@@ -19,7 +19,7 @@ export default function TocContent({
     //       target={`#${item.id}`}
     //       href={`#${item.id}`}
     //     //   as={RemixLink}
-    //       onPress={onClose}
+    //       onClick={onClose}
     //     ></ListboxItem>
     //   ))}
     // </Listbox>

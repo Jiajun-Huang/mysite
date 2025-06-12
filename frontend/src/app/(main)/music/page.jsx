@@ -45,11 +45,11 @@ export default function Music() {
         const json = await response.json();
         console.log(json);
         const audioData = json.map((song) => ({
-          name: song.title,
-          artist: song.artist,
-          // url: song.url,
-          // cover: song.pic,
-          // lrc: song.lrc,
+          name: song.name,
+          artist: song.artist[0],
+          url: BASE_URL + "/api/audio/" + song.id,
+          cover: BASE_URL + "/api/cover/" + song.id,
+          lrc: BASE_URL + "/api/lrc/" + song.id,
         }));
 
         // Dynamically import APlayer

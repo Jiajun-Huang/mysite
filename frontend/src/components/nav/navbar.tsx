@@ -45,7 +45,7 @@ export const Navbar = () => {
         </NavbarBrand>
         <NavbarMenuToggle
           className="sm:hidden"
-          onPress={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
         />
       </NavbarContent>
 
@@ -83,7 +83,7 @@ export const Navbar = () => {
                 "data-[active=true]:text-primary data-[active=true]:font-medium"
               )}
               href="/"
-              onPress={() => setIsMenuOpen(false)}
+              onClick={() => setIsMenuOpen(false)}
             >
               <Logo />
               <p className="font-bold text-inherit">Jiajun Huang</p>
@@ -100,7 +100,7 @@ export const Navbar = () => {
                 )}
                 href={item.href}
                 isBlock
-                onPress={() => setIsMenuOpen(false)}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>

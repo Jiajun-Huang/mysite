@@ -9,7 +9,7 @@ console.log("Connect to: " + backend_url);
 console.log({
   protocol: backend_url_obj.protocol.slice(0, -1),
   hostname: backend_url_obj.hostname,
-  port: backend_url.port,
+  port: backend_url_obj.port,
 });
 const nextConfig = {
   async rewrites() {

@@ -36,7 +36,7 @@ export default function SignInModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button onPress={onOpenChange} variant="light">
+          <Button onClick={onOpenChange} variant="light">
             Close
           </Button>
         </ModalFooter>

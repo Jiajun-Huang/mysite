@@ -34,7 +34,7 @@ export default function NavUserAvartar() {
             const id = setTimeout(() => setIsOpen(false), delay);
             setTimeoutId(id);
           }}
-          // onPress={() => {
+          // onClick={() => {
           //   console.log("press");
           //   clearTimeout(timeoutId);
           //   setIsOpen(true);
@@ -68,7 +68,7 @@ export default function NavUserAvartar() {
           <DropdownItem
             data-hover
             key={"logout"}
-            onPress={() => {
+            onClick={() => {
               logout();
             }}
           >

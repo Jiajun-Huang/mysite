@@ -9,7 +9,7 @@ export default function SignInButton() {
 
   return (
     <div>
-      <Button onPress={onOpen}>Sign In</Button>
+      <Button onClick={onOpen}>Sign In</Button>
       <SignInModal
         isOpen={isOpen}
         onOpen={onOpen}

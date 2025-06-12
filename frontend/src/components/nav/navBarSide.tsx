@@ -1,3 +1,5 @@
+"use client";
+
 import { Logo } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { Divider } from "@heroui/divider";

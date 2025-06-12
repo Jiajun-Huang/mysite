@@ -2,7 +2,7 @@ import "@/styles/fonts.css";
 import "@/styles/globals.css";
 import { Link } from "@heroui/link";
 import clsx from "clsx";
-import { Metadata, Viewport } from "next";
+import { Metadata } from "next";
 
 import { Providers } from "../providers";
 
@@ -10,6 +10,7 @@ import { Navbar } from "@/components/nav/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -22,12 +23,12 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
-};
+// export const viewport: Viewport = {
+//   themeColor: [
+//     { media: "(prefers-color-scheme: light)", color: "white" },
+//     { media: "(prefers-color-scheme: dark)", color: "black" },
+//   ],
+// };
 
 export default function RootLayout({
   children,
@@ -35,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <head />
       <body
         className={
@@ -68,11 +69,11 @@ export default function RootLayout({
         </Providers>
       </body>
       <GoogleAnalytics gaId={"G-4KCSE04GPC"} />
-      <script
+      <Script
         defer
         src="https://cloud.umami.is/script.js"
         data-website-id="32f1869d-6a2c-43f8-86d3-c9ce4ed8ebb8"
-      ></script>
+      ></Script>
     </html>
   );
 }
