@@ -1,7 +1,6 @@
 from attr import dataclass
 from openapi_client import *
 from openapi_client.models import lyric_dto
-from reactivex import catch
 
 
 @dataclass()

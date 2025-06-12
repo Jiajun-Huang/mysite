@@ -11,3 +11,4 @@ whitenoise
 django-minio-storage
 Pillow
 pyexecjs
+-e ./thirdparty/jellyfin-python-client

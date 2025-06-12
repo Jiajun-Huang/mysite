@@ -12,6 +12,7 @@ interface Prop {
   };
 }
 
+export const revalidate = 60;
 // meta data
 export async function generateMetadata({ params }: Prop) {
   const { uri } = await params;

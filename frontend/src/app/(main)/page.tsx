@@ -2,6 +2,8 @@ import { BASE_URL } from "@/api/request";
 import BlogCard from "@/components/blogCard";
 import { Blog } from "@/types/";
 
+export const revalidate = 60;
+
 export default async function Home() {
   let blogData: Blog[];
 
@@ -10,7 +12,6 @@ export default async function Home() {
       method: "GET",
       next: { revalidate: 60 },
     });
-
     blogData = await data.json();
   } catch (error) {
     blogData = [];
