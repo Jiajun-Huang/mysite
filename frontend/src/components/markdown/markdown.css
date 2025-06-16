@@ -99,4 +99,30 @@
   /* .markdown tr:hover {
     @apply;
   } */
+
+  .markdown blockquote {
+    @apply border-l-4 border-gray-500 bg-gray-50 dark:bg-gray-900/20;
+    @apply pl-4 pr-4 py-3 my-4 rounded-r-lg;
+    @apply text-gray-700 dark:text-gray-300;
+    position: relative;
+    font-style: italic;
+  }
+  .markdown blockquote p {
+    margin: 0.5rem 0;
+  }
+  .markdown blockquote p:first-child {
+    margin-top: 0;
+  }
+  .markdown blockquote p:last-child {
+    margin-bottom: 0;
+  }
+  /* Nested blockquotes */
+  .markdown blockquote blockquote {
+    @apply border-l-4 border-gray-600 bg-gray-100 dark:bg-gray-800/20;
+    @apply ml-4 my-2;
+  }
+  /* Third level blockquote */
+  .markdown blockquote blockquote blockquote {
+    @apply border-l-4 border-gray-700 bg-gray-200 dark:bg-gray-700/20;
+  }
 }

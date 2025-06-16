@@ -10,14 +10,12 @@ export default function rehypeCodeType() {
     visit(tree, "element", function (node, index, parent) {
       if (node.tagName == "code") {
         if (node.tagName === "code") {
-          console.log(parent);
           const isBlockCode =
             parent?.type === "element" && parent.tagName === "pre";
 
           node.properties = node.properties || {};
           //   node.properties["data-code-type"] = isBlockCode ? "block" : "inline";
           node.block = isBlockCode;
-          console.log(node);
         }
       }
     });
