@@ -27,17 +27,15 @@ const MdCode = (props: any) => {
   // Inline code
   if (!node.block) {
     return (
-      <span className="text-xs">
-        <SyntaxHighlighter
-          {...rest}
-          PreTag="span"
-          language={match ? match[1] : ""}
-          style={CodeStyle}
-          className="inline bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm border border-gray-300 dark:border-gray-600"
-        >
-          {String(children).replace(/\n$/, "")}
-        </SyntaxHighlighter>
-      </span>
+      <SyntaxHighlighter
+        {...rest}
+        PreTag="span"
+        language={match ? match[1] : ""}
+        style={CodeStyle}
+        className="inline px-1 py-0.5 rounded text-sm"
+      >
+        {String(children).replace(/\n$/, "")}
+      </SyntaxHighlighter>
     );
   }
 

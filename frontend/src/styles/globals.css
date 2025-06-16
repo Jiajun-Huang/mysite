@@ -31,6 +31,19 @@ body {
   font-weight: normal;
 }
 
+code {
+  font-family:
+    "Fira Code",
+    "Fira Mono",
+    "LXGWBright",
+    Menlo,
+    Consolas,
+    DejaVu Sans Mono,
+    monospace,
+    sans-serif !important;
+  font-weight: normal;
+}
+
 :root {
   --scroll-padding-top: 0;
 }
