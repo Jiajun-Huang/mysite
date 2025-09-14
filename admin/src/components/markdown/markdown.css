@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@reference "tailwindcss";
 
 .markdown {
   cursor: default;
@@ -60,7 +58,6 @@
 .markdown h5 {
   font-size: 1rem;
 }
-
 
 @layer base {
   .markdown strong:hover {

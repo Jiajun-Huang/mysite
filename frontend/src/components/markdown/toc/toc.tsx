@@ -57,8 +57,8 @@ function Toc({ queryId }: { queryId: string }) {
   }, [queryId]);
 
   return (
-    <div className={`transition-all duration-300`}>
-      <div className="hidden md:block">
+    <div className={`transition-all duration-300 hide-scrollbar`}>
+      <div className="hidden md:block hide-scrollbar">
         <TocDisplayBig tocItems={tocItems} isScrolled={isScrolled} />
       </div>
       <div className="md:hidden">

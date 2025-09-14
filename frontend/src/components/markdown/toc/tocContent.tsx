@@ -23,7 +23,7 @@ export default function TocContent({
     //     ></ListboxItem>
     //   ))}
     // </Listbox>
-    <nav>
+    <nav className="hide-scrollbar">
       {tocItems.map((item) => (
         <a
           key={item.id}

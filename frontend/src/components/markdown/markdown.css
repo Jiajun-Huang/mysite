@@ -1,6 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@reference "tailwindcss";
+
+@import "../../styles/globals.css";
+
+@layer components {
+  .hide-scrollbar {
+    scrollbar-width: 0px;
+    scrollbar-color: transparent;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 .markdown {
   cursor: default;

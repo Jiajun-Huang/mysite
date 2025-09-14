@@ -43,7 +43,7 @@ export default function MdImage(
       {/* Modal Overlay */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-black/75 backdrop-blur-xs"
           onClick={closeModal}
         >
           <div className="relative max-w-[90vw] max-h-[90vh] p-4">
@@ -67,7 +67,7 @@ export default function MdImage(
             {/* Image Caption (if alt text exists) */}
             {props.alt && (
               <div className="mt-4 text-center">
-                <p className="text-white text-sm bg-black bg-opacity-50 px-3 py-2 max-w-md mx-auto">
+                <p className="text-white text-sm bg-black bg-black/50 px-3 py-2 max-w-md mx-auto">
                   {props.alt}
                 </p>
               </div>
