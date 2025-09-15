@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import TocDisplayBig from "./tocDisplayBig";
 import TocDisplaySmall from "./tocDisplaySmall";
 
@@ -13,6 +14,7 @@ export interface TocItem {
 function Toc({ queryId }: { queryId: string }) {
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
+
   // Track the scroll position and set isScrolled if it's greater than 100vh
   useEffect(() => {
     const handleScroll = () => {
@@ -21,7 +23,7 @@ function Toc({ queryId }: { queryId: string }) {
         // chanage --scroll-padding-top css variable to 4rem if isScrolled is true
         document.documentElement.style.setProperty(
           "--scroll-padding-top",
-          "4rem"
+          "4rem",
         );
       } else {
         setIsScrolled(false);
@@ -30,6 +32,7 @@ function Toc({ queryId }: { queryId: string }) {
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -40,6 +43,7 @@ function Toc({ queryId }: { queryId: string }) {
 
     if (!contentElement) {
       console.error("Element with id 'body-body' not found.");
+
       return;
     }
 
@@ -50,6 +54,7 @@ function Toc({ queryId }: { queryId: string }) {
       const level = parseInt(header.tagName[1]);
       const id = header.id;
       const text = header.textContent || "";
+
       tocItems.push({ id, level, text });
     });
 
@@ -59,10 +64,10 @@ function Toc({ queryId }: { queryId: string }) {
   return (
     <div className={`transition-all duration-300 hide-scrollbar`}>
       <div className="hidden md:block hide-scrollbar">
-        <TocDisplayBig tocItems={tocItems} isScrolled={isScrolled} />
+        <TocDisplayBig isScrolled={isScrolled} tocItems={tocItems} />
       </div>
       <div className="md:hidden">
-        <TocDisplaySmall tocItems={tocItems} isScrolled={isScrolled} />
+        <TocDisplaySmall isScrolled={isScrolled} tocItems={tocItems} />
       </div>
     </div>
   );

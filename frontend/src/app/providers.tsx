@@ -2,11 +2,12 @@
 
 import type { ThemeProviderProps } from "next-themes";
 
-import { UserProvider } from "@/components/auth/context";
 import { HeroUIProvider } from "@heroui/system";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useRouter } from "next/navigation";
 import * as React from "react";
+
+import { UserProvider } from "@/components/auth/context";
 
 export interface ProvidersProps {
   children: React.ReactNode;

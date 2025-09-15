@@ -1,9 +1,11 @@
 "use client";
 
-import { Comment } from "@/types/";
 import { useCallback, useEffect, useState } from "react";
+
 import CommentBlock from "./commentBlock";
 import CommentInput from "./commentInput";
+
+import { Comment } from "@/types/";
 
 type Prop = {
   placeholder: string;
@@ -15,6 +17,7 @@ export default function Comments({ placeholder, type, blog }: Prop) {
   const [commentss, setComments] = useState<Comment[]>([]);
   const fetchComments = useCallback(async () => {
     const searchParams = new URLSearchParams();
+
     if (blog) {
       searchParams.set("blog", blog.toString());
       searchParams.set("type", type.toString());
@@ -25,8 +28,10 @@ export default function Comments({ placeholder, type, blog }: Prop) {
     const params = searchParams.toString();
     const response = await fetch("/api/comment/get-comments?" + params);
     const data = await response.json();
+
     setComments(data);
   }, [blog, type]);
+
   useEffect(() => {
     fetchComments();
   }, [fetchComments]);
@@ -34,22 +39,22 @@ export default function Comments({ placeholder, type, blog }: Prop) {
   return (
     <div>
       <CommentInput
-        placeholder={placeholder}
+        avartar={true}
         blog={blog}
+        placeholder={placeholder}
+        reply={null}
         root={null}
         type={type}
-        reply={null}
-        avartar={true}
         onSubmit={fetchComments}
       />
       {commentss.map((comment: Comment) => (
         <CommentBlock
           key={comment.id}
-          comment={comment}
           blog={blog}
-          type={type}
+          comment={comment}
           parentComment={null}
           setRootState={null}
+          type={type}
         />
       ))}
     </div>

@@ -7,6 +7,6 @@ export function printDate(date: string) {
     hour: "2-digit",
     hourCycle: "h23",
   });
+
   return formatter.format(new Date(date));
 }
-

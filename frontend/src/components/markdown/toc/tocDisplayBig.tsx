@@ -1,4 +1,5 @@
 import { Divider } from "@heroui/divider";
+
 import { TocItem } from "./toc";
 import TocContent from "./tocContent";
 
@@ -10,6 +11,7 @@ export default function TocDisplayBig({
   isScrolled: boolean;
 }) {
   console.log(isScrolled);
+
   return (
     <>
       <nav className="text-1xl font-bold">Table of Contents</nav>
@@ -20,10 +22,10 @@ export default function TocDisplayBig({
         >
           <Divider className="my-4" />
           <div>
-            <a href="#top" className="hover:text-secondary block">
+            <a className="hover:text-secondary block" href="#top">
               Back to top
             </a>
-            <a href="#comments-ff" className="hover:text-secondary block">
+            <a className="hover:text-secondary block" href="#comments-ff">
               Go to Comment
             </a>
           </div>

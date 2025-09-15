@@ -27,11 +27,11 @@ export default function TocContent({
       {tocItems.map((item) => (
         <a
           key={item.id}
-          style={{ paddingLeft: `${(item.level - 2) * 20 + 10}px` }}
           className="text-foreground block hover:text-primary"
-          onClick={onClose}
-          title={item.text}
           href={`#${item.id}`}
+          style={{ paddingLeft: `${(item.level - 2) * 20 + 10}px` }}
+          title={item.text}
+          onClick={onClose}
         >
           {item.text}
         </a>

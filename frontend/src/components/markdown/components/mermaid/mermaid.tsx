@@ -14,6 +14,7 @@ mermaid.initialize({
 
 function Mermaid({ children }: Props) {
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);

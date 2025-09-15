@@ -1,8 +1,8 @@
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
+import Link from "next/link";
 
 import { Blog } from "@/types";
-import Link from "next/link";
 
 export default function BlogCard({ data }: { data: Blog }) {
   return (
@@ -19,7 +19,7 @@ export default function BlogCard({ data }: { data: Blog }) {
             <div className="flex gap-1">
               <p className="text-default-500">
                 {new Date(
-                  data.created_at || new Date("undefined")
+                  data.created_at || new Date("undefined"),
                 ).toLocaleDateString()}
               </p>
             </div>

@@ -9,6 +9,7 @@ import "remark-github-alerts/styles/github-base.css";
 import "remark-github-alerts/styles/github-colors-dark-class.css";
 import "remark-github-alerts/styles/github-colors-light.css";
 import remarkMath from "remark-math";
+
 import rehypeCodeType from "./rehype-code-type";
 
 export const remarkPlugins = [remarkMath, remarkGfm, remarkGithubAlerts];

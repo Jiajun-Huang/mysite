@@ -1,12 +1,13 @@
 "use client";
 
-import { Logo } from "@/components/icons";
-import { siteConfig } from "@/config/site";
 import { Divider } from "@heroui/divider";
 import { Link } from "@heroui/link";
 import { NavbarBrand, NavbarMenu, NavbarMenuItem } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
+
+import { siteConfig } from "@/config/site";
+import { Logo } from "@/components/icons";
 
 export default function NavBarSide() {
   return (
@@ -16,7 +17,7 @@ export default function NavBarSide() {
           <Link
             className={clsx(
               linkStyles({ color: "foreground" }),
-              "data-[active=true]:text-primary data-[active=true]:font-medium"
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
             )}
             href="/"
           >
@@ -28,13 +29,13 @@ export default function NavBarSide() {
         {siteConfig.navMenuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              color="foreground"
+              isBlock
               className={clsx(
                 linkStyles({ color: "foreground" }),
-                "data-[active=true]:text-primary data-[active=true]:font-medium"
+                "data-[active=true]:text-primary data-[active=true]:font-medium",
               )}
+              color="foreground"
               href={item.href}
-              isBlock
             >
               {item.label}
             </Link>

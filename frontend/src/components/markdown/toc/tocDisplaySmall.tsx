@@ -8,6 +8,7 @@ import {
   DrawerHeader,
 } from "@heroui/drawer";
 import { useDisclosure } from "@heroui/modal";
+
 import { TocItem } from "./toc";
 import TocContent from "./tocContent";
 
@@ -19,11 +20,12 @@ export default function TocDisplaySmall({
   isScrolled: boolean;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <div>
       <Button
-        onClick={onOpen}
         className="fixed right-0 translate-x-1/2 top-1/2 transform -translate-y-1/2 hover:translate-x-0 transition-transform duration-300 px-4 py-2 rounded-md shadow-lg z-50"
+        onClick={onOpen}
       >
         TOC
       </Button>
@@ -42,15 +44,15 @@ export default function TocDisplaySmall({
                 >
                   <Divider className="my-4" />
                   <a
-                    href="#top"
                     className="hover:text-secondary block"
+                    href="#top"
                     onClick={onClose}
                   >
                     Back to top
                   </a>
                   <a
-                    href="#comments-ff"
                     className="hover:text-secondary block"
+                    href="#comments-ff"
                     onClick={onClose}
                   >
                     Go to Comment

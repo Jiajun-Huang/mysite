@@ -1,9 +1,9 @@
 "use client";
 
-import { IconSvgProps } from "@/types";
 import { Button } from "@heroui/button";
-
 import { FC } from "react";
+
+import { IconSvgProps } from "@/types";
 
 interface SocialSignInButtonProps {
   icon: FC<IconSvgProps>;
@@ -18,9 +18,9 @@ export default function SocialSignInButton({
 }: SocialSignInButtonProps) {
   return (
     <Button
-      variant="light"
-      color="secondary"
       className="flex-grow"
+      color="secondary"
+      variant="light"
       onClick={async () => {
         const response = await fetch(requestUrl, {
           method: "HEAD",
@@ -28,6 +28,7 @@ export default function SocialSignInButton({
 
         //  get url from header
         const url = response.headers.get("Url");
+
         // open a small window to github
         if (!url) return;
 
@@ -35,6 +36,7 @@ export default function SocialSignInButton({
 
         if (!windows) {
           alert("Please disable your popup blocker");
+
           return;
         }
         // save curren url to local storage for redirect after login

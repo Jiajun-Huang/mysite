@@ -7,7 +7,7 @@ export default function MdImage(
   props: React.DetailedHTMLProps<
     React.ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
-  >
+  >,
 ) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -20,19 +20,19 @@ export default function MdImage(
     <>
       {/* Main Image */}
       <Image
-        src={props.src || ""}
         alt={props.alt || ""}
-        width={0}
-        height={0}
-        placeholder="blur"
         blurDataURL={"/icons8-loading-circle.gif"}
         className="my-4 sm:my-6 cursor-pointer"
+        height={0}
+        placeholder="blur"
         sizes="500"
+        src={props.src || ""}
         style={{
           width: "auto",
           height: "auto",
           display: "block",
         }}
+        width={0}
         onClick={openModal}
         // onError={(e) => {
         //   console.error(e);
@@ -50,17 +50,17 @@ export default function MdImage(
             {/* Modal Image */}
             <div className="relative" onClick={(e) => e.stopPropagation()}>
               <Image
-                src={props.src || ""}
+                priority
                 alt={props.alt || ""}
-                width={0}
-                height={0}
                 className="max-w-full object-contain shadow-2xl"
+                height={0}
                 sizes="(max-width: 768px) 90vw, (max-width: 1200px) 80vw, 70vw"
+                src={props.src || ""}
                 style={{
                   width: "auto",
                   height: "auto",
                 }}
-                priority
+                width={0}
               />
             </div>
 

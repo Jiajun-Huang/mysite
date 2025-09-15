@@ -9,6 +9,7 @@ import {
   DropdownTrigger,
 } from "@heroui/dropdown";
 import { useContext, useState } from "react";
+
 import { UserContext } from "../auth/context";
 import SignInButton from "../auth/signInButton";
 import UserAvartar from "../user/userAvartar";
@@ -20,18 +21,20 @@ export default function NavUserAvartar() {
 
   if (!user || !user.pk) return <SignInButton />;
   const delay = 200;
+
   return (
     <Dropdown isOpen={isOpen}>
       <DropdownTrigger>
         <Button
-          variant="light"
           className="px-10 py-5"
+          variant="light"
           onMouseEnter={() => {
             clearTimeout(timeoutId);
             setIsOpen(true);
           }}
           onMouseLeave={() => {
             const id = setTimeout(() => setIsOpen(false), delay);
+
             setTimeoutId(id);
           }}
           // onClick={() => {
@@ -50,7 +53,7 @@ export default function NavUserAvartar() {
             setIsOpen((prev) => !prev);
           }}
         >
-          <UserAvartar user={user.pk} width={40} height={40} />
+          <UserAvartar height={40} user={user.pk} width={40} />
           <p>{user.username}</p>
         </Button>
         {/* <p>{user.username}</p> */}
@@ -66,8 +69,8 @@ export default function NavUserAvartar() {
       >
         <DropdownSection>
           <DropdownItem
-            data-hover
             key={"logout"}
+            data-hover
             onClick={() => {
               logout();
             }}

@@ -11,31 +11,32 @@ import {
 } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
-
-import { Logo } from "@/components/icons";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { siteConfig } from "@/config/site";
 import { Divider } from "@heroui/divider";
 import { Link } from "@heroui/link";
 import { useState } from "react";
+
 import NavUserAvartar from "./navUserAvartar";
+
+import { siteConfig } from "@/config/site";
+import { ThemeSwitch } from "@/components/theme-switch";
+import { Logo } from "@/components/icons";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <NextUINavbar
-      maxWidth="2xl"
-      position="sticky"
       isBordered
       isMenuOpen={isMenuOpen}
+      maxWidth="2xl"
+      position="sticky"
     >
       <NavbarContent className=" sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit hidden sm:flex">
           <Link
             className={clsx(
               linkStyles({ color: "foreground" }),
-              "data-[active=true]:text-primary data-[active=true]:font-medium"
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
             )}
             href="/"
           >
@@ -54,13 +55,13 @@ export const Navbar = () => {
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <Link
+                isBlock
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium text-lg"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium text-lg",
                 )}
                 color="foreground"
                 href={item.href}
-                isBlock
               >
                 {item.label}
               </Link>
@@ -80,7 +81,7 @@ export const Navbar = () => {
             <Link
               className={clsx(
                 linkStyles({ color: "foreground" }),
-                "data-[active=true]:text-primary data-[active=true]:font-medium"
+                "data-[active=true]:text-primary data-[active=true]:font-medium",
               )}
               href="/"
               onClick={() => setIsMenuOpen(false)}
@@ -93,13 +94,13 @@ export const Navbar = () => {
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
-                color="foreground"
+                isBlock
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium text-xl"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium text-xl",
                 )}
+                color="foreground"
                 href={item.href}
-                isBlock
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}

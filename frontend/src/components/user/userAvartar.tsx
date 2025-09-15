@@ -1,5 +1,6 @@
-import { BASE_URL } from "@/api/request";
 import Image from "next/image";
+
+import { BASE_URL } from "@/api/request";
 
 export default function UserAvartar({
   user: userId,
@@ -12,11 +13,11 @@ export default function UserAvartar({
 }) {
   return (
     <Image
-      src={BASE_URL + `/api/user/avatar?user=${userId}`}
       alt="avatar"
-      width={width}
-      height={height}
       className="object-contain object-top"
+      height={height}
+      src={BASE_URL + `/api/user/avatar?user=${userId}`}
+      width={width}
     />
   );
 }

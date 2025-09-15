@@ -1,9 +1,10 @@
+import { Divider } from "@heroui/divider";
+
 import { BASE_URL } from "@/api/request";
 import Comment from "@/components/comment/comment";
 import MarkDown from "@/components/markdown/markdown";
 import Toc from "@/components/markdown/toc/toc";
 import { printDate } from "@/util/util";
-import { Divider } from "@heroui/divider";
 import "katex/dist/katex.min.css";
 
 interface Prop {
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: Prop) {
   }
 
   const data = await response.json();
+
   return {
     title: data.title,
     description: data.description,
@@ -54,6 +56,7 @@ export default async function BlogDetail({ params }: Prop) {
   }).then((res) => res.text());
   // console.log(text);
   const dateStr = printDate(created_at);
+
   return (
     <div>
       <h1 className="text-4xl font-bold mb-7">{data.title}</h1>
@@ -74,7 +77,7 @@ export default async function BlogDetail({ params }: Prop) {
 
       <Divider className="my-4" />
       <div className="flex justify-between">
-        <div id="content" className="w-11/12 md:w-3/4 pr-4">
+        <div className="w-11/12 md:w-3/4 pr-4" id="content">
           <MarkDown
             urlTransform={(url, key, node) => {
               if (key === "src" && node.tagName === "img") {
@@ -84,7 +87,9 @@ export default async function BlogDetail({ params }: Prop) {
                   uri +
                   "?" +
                   new URLSearchParams({ url }).toString();
+
                 console.log(newUrl);
+
                 return newUrl;
               }
             }}
@@ -101,11 +106,7 @@ export default async function BlogDetail({ params }: Prop) {
       <Divider className="my-10" />
       <div id="comments-ff">
         <h2 className="text-2xl font-bold">Comments</h2>
-        <Comment
-          placeholder="write a comment"
-          blog={data.id}
-          type={0}
-        ></Comment>
+        <Comment blog={data.id} placeholder="write a comment" type={0} />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
-import { User } from "@/types/";
 import React, { createContext, useEffect, useState } from "react";
+
+import { User } from "@/types/";
 
 interface UserContextType {
   user: User | null;
@@ -38,6 +39,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     // get user data
     const token = localStorage.getItem("token");
+
     console.log("Token:", token);
     if (token) {
       fetch("/api/auth/user", {

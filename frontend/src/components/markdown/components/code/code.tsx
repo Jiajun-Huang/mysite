@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark as CodeStyle } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
 import Mermaid from "../mermaid/mermaid";
 
 const MdCode = (props: any) => {
@@ -30,9 +31,9 @@ const MdCode = (props: any) => {
       <SyntaxHighlighter
         {...rest}
         PreTag="span"
+        className="inline px-1 py-0.5 rounded text-sm"
         language={match ? match[1] : ""}
         style={CodeStyle}
-        className="inline px-1 py-0.5 rounded text-sm"
       >
         {String(children).replace(/\n$/, "")}
       </SyntaxHighlighter>
@@ -48,19 +49,19 @@ const MdCode = (props: any) => {
           {match ? match[1] : "text"}
         </span>
         <button
-          onClick={handleCopy}
           className={`bg-transparent border px-2 py-1 rounded text-xs cursor-pointer flex items-center gap-1 transition-all duration-200 ${
             copied
               ? "border-green-500 text-green-500"
               : "border-gray-600 text-gray-400 hover:border-gray-500 hover:text-gray-300"
           }`}
+          onClick={handleCopy}
         >
           {copied ? (
             <>
               <svg
                 className="w-3.5 h-3.5"
-                viewBox="0 0 24 24"
                 fill="currentColor"
+                viewBox="0 0 24 24"
               >
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
               </svg>
@@ -70,8 +71,8 @@ const MdCode = (props: any) => {
             <>
               <svg
                 className="w-3.5 h-3.5"
-                viewBox="0 0 24 24"
                 fill="currentColor"
+                viewBox="0 0 24 24"
               >
                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
               </svg>
@@ -86,8 +87,15 @@ const MdCode = (props: any) => {
         <SyntaxHighlighter
           {...rest}
           PreTag="div"
+          customStyle={{
+            margin: 0,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            borderBottomLeftRadius: "6px",
+            borderBottomRightRadius: "6px",
+            fontStyle: "normal",
+          }}
           language={match ? match[1] : ""}
-          style={CodeStyle}
           className="block-code"
           // showLineNumbers={true}
           // lineNumberStyle={{
@@ -98,14 +106,7 @@ const MdCode = (props: any) => {
           //   opacity: 1,
           //   // fontStyle: "normal",
           // }}
-          customStyle={{
-            margin: 0,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-            borderBottomLeftRadius: "6px",
-            borderBottomRightRadius: "6px",
-            fontStyle: "normal",
-          }}
+          style={CodeStyle}
         >
           {String(children).replace(/\n$/, "")}
         </SyntaxHighlighter>

@@ -1,11 +1,13 @@
 "use client";
 
-import { submitComment } from "@/api/action";
-import { UserContext } from "@/components/auth/context";
 import { Button } from "@heroui/button";
 import { useContext } from "react";
+
 import SignInButton from "../auth/signInButton";
 import Avatar from "../user/userAvartar";
+
+import { UserContext } from "@/components/auth/context";
+import { submitComment } from "@/api/action";
 
 interface Props {
   placeholder: string;
@@ -30,9 +32,9 @@ export default function CommentInput({
 
   return (
     <form
-      className="flex flex-col py-2.5"
       action={async (formdata: FormData) => {
         const content = formdata.get("inputField") as string;
+
         await submitComment({
           content: content ?? "",
           path: window.location.pathname,
@@ -45,16 +47,17 @@ export default function CommentInput({
         console.log("submit");
         onSubmit();
       }}
+      className="flex flex-col py-2.5"
     >
       <div className="flex items-center mb-2.5">
         {avartar && user ? (
-          <Avatar user={user.pk} width={50} height={50} />
+          <Avatar height={50} user={user.pk} width={50} />
         ) : null}
         <textarea
-          name="inputField"
-          placeholder={user ? placeholder : "Please log in to comment"}
           className="flex-1 ml-2.5 p-2.5 border border-gray-300 rounded-md text-base resize-none"
           disabled={user == null}
+          name="inputField"
+          placeholder={user ? placeholder : "Please log in to comment"}
         />
       </div>
       <div className="flex justify-end mt-2.5">

@@ -6,8 +6,10 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@heroui/modal";
+
 import DividerWithText from "../dividerWithText";
 import { GithubIcon } from "../icons";
+
 import SignInForm from "./signInForm";
 import SocialSignInButton from "./socialSignInButton";
 
@@ -30,13 +32,13 @@ export default function SignInModal({
           <div className="flex">
             <SocialSignInButton
               icon={GithubIcon}
-              text="Github"
               requestUrl="/api/auth/github/url/"
+              text="Github"
             />
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={onOpenChange} variant="light">
+          <Button variant="light" onClick={onOpenChange}>
             Close
           </Button>
         </ModalFooter>

@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
+
+import CommentInput from "./commentInput";
+
 import Avatar from "@/components/user/userAvartar";
 import { Comment } from "@/types/";
 import { printDate } from "@/util/util";
-import { useState } from "react";
-import CommentInput from "./commentInput";
 
 type Props = {
   comment: Comment;
@@ -25,12 +27,14 @@ export default function CommentBlock({
   const [commentState, setCommentState] = useState(comment);
   const { content, user, created_at, replies, id, root } = commentState;
   const rootId = root || id; // if root is null, use self as root
+
   setRootState = setRootState || setCommentState;
 
   const dateStr = printDate(created_at);
+
   return (
     <div className="flex space-x-2 mb-4" id={`comment-${comment.id}`}>
-      <Avatar user={user.id} width={50} height={50} />
+      <Avatar height={50} user={user.id} width={50} />
       <div className="flex-1">
         <p className="font-semibold">
           {parentComment
@@ -50,12 +54,12 @@ export default function CommentBlock({
           </span>
           {reply ? (
             <CommentInput
-              placeholder={`reply to ${user.username}`}
-              blog={blog}
-              type={type}
-              root={rootId} // root comment id
-              reply={id} // reply to this comment
               avartar={false}
+              blog={blog}
+              placeholder={`reply to ${user.username}`}
+              reply={id} // reply to this comment
+              root={rootId} // root comment id
+              type={type}
               onSubmit={() => {
                 setReply(false);
                 console.log(rootId);
@@ -71,6 +75,7 @@ export default function CommentBlock({
         <div className="mt-4">
           {replies?.map((reply) => {
             let replyTo = null;
+
             if (reply.reply !== reply.root) {
               // if the comment is a reply to another comment (not the root comment)
               replyTo = replies.find((r) => r.id === reply.reply); // find the comment under which this comment is replied
@@ -79,14 +84,15 @@ export default function CommentBlock({
                 console.error("reply to comment not found"); // if not found, log error
               }
             }
+
             return (
               <div key={reply.id}>
                 <CommentBlock
-                  comment={reply}
                   blog={blog}
-                  type={type}
+                  comment={reply}
                   parentComment={replyTo || null}
                   setRootState={setCommentState}
+                  type={type}
                 />
               </div>
             );

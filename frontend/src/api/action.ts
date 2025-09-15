@@ -1,9 +1,10 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { BASE_URL } from "@/api/request";
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
-import { revalidatePath } from "next/cache";
 
 type SubmitCommentType = {
   content: string;

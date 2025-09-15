@@ -3,14 +3,14 @@ import "@/styles/globals.css";
 import { Link } from "@heroui/link";
 import clsx from "clsx";
 import { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 import { Providers } from "../providers";
 
 import { Navbar } from "@/components/nav/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -43,7 +43,7 @@ export default function RootLayout({
           clsx(
             "min-h-screen bg-background font-sans antialiased",
             fontSans.variable,
-            "text-base" // Responsive font sizes
+            "text-base", // Responsive font sizes
           ) + " "
           // LXGWBright.className
         }
@@ -71,9 +71,9 @@ export default function RootLayout({
       <GoogleAnalytics gaId={"G-4KCSE04GPC"} />
       <Script
         defer
-        src="https://cloud.umami.is/script.js"
         data-website-id="32f1869d-6a2c-43f8-86d3-c9ce4ed8ebb8"
-      ></Script>
+        src="https://cloud.umami.is/script.js"
+      />
     </html>
   );
 }
