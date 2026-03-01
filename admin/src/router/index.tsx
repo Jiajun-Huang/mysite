@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 import { Navigate } from "react-router";
-import SkeletonLoading from "../components/SkeletonLoading";
 import ProtectedRoute from "../components/ProtectedRoute";
+import SkeletonLoading from "../components/SkeletonLoading";
 import { routesType } from "../types/route";
 import BlogCreate from "../views/Blog/blogCreate";
 import BlogEdit from "../views/Blog/blogEdit";

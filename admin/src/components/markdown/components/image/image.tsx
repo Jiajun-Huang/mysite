@@ -1,18 +1,18 @@
-import { useState } from "react";
 import { Modal } from "antd";
+import { useState } from "react";
 
 export default function MdImage(
   props: React.DetailedHTMLProps<
     React.ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
-  >
+  >,
 ) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
   };
-  
+
   const closeModal = () => setIsModalOpen(false);
 
   return (

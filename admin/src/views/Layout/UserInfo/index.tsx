@@ -9,7 +9,7 @@ import Clock from "../NowTime";
 const UserInfo: React.FC = () => {
   const navigateTo = useNavigate();
   const { userInfo, logout, getUserInfo } = useAuth();
-  
+
   useEffect(() => {
     if (!userInfo) {
       getUserInfo();
