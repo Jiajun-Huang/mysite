@@ -1,15 +1,48 @@
 import { Input } from "antd";
-import React from "react";
+import React, { useDeferredValue, useEffect, useState } from "react";
+import { UrlTransform } from "react-markdown";
 import MarkDown from "./markdown"; // The Markdown renderer component
 
 interface MarkdownEditorProps {
   text: string;
   setText: (text: string) => void;
+  urlTransform?: UrlTransform;
+  syncDelayMs?: number;
 }
 
-const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ text, setText }) => {
+const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
+  text,
+  setText,
+  urlTransform,
+  syncDelayMs = 150,
+}) => {
+  const [draftText, setDraftText] = useState(text);
+  const deferredText = useDeferredValue(draftText);
+
+  useEffect(() => {
+    setDraftText(text);
+  }, [text]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (draftText !== text) {
+        setText(draftText);
+      }
+    }, syncDelayMs);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [draftText, setText, syncDelayMs, text]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+    setDraftText(e.target.value);
+  };
+
+  const flushDraftToParent = () => {
+    if (draftText !== text) {
+      setText(draftText);
+    }
   };
 
   return (
@@ -22,8 +55,9 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ text, setText }) => {
     >
       <Input.TextArea
         rows={12}
-        value={text}
+        value={draftText}
         onChange={handleInputChange}
+        onBlur={flushDraftToParent}
         placeholder="Type your Markdown here..."
         style={{
           width: "50%",
@@ -44,8 +78,8 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ text, setText }) => {
           overflowY: "scroll",
         }}
       >
-        <MarkDown>
-          {text || "Start with second level heading (##)"}
+        <MarkDown urlTransform={urlTransform}>
+          {deferredText || "Start with second level heading (##)"}
         </MarkDown>
       </div>
     </div>

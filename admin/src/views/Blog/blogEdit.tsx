@@ -11,7 +11,8 @@ import {
   Space,
   Spin,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { UrlTransform } from "react-markdown";
 import { useNavigate, useParams } from "react-router";
 import {
   fetchBlog,
@@ -24,6 +25,19 @@ import MarkdownEditor from "../../components/markdown/editor";
 import { useAuth } from "../../provider/auth";
 
 const { TextArea } = Input;
+
+interface SelectOptionItem {
+  id: number;
+  name: string;
+}
+
+interface BlogEditFormValues {
+  title: string;
+  description: string;
+  category: number;
+  tags: number[];
+  uri: string;
+}
 
 const BlogEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -78,6 +92,34 @@ const BlogEdit = () => {
     }
   }, [markdownQuery.data]);
 
+  const markdownImageTransform = useCallback<UrlTransform>(
+    (url, key, node) => {
+      if (key === "src" && node.tagName === "img") {
+        const blogUri = blogQuery.data?.uri;
+        if (!blogUri) {
+          return url;
+        }
+
+        if (
+          /^https?:\/\//i.test(url) ||
+          url.startsWith("data:") ||
+          url.startsWith("blob:") ||
+          url.startsWith("/api/blog/image/")
+        ) {
+          return url;
+        }
+
+        const normalizedUrl = url.split(/[?#]/)[0].replace(/^\.\//, "");
+        return `/api/blog/image/${blogUri}?${new URLSearchParams({
+          url: normalizedUrl,
+        }).toString()}`;
+      }
+
+      return url;
+    },
+    [blogQuery.data?.uri],
+  );
+
   if (
     tagQuery.isLoading ||
     categoryQuery.isLoading ||
@@ -102,7 +144,7 @@ const BlogEdit = () => {
     return <div>Error loading data...</div>;
   }
 
-  const handleUpdate = async (values: any) => {
+  const handleUpdate = async (values: BlogEditFormValues) => {
     setIsSubmitting(true);
     try {
       const mdContent = mdText;
@@ -114,15 +156,17 @@ const BlogEdit = () => {
       formData.append("files", mdFile);
       formData.append("title", values.title);
       formData.append("description", values.description);
-      formData.append("category", values.category);
+      formData.append("category", String(values.category));
       formData.append("tags", values.tags.join(","));
       formData.append("uri", values.uri);
 
       await updateBlog(id!, formData, accessToken!);
       message.success("Blog updated successfully!");
       navigate("/blog/list");
-    } catch (err: any) {
-      message.error(err.message || "Failed to update blog");
+    } catch (err: unknown) {
+      const messageText =
+        err instanceof Error ? err.message : "Failed to update blog";
+      message.error(messageText);
     } finally {
       setIsSubmitting(false);
     }
@@ -165,7 +209,7 @@ const BlogEdit = () => {
               ]}
             >
               <Select>
-                {categoryQuery.data.map((category: any) => (
+                {categoryQuery.data.map((category: SelectOptionItem) => (
                   <Select.Option key={category.id} value={category.id}>
                     {category.name}
                   </Select.Option>
@@ -185,7 +229,7 @@ const BlogEdit = () => {
                 style={{ width: "100%" }}
                 placeholder="Select tags"
               >
-                {tagQuery.data.map((tag: any) => (
+                {tagQuery.data.map((tag: SelectOptionItem) => (
                   <Select.Option key={tag.id} value={tag.id}>
                     {tag.name}
                   </Select.Option>
@@ -206,7 +250,11 @@ const BlogEdit = () => {
           </Col>
         </Row>
         <Form.Item wrapperCol={{ span: 24 }}>
-          <MarkdownEditor text={mdText} setText={setMdText} />
+          <MarkdownEditor
+            text={mdText}
+            setText={setMdText}
+            urlTransform={markdownImageTransform}
+          />
         </Form.Item>
 
         <Form.Item wrapperCol={{ span: 24 }}>

@@ -1,3 +1,4 @@
+import React from "react";
 import ReactMarkdown, { UrlTransform } from "react-markdown";
 
 import MdCode from "./components/code/code";
@@ -10,7 +11,7 @@ interface Props {
   urlTransform?: UrlTransform;
 }
 
-const MarkDown = ({ children, urlTransform }: Props) => {
+const MarkDown = React.memo(({ children, urlTransform }: Props) => {
   if (!children) {
     return <div />;
   }
@@ -30,7 +31,7 @@ const MarkDown = ({ children, urlTransform }: Props) => {
       </ReactMarkdown>
     </div>
   );
-};
+});
 
 export default MarkDown;
 //https://github.com/kevinzunigacuellar/remark-code-title
