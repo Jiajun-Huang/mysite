@@ -10,7 +10,7 @@ const getItem: getItemType = function getItem(
   key,
   icon,
   children,
-  type
+  type,
 ) {
   return {
     key,
@@ -18,15 +18,14 @@ const getItem: getItemType = function getItem(
     children,
     label,
     type,
-  } as MenuItem;  
+  } as MenuItem;
 };
 
 const items: MenuItem[] = [
   getItem("Home", "/home", <HomeOutlined />),
   getItem("Blog", "/blog", <UserOutlined />, [
+    getItem("List", "/blog/list"),
     getItem("Create", "/blog/create"),
-    getItem("Edit", "/blog/:id"),
-    getItem("List", "/blog"),
   ]),
 ];
 
@@ -37,7 +36,7 @@ const MainMenu: React.FC = () => {
 
   const firstOpenKeys = currentRoute.pathname.match(/^\/[\w-]+/)![0];
   const [openKeys, setOpenKeys] = useState([firstOpenKeys]);
- 
+
   const [current, setCurrent] = useState(currentRoute.pathname);
 
   useEffect(() => {

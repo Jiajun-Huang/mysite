@@ -3,14 +3,18 @@ import os
 import subprocess
 import sys
 
-# Set environment variables
+# Configuration
+REMOTE_DOCKER_HOST = os.environ.get("REMOTE_DOCKER_HOST", "ssh://unraid")
+REMOTE_APP_DIR = os.environ.get("REMOTE_APP_DIR", "/mnt/user/appdata")
+
+# Django environment variables
 os.environ["DJANGO_ALLOWED_HOSTS"] = "localhost 127.0.0.1"
 os.environ["DATABASE_URL"] = "mysql://demo:12345678@192.168.1.5:3306/MYSQL_DATABASE"
 os.environ["MINIO_STORAGE_URL"] = "http://192.168.1.10:9000/test"
 os.environ["MINIO_STORAGE_ACCESS_KEY"] = "Z2UEZevaUAlmeX3t0W2K"
 os.environ["MINIO_STORAGE_SECRET_KEY"] = "nMkyHsuoFXm2Vn8r41S91rv5WK66NUH0JXe1P9Jg"
 
-# Frontend environment variables
+# Next.js environment variables
 os.environ["BACKEND_ADDR"] = "http://192.168.1.7"
 os.environ["NEXT_PUBLIC_BACKEND_ADDR"] = "http://192.168.1.7"
 os.environ["STORAGE_ADDR"] = "192.168.1.10"
@@ -20,8 +24,8 @@ os.environ["NEXT_SHARP_PATH"] = os.path.join(
 )
 
 
-# Function to run a shell command and handle errors
 def run_command(command, error_message):
+    """Execute a local shell command and handle errors."""
     try:
         subprocess.check_call(command, shell=True)
     except subprocess.CalledProcessError:
@@ -29,109 +33,80 @@ def run_command(command, error_message):
         exit(1)
 
 
-def all():
+def run_remote_script(script, error_message):
+    """Execute a bash script on the remote host via SSH."""
+    script = script.replace("\r\n", "\n").replace("\r", "")
+    script_bytes = script.encode("utf-8")
 
-    # Navigate to backend directory, build the Docker image, and handle errors
-    os.chdir("backend")
-    print("Building Django Docker image...")
-    run_command("docker build -t my-django-app:latest .", "Django build")
-
-    # Navigate to frontend directory, build the Docker image, and handle errors
-    os.chdir("../frontend")
-    print("Building Next.js Docker image...")
-    run_command("npm run build", "Next.js build failed")
-    run_command("docker build -t my-nextjs-app:latest .", "Next.js build")
-
-    # Create a build directory if it doesn't exist
-    os.makedirs("../build", exist_ok=True)
-
-    # Save Docker images to tar files
-    print("Saving Django Docker image to tar file...")
-    run_command(
-        "docker save my-django-app:latest -o ../build/my-django-app.tar.gz",
-        "Failed to save Django image",
+    result = subprocess.run(
+        ["ssh", "unraid", "bash", "-s"],
+        input=script_bytes,
+        capture_output=True,
     )
 
-    print("Saving Next.js Docker image to tar file...")
-    run_command(
-        "docker save my-nextjs-app:latest -o ../build/my-nextjs-app.tar.gz",
-        "Failed to save Next.js image",
-    )
+    if result.stdout:
+        print(result.stdout.decode("utf-8", errors="replace"))
+    if result.stderr:
+        print(result.stderr.decode("utf-8", errors="replace"))
 
-    # Securely copy Docker images to Unraid server
-    print("Copying Django image to Unraid...")
-    run_command(
-        "scp ../build/my-django-app.tar.gz unraid:/mnt/user/appdata/my-django-app.tar.gz",
-        "Failed to copy Django image",
-    )
+    if result.returncode != 0:
+        print(f"{error_message} failed")
+        exit(1)
 
-    print("Copying Next.js image to Unraid...")
-    run_command(
-        "scp ../build/my-nextjs-app.tar.gz unraid:/mnt/user/appdata/my-nextjs-app.tar.gz",
-        "Failed to copy Next.js image",
-    )
 
-    # SSH into Unraid and run deployment script
+def remote_build(image_name, build_context, dockerfile="Dockerfile"):
+    """Build Docker image on remote host using SSH context."""
+    print(f"Building {image_name} on remote Docker host ({REMOTE_DOCKER_HOST})...")
+    build_cmd = f"docker -H {REMOTE_DOCKER_HOST} build -t {image_name}:latest -f {dockerfile} {build_context}"
+    run_command(build_cmd, f"Remote build {image_name}")
+
+
+def deploy_on_unraid():
+    """Deploy containers on Unraid server."""
     print("Running deployment on Unraid...")
-    run_command(
-        'ssh unraid "cd /mnt/user/appdata && bash deploy.sh"', "Deployment script"
-    )
 
+    script_path = os.path.join(os.path.dirname(__file__), "deploy_unraid.sh")
+    with open(script_path, "r", encoding="utf-8") as f:
+        script_template = f.read()
+
+    script = script_template.replace("{{REMOTE_APP_DIR}}", REMOTE_APP_DIR)
+    run_remote_script(script, "Deployment command")
+
+
+def build_all():
+    """Build both backend and frontend, then deploy."""
+    # Build backend
+    os.chdir("backend")
+    remote_build("my-django-app", ".", "Dockerfile")
+
+    # Build frontend
+    os.chdir("../frontend")
+    print("Building Next.js app...")
+    run_command("npm run build", "Next.js build failed")
+    remote_build("my-nextjs-app", ".", "Dockerfile")
+
+    os.chdir("..")
+    deploy_on_unraid()
     print("Build and deployment completed successfully!")
 
 
-def backend():
+def build_backend():
+    """Build backend and deploy."""
     os.chdir("backend")
-    print("Building Django Docker image...")
-    run_command("docker build -t my-django-app:latest .", "Django build")
+    remote_build("my-django-app", ".", "Dockerfile")
     os.chdir("..")
-    os.makedirs("build", exist_ok=True)
-    print("Saving Django Docker image to tar file...")
-    run_command(
-        "docker save my-django-app:latest -o build/my-django-app.tar.gz",
-        "Failed to save Django image",
-    )
-    print("Copying Django image to Unraid...")
-    run_command(
-        "scp -C build/my-django-app.tar.gz unraid:/mnt/user/appdata/my-django-app.tar.gz",
-        "Failed to copy Django image",
-    )
-    print("Running deployment on Unraid...")
-    run_command(
-        'ssh unraid "cd /mnt/user/appdata && bash deploy.sh"', "Deployment script"
-    )
+    deploy_on_unraid()
     print("Backend build and deployment completed successfully!")
 
 
-def frontend():
+def build_frontend():
+    """Build frontend and deploy."""
     os.chdir("frontend")
-    os.environ["BACKEND_ADDR"] = "http://192.168.1.7"
-    os.environ["NEXT_PUBLIC_BACKEND_ADDR"] = "http://192.168.1.7"
-    os.environ["STORAGE_ADDR"] = "192.168.1.10"
-    os.environ["NEXT_PUBLIC_STORAGE_ADDR"] = os.environ["STORAGE_ADDR"]
-    os.environ["NEXT_SHARP_PATH"] = os.path.join(
-        os.getcwd(), "frontend", "node_modules", "sharp"
-)
-
-    print("Building Next.js Docker image...")
+    print("Building Next.js app...")
     run_command("npm run build", "Next.js build failed")
-    run_command("docker build -t my-nextjs-app:latest .", "Next.js build")
+    remote_build("my-nextjs-app", ".", "Dockerfile")
     os.chdir("..")
-    os.makedirs("build", exist_ok=True)
-    print("Saving Next.js Docker image to tar file...")
-    run_command(
-        "docker save my-nextjs-app:latest -o build/my-nextjs-app.tar.gz",
-        "Failed to save Next.js image",
-    )
-    print("Copying Next.js image to Unraid...")
-    run_command(
-        "scp -C build/my-nextjs-app.tar.gz unraid:/mnt/user/appdata/my-nextjs-app.tar.gz",
-        "Failed to copy Next.js image",
-    )
-    print("Running deployment on Unraid...")
-    run_command(
-        'ssh unraid "cd /mnt/user/appdata && bash deploy.sh"', "Deployment script"
-    )
+    deploy_on_unraid()
     print("Frontend build and deployment completed successfully!")
 
 
@@ -150,48 +125,50 @@ def start_backend():
 
 
 def main():
-    # parser = argparse.ArgumentParser(description='Build and deploy Django and Next.js apps to Unraid server')
-    # parser.add_argument('app', choices=['all', 'backend', 'frontend'], help='Choose which app to build and deploy')
-    # args = parser.parse_args()
-    # if args.app == 'all':
-    #     all()
-    # elif args.app == 'backend':
-    #     backend()
-    # elif args.app == 'frontend':
-    #     frontend()
-    # else:
-    #     print("Invalid argument")
-    #     exit(1)
+    parser = argparse.ArgumentParser(
+        description="Build and deploy Django and Next.js apps to Unraid server"
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    # get first argument [build, start]
-    app = sys.argv[1]
+    # Build subcommand
+    build_parser = subparsers.add_parser("build", help="Build and deploy application")
+    build_parser.add_argument(
+        "target",
+        nargs="?",
+        default="all",
+        choices=["frontend", "backend", "all"],
+        help="What to build (frontend, backend, or all). Defaults to 'all'",
+    )
+    build_parser.add_argument(
+        "--deploy-only",
+        action="store_true",
+        help="Skip building, only deploy existing images",
+    )
 
-    # get second argument [frontend, backend]
-    action = sys.argv[2]
+    # Start subcommand
+    start_parser = subparsers.add_parser("start", help="Start application locally")
+    start_parser.add_argument(
+        "target",
+        choices=["frontend", "backend"],
+        help="What to start (frontend or backend)",
+    )
 
-    if app == "build":
-        if action == "frontend":
-            frontend()
-        elif action == "backend":
-            backend()
-        elif action == 'all':
-            frontend()
-            backend()
-        else:
-            print("Invalid argument")
-            exit(1)
-    elif app == "start":
-        if action == "frontend":
+    args = parser.parse_args()
+
+    if args.command == "build":
+        if args.deploy_only:
+            deploy_on_unraid()
+        elif args.target == "frontend":
+            build_frontend()
+        elif args.target == "backend":
+            build_backend()
+        elif args.target == "all":
+            build_all()
+    elif args.command == "start":
+        if args.target == "frontend":
             start_frontend()
-        elif action == "backend":
+        elif args.target == "backend":
             start_backend()
-            exit(1)
-        else:
-            print("Invalid argument")
-            exit(1)
-    else:
-        print("Invalid argument")
-        exit(1)
 
 
 if __name__ == "__main__":

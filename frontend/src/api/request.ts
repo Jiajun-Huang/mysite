@@ -1,5 +1,5 @@
-export const BASE_URL = process.env.BACKEND_ADDR || currentHost();
-
-function currentHost() {
-  return window.location.protocol + "//" + window.location.host;
-}
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_ADDR ||
+  (typeof window !== "undefined"
+    ? window.location.protocol + "//" + window.location.host
+    : "http://localhost:8000");

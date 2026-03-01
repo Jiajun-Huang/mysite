@@ -1,6 +1,7 @@
 import ReactMarkdown, { UrlTransform } from "react-markdown";
 
 import MdCode from "./components/code/code";
+import MdImage from "./components/image/image";
 import { rehypePlugins, remarkPlugins } from "./config";
 import "./markdown.css";
 
@@ -9,7 +10,7 @@ interface Props {
   urlTransform?: UrlTransform;
 }
 
-const MarkDown = ({ children, urlTransform, ...otherProps }: Props) => {
+const MarkDown = ({ children, urlTransform }: Props) => {
   if (!children) {
     return <div />;
   }
@@ -19,7 +20,7 @@ const MarkDown = ({ children, urlTransform, ...otherProps }: Props) => {
       <ReactMarkdown
         components={{
           code: MdCode,
-          // img: MdImage,
+          img: MdImage,
         }}
         rehypePlugins={rehypePlugins}
         remarkPlugins={remarkPlugins}

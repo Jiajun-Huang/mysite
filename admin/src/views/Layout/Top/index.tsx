@@ -71,7 +71,7 @@ const View: React.FC = () => {
         </Content>
         {/* 右边底部 */}
         <Footer style={{ textAlign: "center", padding: 0, lineHeight: "48px" }}>
-          Ant Design ©2023 Created by Ant UED
+          Admin Portal © {new Date().getFullYear()}
         </Footer>
       </Layout>
     </Layout>

@@ -1,7 +1,8 @@
-import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Col, Form, Input, message, Row, Select, Space } from "antd";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { fetchCategories, fetchTags } from "../../apis/blog";
 import MarkdownEditor from "../../components/markdown/editor";
 import { useAuth } from "../../provider/auth";
@@ -9,16 +10,17 @@ import { useAuth } from "../../provider/auth";
 const { TextArea } = Input;
 
 const BlogCreate = () => {
-  // query the tag and category
-  const tagQuery = useQuery({
-    queryKey: ["tags"],
-    queryFn: fetchTags,
-  });
-
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { accessToken } = useAuth();
   const [mdText, setMdText] = useState("");
+
+  // Query tags and categories
+  const tagQuery = useQuery({
+    queryKey: ["tags"],
+    queryFn: fetchTags,
+  });
 
   const categoryQuery = useQuery({
     queryKey: ["categories"],
@@ -30,10 +32,10 @@ const BlogCreate = () => {
   }
 
   if (tagQuery.isError || categoryQuery.isError) {
-    return <div>Error...</div>;
+    return <div>Error loading data...</div>;
   }
 
-  const handlePost = async (values, status) => {
+  const handlePost = async (values: any) => {
     setIsSubmitting(true);
     try {
       const mdContent = mdText;
@@ -46,9 +48,12 @@ const BlogCreate = () => {
       formData.append("title", values.title);
       formData.append("description", values.description);
       formData.append("category", values.category);
-      formData.append("tags", values.tags);
+      formData.append(
+        "tags",
+        Array.isArray(values.tags) ? values.tags.join(",") : values.tags,
+      );
       formData.append("uri", values.uri);
-      console.log(values);
+
       const response = await fetch("/api/blog/", {
         method: "POST",
         body: formData,
@@ -58,18 +63,13 @@ const BlogCreate = () => {
       });
 
       if (!response.ok) {
-        throw new Error(
-          status === "draft" ? "Failed to save draft" : "Failed to publish post"
-        );
+        throw new Error("Failed to create blog post");
       }
 
-      message.success(
-        status === "draft"
-          ? "Successfully saved as draft!"
-          : "Successfully published!"
-      );
-    } catch (err) {
-      message.error(err.message);
+      message.success("Blog created successfully!");
+      navigate("/blog/list");
+    } catch (err: any) {
+      message.error(err.message || "Failed to create blog");
     } finally {
       setIsSubmitting(false);
     }
@@ -77,11 +77,8 @@ const BlogCreate = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Form
-        form={form}
-        layout="horizontal"
-        onFinish={(values) => handlePost(values, "draft")}
-      >
+      <h2>Create New Blog</h2>
+      <Form form={form} layout="horizontal" onFinish={handlePost}>
         <Row justify="space-between">
           <Col span={12}>
             <Form.Item
@@ -115,7 +112,7 @@ const BlogCreate = () => {
               ]}
             >
               <Select>
-                {categoryQuery.data.map((category) => (
+                {categoryQuery.data.map((category: any) => (
                   <Select.Option key={category.id} value={category.id}>
                     {category.name}
                   </Select.Option>
@@ -131,11 +128,11 @@ const BlogCreate = () => {
               wrapperCol={{ span: 18 }}
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 style={{ width: "100%" }}
-                placeholder="添加标签"
+                placeholder="Select tags"
               >
-                {tagQuery.data.map((tag) => (
+                {tagQuery.data.map((tag: any) => (
                   <Select.Option key={tag.id} value={tag.id}>
                     {tag.name}
                   </Select.Option>
@@ -161,20 +158,14 @@ const BlogCreate = () => {
 
         <Form.Item wrapperCol={{ span: 24 }}>
           <Space style={{ float: "right" }}>
-            <Button
-              icon={<SaveOutlined />}
-              onClick={() => form.submit()}
-              loading={isSubmitting}
-            >
-              存为草稿
-            </Button>
+            <Button onClick={() => navigate("/blog/list")}>Cancel</Button>
             <Button
               type="primary"
               icon={<UploadOutlined />}
-              onClick={() => handlePost(form.getFieldsValue(true), "published")}
+              htmlType="submit"
               loading={isSubmitting}
             >
-              更新文章
+              Create Blog
             </Button>
           </Space>
         </Form.Item>

@@ -1,6 +1,7 @@
 import React, { lazy } from "react";
 import { Navigate } from "react-router";
 import SkeletonLoading from "../components/SkeletonLoading";
+import ProtectedRoute from "../components/ProtectedRoute";
 import { routesType } from "../types/route";
 import BlogCreate from "../views/Blog/blogCreate";
 import BlogEdit from "../views/Blog/blogEdit";
@@ -34,7 +35,11 @@ const routes: routesType[] = [
   },
   {
     path: "/",
-    element: <Top />,
+    element: (
+      <ProtectedRoute>
+        <Top />
+      </ProtectedRoute>
+    ),
     exact: true,
     name: "menuRoutes",
     children: [
@@ -43,11 +48,11 @@ const routes: routesType[] = [
         element: withLoadingComponent(<Home />),
       },
       {
-        path: "/blog",
+        path: "/blog/list",
         element: withLoadingComponent(<BlogList />),
       },
       {
-        path: "/blog/:id",
+        path: "/blog/edit/:id",
         element: withLoadingComponent(<BlogEdit />),
       },
       {

@@ -1,6 +1,6 @@
 // import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Avatar, Dropdown } from "antd";
+import { Avatar, Dropdown, message } from "antd";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../../provider/auth.tsx";
@@ -9,8 +9,8 @@ import Clock from "../NowTime";
 const UserInfo: React.FC = () => {
   const navigateTo = useNavigate();
   const { userInfo, logout, getUserInfo } = useAuth();
+  
   useEffect(() => {
-    console.log("userInfo", userInfo);
     if (!userInfo) {
       getUserInfo();
     }
@@ -18,17 +18,26 @@ const UserInfo: React.FC = () => {
 
   const LogoutClick = () => {
     logout();
+    message.success("Logged out successfully");
     navigateTo("/login");
   };
 
   const items: MenuProps["items"] = [
     {
+      label: userInfo?.email || "No email",
+      key: "0",
+      disabled: true,
+    },
+    {
+      type: "divider",
+    },
+    {
       label: (
         <a href="#" onClick={LogoutClick}>
-          退出登录
+          Logout
         </a>
       ),
-      key: "3",
+      key: "1",
     },
   ];
 
@@ -44,13 +53,13 @@ const UserInfo: React.FC = () => {
       </div>
       <Dropdown menu={{ items }} trigger={["click"]} arrow={true}>
         <Avatar
-          style={{ backgroundColor: "#00a2ae", cursor: "pointer" }}
+          style={{ backgroundColor: "#1890ff", cursor: "pointer" }}
           shape="square"
           size="large"
           gap={4}
           onClick={(e) => e?.preventDefault()}
         >
-          {userInfo?.username}
+          {userInfo?.username?.charAt(0).toUpperCase() || "U"}
         </Avatar>
       </Dropdown>
     </div>

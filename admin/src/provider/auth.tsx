@@ -31,14 +31,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(() => {
+    // Initialize from cookie on mount
+    return getCookie("accessToken") || null;
+  });
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   const login = async (
     username: string,
     password: string
   ): Promise<boolean> => {
-    // else, login with username and password
     try {
       const response = await fetch("/api/auth/login/", {
         method: "POST",
@@ -47,13 +49,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Login failed:", errorData);
+        return false;
       }
 
       const data: LoginResponse = await response.json();
       setAccessToken(data.access);
       setUserInfo(data.user);
-      setCookie("accessToken", data.access);
+      setCookie("accessToken", data.access, 7); // 7 days expiry
       return true;
     } catch (error) {
       console.error("Login error:", error);
@@ -67,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     removeCookie("accessToken");
   };
 
-  const getUserInfo = async () => {
+  const getUserInfo = async (): Promise<User | null> => {
     if (userInfo) return userInfo;
 
     const storedToken = accessToken || getCookie("accessToken");
@@ -85,8 +89,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (response.ok) {
         const data: User = await response.json();
         setUserInfo(data);
+        setAccessToken(storedToken);
         return data;
       } else {
+        // Token is invalid, clear it
         logout();
         return null;
       }

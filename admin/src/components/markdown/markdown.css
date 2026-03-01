@@ -1,7 +1,15 @@
-@reference "tailwindcss";
+.hide-scrollbar {
+  scrollbar-width: 0px;
+  scrollbar-color: transparent;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
 .markdown {
   cursor: default;
+  line-height: 1.7;
+  color: #333;
 }
 
 .markdown h1,
@@ -11,100 +19,159 @@
 .markdown h5 {
   font-weight: bold;
   position: relative;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
 }
 
-.markdown table {
-  border-collapse: collapse;
-  margin: 1rem 0;
-  border: 1px solid;
-  border-radius: 0.5rem;
-}
-
-.markdown li {
-  list-style-type: disc;
-  margin-left: 1.5rem;
-  margin: 0.5rem 0 0.5rem 1.5rem;
-}
-
-.markdown pre {
-  width: 100%;
-  overflow-x: scroll;
-}
-
-/* use title to replay h1 tag */
 .markdown h1 {
   font-size: 2rem;
   display: none !important;
 }
 
-.markdown h1::before {
-  font-size: 2rem;
-}
-
 .markdown h2 {
   font-size: 1.5rem;
-  margin: 1.5rem 0 0.5rem 0;
+  margin: 1.5rem 0 0.8rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .markdown h3 {
   font-size: 1.3rem;
-  margin: 1rem 0 0.5rem 0;
+  margin: 1.2rem 0 0.6rem 0;
 }
 
 .markdown h4 {
   font-size: 1.1rem;
+  margin: 1rem 0 0.5rem 0;
 }
 
 .markdown h5 {
   font-size: 1rem;
+  margin: 0.8rem 0 0.4rem 0;
 }
 
-@layer base {
-  .markdown strong:hover {
-    @apply text-primary;
-  }
+.markdown p {
+  margin: 0.8rem 0;
+  text-align: justify;
+}
 
-  .markdown p {
-    margin: 0.5rem 0;
-  }
+.markdown ul,
+.markdown ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
 
-  .markdown a {
-    @apply text-primary;
-  }
+.markdown li {
+  list-style-type: disc;
+  margin: 0.4rem 0;
+  line-height: 1.6;
+}
 
-  .markdown a:hover {
-    @apply text-primary-500;
-    text-decoration: underline;
-  }
+.markdown ol li {
+  list-style-type: decimal;
+}
 
-  .markdown a:active {
-    @apply text-primary-300;
-  }
+.markdown blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid #1890ff;
+  background-color: #f5f8fa;
+  color: #666;
+}
 
-  /* .markdown a:visited {
-    @apply text-primary-600;
-  } */
+.markdown code {
+  padding: 0.2rem 0.4rem;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+}
 
-  .markdown tr {
-    border-bottom: 1px solid #ccc;
-  }
+.markdown pre {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #282c34;
+  border-radius: 6px;
+}
 
-  .markdown tr:last-child {
-    border-bottom: none;
-  }
+.markdown pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
 
-  .markdown th,
-  .markdown td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-  }
+.markdown .inline {
+  padding: 0.2rem 0.4rem !important;
+  margin: 0 0.2rem;
+}
 
-  .markdown th {
-    background-color: #f5f5f5;
-    font-weight: 600;
-  }
+.markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
 
-  .markdown tr:hover {
-    background-color: #f9f9f9;
-  }
+.markdown th,
+.markdown td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.markdown th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+}
+
+.markdown tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown tr:hover {
+  background-color: #f9f9f9;
+}
+
+.markdown a {
+  color: #1890ff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.markdown a:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+.markdown a:active {
+  color: #096dd9;
+}
+
+.markdown strong {
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.markdown strong:hover {
+  color: #1890ff;
+}
+
+.markdown img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.markdown hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px solid #e5e5e5;
 }
