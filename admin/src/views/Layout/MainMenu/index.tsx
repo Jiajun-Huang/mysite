@@ -1,5 +1,10 @@
 import { getItemType, menuClick, MenuItem } from "@/types/mainMenu";
-import { HomeOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  FileTextOutlined,
+  HomeOutlined,
+  TagsOutlined,
+} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -23,13 +28,19 @@ const getItem: getItemType = function getItem(
 
 const items: MenuItem[] = [
   getItem("Home", "/home", <HomeOutlined />),
-  getItem("Blog", "/blog", <UserOutlined />, [
+  getItem("Blog", "/blog", <FileTextOutlined />, [
     getItem("List", "/blog/list"),
     getItem("Create", "/blog/create"),
   ]),
+  getItem("Tags", "/tag", <TagsOutlined />, [
+    getItem("Manage Tags", "/tag/list"),
+  ]),
+  getItem("Categories", "/category", <AppstoreOutlined />, [
+    getItem("Manage Categories", "/category/list"),
+  ]),
 ];
 
-const rootSubmenuKeys = ["/user", "/team"];
+const rootSubmenuKeys = ["/blog", "/tag", "/category"];
 const MainMenu: React.FC = () => {
   const navigateTo = useNavigate();
   const currentRoute = useLocation();

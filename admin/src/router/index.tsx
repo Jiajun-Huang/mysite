@@ -6,8 +6,10 @@ import { routesType } from "../types/route";
 import BlogCreate from "../views/Blog/blogCreate";
 import BlogEdit from "../views/Blog/blogEdit";
 import BlogList from "../views/Blog/blogList";
+import CategoryList from "../views/Category/categoryList";
 import Top from "../views/Layout/Top";
 import Login from "../views/Login";
+import TagList from "../views/Tag/tagList";
 
 const Error404 = lazy(() => import("../views/Error/404"));
 
@@ -58,6 +60,14 @@ const routes: routesType[] = [
       {
         path: "/blog/create",
         element: withLoadingComponent(<BlogCreate />),
+      },
+      {
+        path: "/tag/list",
+        element: withLoadingComponent(<TagList />),
+      },
+      {
+        path: "/category/list",
+        element: withLoadingComponent(<CategoryList />),
       },
     ],
   },
