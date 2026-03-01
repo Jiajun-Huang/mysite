@@ -1,12 +1,12 @@
 import {
-  FileTextOutlined,
-  TagsOutlined,
   AppstoreOutlined,
   EyeOutlined,
+  FileTextOutlined,
   LikeOutlined,
+  TagsOutlined,
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Col, Row, Statistic, Table, Spin } from "antd";
+import { Card, Col, Row, Spin, Statistic, Table } from "antd";
 import { useNavigate } from "react-router";
 import { fetchDashboardStats } from "../../apis/blog";
 import styled from "./index.module.scss";

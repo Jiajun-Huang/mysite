@@ -14,19 +14,25 @@ export const fetchDashboardStats = async () => {
     throw new Error("Network response was not ok");
   }
   const blogs: BlogData[] = await response.json();
-  
+
   const tagsResponse = await fetch("/api/tag/");
   const tags = await tagsResponse.json();
-  
+
   const categoriesResponse = await fetch("/api/category/");
   const categories = await categoriesResponse.json();
-  
+
   return {
     totalBlogs: blogs.length,
     totalTags: tags.length,
     totalCategories: categories.length,
-    totalViews: blogs.reduce((sum: number, blog: BlogData) => sum + blog.views, 0),
-    totalLikes: blogs.reduce((sum: number, blog: BlogData) => sum + blog.likes, 0),
+    totalViews: blogs.reduce(
+      (sum: number, blog: BlogData) => sum + blog.views,
+      0,
+    ),
+    totalLikes: blogs.reduce(
+      (sum: number, blog: BlogData) => sum + blog.likes,
+      0,
+    ),
     recentBlogs: blogs.slice(0, 5),
   };
 };
