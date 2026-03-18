@@ -130,6 +130,6 @@ You can override deployment settings with:
 ## Notes
 
 - There are two frontend projects in this repo:
-	- `frontend/`: public website (Next.js)
-	- `admin/`: internal content management UI (React + Vite)
+  - `frontend/`: public website (Next.js)
+  - `admin/`: internal content management UI (React + Vite)
 - Current root README is focused on getting both running together with the Django API.
